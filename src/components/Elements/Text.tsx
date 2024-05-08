@@ -4,14 +4,15 @@ import SelectMenus from "../Form/SelectMenus";
 import Color2Picker from "../Form/Color2Picker";
 import clsx from "clsx";
 import DragIndicatorOutlinedIcon from "@mui/icons-material/DragIndicatorOutlined";
-import Slider from "../Form/Slider";
+import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";
+import Input from "../Form/Input";
 
-interface TextProps {
+interface TextProps extends BaseElementsProps {
   text: string;
   fontSize?: string;
   color?: string;
   fontWeight?: string;
-  margin?: { t: number; l: number; r: number; b: number };
+  lineLimit?: number;
 }
 
 const TEXTRGX = /<\/?[^>]+(>|$)/g;
@@ -24,7 +25,19 @@ const Text: UserComponent<TextProps> = (props) => {
     text,
     fontSize,
     margin = { t: 0, l: 0, r: 0, b: 0 },
+    padding = { t: 0, l: 0, r: 0, b: 0 },
+    lineLimit = 0,
   } = props;
+
+  const lineClampMap = new Map([
+    [0, ""],
+    [1, "line-clamp-1"],
+    [2, "line-clamp-2"],
+    [3, "line-clamp-3"],
+    [4, "line-clamp-4"],
+    [5, "line-clamp-5"],
+    [6, "line-clamp-6"],
+  ]);
 
   const {
     connectors: { connect, drag },
@@ -41,10 +54,8 @@ const Text: UserComponent<TextProps> = (props) => {
     <div
       ref={(ref) => ref && connect(drag(ref))}
       style={{
-        marginTop: margin.t + "px",
-        marginRight: margin.r + "px",
-        marginBottom: margin.b + "px",
-        marginLeft: margin.l + "px",
+        padding: `${padding.t}px ${padding.r}px ${padding.b}px ${padding.l}px`,
+        margin: `${margin.t}px ${margin.r}px ${margin.b}px ${margin.l}px`,
       }}
       className={clsx(
         hasSelectedNode ? "outline-blue-500" : "outline-transparent",
@@ -63,7 +74,10 @@ const Text: UserComponent<TextProps> = (props) => {
       <ContentEditable
         html={text}
         tagName="p"
-        className="outline-blue-500 focus:outline-dashed hover:outline-gray-500"
+        className={clsx(
+          "outline-blue-500 focus:outline-dashed hover:outline-gray-500",
+          lineClampMap.get(lineLimit) ?? ""
+        )}
         style={{ fontSize, color, fontWeight }}
         onChange={(e) => {
           setProp((props: TextProps) => {
@@ -83,29 +97,32 @@ export const TextSettings = () => {
     actions: { setProp },
     color,
     margin,
+    padding,
+    lineLimit,
   } = useNode<TextProps>((node) => ({
     text: node.data.props.text,
     margin: node.data.props.margin,
     fontSize: node.data.props.fontSize,
     color: node.data.props.color,
     fontWeight: node.data.props.fontWeight,
+    padding: node.data.props.padding,
+    lineLimit: node.data.props.lineLimit,
   }));
 
   return (
     <div className="flex flex-col gap-2">
-      {/**TODO: 公共属性 */}
-      <Slider
-        label="外边距"
-        max={100}
-        min={0}
-        value={margin?.t ?? 0}
-        onChange={(v) => {
-          setProp(
-            (props: TextProps) => (props.margin = { t: v, r: v, b: v, l: v })
-          );
+      {/** 公共属性 */}
+      <LayoutSettingsPanel
+        margin={margin}
+        padding={padding}
+        onMarginChange={(v) => {
+          setProp((props: TextProps) => (props.margin = v));
+        }}
+        onPaddingChange={(v) => {
+          setProp((props: TextProps) => (props.padding = v));
         }}
       />
-
+      {/*  */}
       <SelectMenus
         onChange={(v) => {
           setProp((props: TextProps) => {
@@ -153,6 +170,16 @@ export const TextSettings = () => {
           { name: "extrabold", value: "800" },
           { name: "black", value: "900" },
         ]}
+      />
+      <Input
+        value={(lineLimit ?? 0).toString()}
+        label="行数限制"
+        type="number"
+        min={0}
+        max={6}
+        onChange={(v) => {
+          setProp((props: TextProps) => (props.lineLimit = Number(v)));
+        }}
       />
     </div>
   );

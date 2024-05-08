@@ -1,32 +1,43 @@
 import React from "react";
 import UserComponent from "../UserComponent";
-import {
-  UserComponent as CUserComponent,
-  Element,
-  useNode,
-} from "@craftjs/core";
+import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 import Color2Picker from "../Form/Color2Picker";
 import Slider from "../Form/Slider";
+import { BaseElementsProps } from "../LayoutSettingsPanel";
+import { first } from "lodash";
 
-interface ContainerProps {
+interface ContainerProps extends BaseElementsProps {
   children?: React.ReactNode;
   background?: string;
-  padding?: number;
 }
 
+export const ContainerContent: CUserComponent = ({ children }) => {
+  const {
+    connectors: { connect },
+  } = useNode();
+  return <div ref={(ref) => ref && connect(ref)}>{children}</div>;
+};
+
 const Container: CUserComponent<ContainerProps> = (props) => {
+  const { margin = [0, 0, 0, 0], padding = [0, 0, 0, 0], background } = props;
+
   return (
-    <UserComponent>
-      <Element is="div" className="mx-auto max-w-none">
-        {props.children}
-      </Element>
+    <UserComponent
+      style={{
+        padding: padding.join("px "),
+        margin: margin.join("px "),
+        background,
+      }}
+      className="min-w-[100px] !w-full min-h-[100px]"
+    >
+      {props.children}
     </UserComponent>
   );
 };
 
 export default Container;
 
-export const CardSettings = () => {
+export const ContainerSettings = () => {
   const {
     actions: { setProp },
     padding,
@@ -51,9 +62,9 @@ export const CardSettings = () => {
         label="内边距"
         max={100}
         min={0}
-        value={padding ?? 16}
+        value={first(padding) ?? 16}
         onChange={(v) => {
-          setProp((props: ContainerProps) => (props.padding = v));
+          setProp((props: ContainerProps) => (props.padding = [v, v, v, v]));
         }}
       />
     </div>
@@ -61,11 +72,11 @@ export const CardSettings = () => {
 };
 
 Container.craft = {
+  displayName: "Container",
   props: {
-    padding: 16,
-    background: "#FFFFFF",
+    padding: [16, 16, 16, 16],
+    background: "transparent",
   },
-  related: {
-    settings: CardSettings,
-  },
+  rules: { canDrag: () => true },
+  related: { settings: ContainerSettings },
 };

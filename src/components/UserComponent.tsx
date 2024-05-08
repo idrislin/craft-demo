@@ -1,7 +1,6 @@
 import { useNode } from "@craftjs/core";
 import clsx from "clsx";
 import React from "react";
-import DragIndicatorOutlinedIcon from "@mui/icons-material/DragIndicatorOutlined";
 
 interface UserComponentProps {
   children: React.ReactNode;
@@ -17,11 +16,9 @@ const UserComponent: React.FC<UserComponentProps> = (props) => {
   const {
     connectors: { connect, drag },
     hasSelectedNode,
-    name,
   } = useNode((node) => ({
     name: node.data.name,
     hasSelectedNode: node.events.selected,
-    hasDraggedNode: node.events.dragged,
   }));
 
   return (
@@ -35,15 +32,6 @@ const UserComponent: React.FC<UserComponentProps> = (props) => {
       )}
       {...leftProps}
     >
-      <div
-        className={clsx(
-          hasSelectedNode ? "flex" : `hidden`,
-          "absolute gap-1 items-center justify-center top-0 z-[9999] left-0 -translate-y-full text-sm text-white px-2 py-0.5 bg-blue-500"
-        )}
-      >
-        <DragIndicatorOutlinedIcon className="max-h-4 max-w-4 cursor-grab" />
-        {name}
-      </div>
       {children}
     </Component>
   );

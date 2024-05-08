@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useEditor } from "@craftjs/core";
+import { Element, useEditor } from "@craftjs/core";
 import Button from "./Elements/Button";
 import clsx from "clsx";
 import ViewComfyOutlinedIcon from "@mui/icons-material/ViewComfyOutlined";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import Text from "./Elements/Text";
+import Card from "./Layouts/Card";
+import Container from "./Layouts/Container";
 
 const Toolbox: React.FC = () => {
   const { connectors } = useEditor();
@@ -18,6 +20,25 @@ const Toolbox: React.FC = () => {
   const components = [
     { name: "按钮", defaultComponent: <Button text="Click me" /> },
     { name: "文本", defaultComponent: <Text text="文本内容..." /> },
+  ];
+
+  const layouts = [
+    {
+      name: "Card",
+      defaultComponent: (
+        <Element is={Card} canvas>
+          <Text text="文本内容..." />
+        </Element>
+      ),
+    },
+    {
+      name: "Container",
+      defaultComponent: (
+        <Element is={Container} canvas>
+          <Text text="文本内容..." />
+        </Element>
+      ),
+    },
   ];
 
   return (
@@ -42,20 +63,38 @@ const Toolbox: React.FC = () => {
           </div>
         ))}
       </nav>
-      <ul className="flex flex-col w-full gap-3 px-4 py-2">
-        {components.map((component) => (
-          <li
-            key={component.name}
-            className="flex items-center justify-start w-full gap-1 px-4 text-sm text-blue-500 bg-blue-100 rounded h-9 hover:bg-blue-200"
-            ref={(ref) => {
-              if (!ref) return;
-              connectors.create(ref, component.defaultComponent);
-            }}
-          >
-            {component.name}
-          </li>
-        ))}
-      </ul>
+      {tabSelected === 0 && (
+        <ul className="flex flex-col w-full gap-3 px-4 py-2">
+          {components.map((component) => (
+            <li
+              key={component.name}
+              className="flex items-center justify-start w-full gap-1 px-4 text-sm text-blue-500 bg-blue-100 rounded h-9 hover:bg-blue-200"
+              ref={(ref) => {
+                if (!ref) return;
+                connectors.create(ref, component.defaultComponent);
+              }}
+            >
+              {component.name}
+            </li>
+          ))}
+        </ul>
+      )}
+      {tabSelected === 1 && (
+        <ul className="flex flex-col w-full gap-3 px-4 py-2">
+          {layouts.map((component) => (
+            <li
+              key={component.name}
+              className="flex items-center justify-start w-full gap-1 px-4 text-sm text-blue-500 bg-blue-100 rounded h-9 hover:bg-blue-200"
+              ref={(ref) => {
+                if (!ref) return;
+                connectors.create(ref, component.defaultComponent);
+              }}
+            >
+              {component.name}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

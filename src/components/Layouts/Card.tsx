@@ -1,64 +1,35 @@
 import React from "react";
 import UserComponent from "../UserComponent";
-import {
-  UserComponent as CUserComponent,
-  Element,
-  useNode,
-} from "@craftjs/core";
-import Text from "../Elements/Text";
-import Button from "../Elements/Button";
+import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 import Color2Picker from "../Form/Color2Picker";
+import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";
 import Slider from "../Form/Slider";
 
-interface CardProps {
+interface CardProps extends BaseElementsProps {
   children?: React.ReactNode;
   background?: string;
-  padding?: number;
+  borderRadius?: number;
 }
 
-export const CardTop: CUserComponent = ({ children }) => {
-  const {
-    connectors: { connect },
-  } = useNode();
-  return <div ref={(ref) => ref && connect(ref)}>{children}</div>;
-};
-
-CardTop.craft = {
-  rules: {
-    canMoveIn: (incomingNodes) =>
-      incomingNodes.every((incomingNode) => incomingNode.data.type === Text),
-  },
-};
-
-export const CardBottom: CUserComponent = ({ children }) => {
-  const {
-    connectors: { connect },
-  } = useNode();
-  return <div ref={(ref) => ref && connect(ref)}>{children}</div>;
-};
-
-CardBottom.craft = {
-  rules: {
-    canMoveIn: (incomingNodes) =>
-      incomingNodes.every((incomingNode) => incomingNode.data.type === Button),
-  },
-};
-
 const Card: CUserComponent<CardProps> = (props) => {
-  const { padding, background } = props;
+  const {
+    margin = [0, 0, 0, 0],
+    padding = [0, 0, 0, 0],
+    background,
+    borderRadius,
+  } = props;
 
   return (
     <UserComponent
-      style={{ padding: padding + "px", background }}
+      style={{
+        padding: padding.join("px "),
+        margin: margin.join("px "),
+        background,
+        borderRadius: borderRadius + "px",
+      }}
       className="!w-full p-4 bg-white sm:rounded-lg sm:shadow"
     >
-      <Element id="text" is={CardTop} canvas>
-        <Text text="Title" />
-        <Text text="Subtitle" />
-      </Element>
-      <Element id="buttons" is={CardBottom} canvas>
-        <Button size="sm" text="Learn more" />
-      </Element>
+      {props.children}
     </UserComponent>
   );
 };
@@ -70,14 +41,37 @@ export const CardSettings = () => {
     actions: { setProp },
     padding,
     background,
+    margin,
+    borderRadius,
   } = useNode<CardProps>((node) => ({
     actions: node.data.props.actions,
     background: node.data.props.background,
     padding: node.data.props.padding,
+    margin: node.data.props.margin,
+    borderRadius: node.data.props.borderRadius,
   }));
 
   return (
     <div className="flex flex-col gap-2">
+      <LayoutSettingsPanel
+        margin={margin}
+        padding={padding}
+        onMarginChange={(v) => {
+          setProp((props: CardProps) => (props.margin = v));
+        }}
+        onPaddingChange={(v) => {
+          setProp((props: CardProps) => (props.padding = v));
+        }}
+      />
+      <Slider
+        label="圆角"
+        max={32}
+        min={0}
+        value={borderRadius ?? 8}
+        onChange={(v) => {
+          setProp((props: CardProps) => (props.borderRadius = v));
+        }}
+      />
       <Color2Picker
         label="背景颜色"
         value={background ?? ""}
@@ -86,23 +80,15 @@ export const CardSettings = () => {
           setProp((props: CardProps) => (props.background = color), 500);
         }}
       />
-      <Slider
-        label="内边距"
-        max={100}
-        min={0}
-        value={padding ?? 16}
-        onChange={(v) => {
-          setProp((props: CardProps) => (props.padding = v));
-        }}
-      />
     </div>
   );
 };
 
 Card.craft = {
   props: {
-    padding: 16,
+    padding: [16, 16, 16, 16],
     background: "#FFFFFF",
+    borderRadius: 8,
   },
   related: {
     settings: CardSettings,

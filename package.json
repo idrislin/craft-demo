@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@craftjs/core": "^0.2.5",
+    "@craftjs/layers": "^0.2.2",
+    "@craftjs/utils": "^0.2.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@headlessui/react": "^1.7.19",
@@ -19,12 +21,14 @@
     "@mui/material": "^5.15.16",
     "clsx": "^2.1.1",
     "framer-motion": "^11.1.9",
+    "lodash": "^4.17.21",
     "material-ui-color-picker": "^3.5.1",
     "react": "^18.2.0",
     "react-contenteditable": "^3.3.7",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.1",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
