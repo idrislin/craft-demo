@@ -4,6 +4,7 @@ import Color2Picker from "../Form/Color2Picker";
 import SelectMenus from "../Form/SelectMenus";
 import Input from "../Form/Input";
 import UserComponent from "../UserComponent";
+import Accordion from "../Animation/Accordion";
 
 type SIZE = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -42,7 +43,7 @@ const Button: CUserComponent<ButtonProps> = (props) => {
     <UserComponent
       as="button"
       className={clsx(
-        "font-semibold shadow-sm w-max",
+        "font-semibold shadow-sm w-max whitespace-nowrap",
         variantsClassMap.get(variants),
         sizeClassMap.get(size)
       )}
@@ -71,45 +72,47 @@ export const ButtonSettings = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <Input
-        value={text}
-        label="文本"
-        onChange={(v) => {
-          setProp((props: ButtonProps) => (props.text = v), 500);
-        }}
-      />
-      <SelectMenus
-        onChange={(v) => {
-          setProp((props: ButtonProps) => {
-            return (props.size = v as SIZE);
-          });
-        }}
-        label="按钮尺寸"
-        defaultSelected={size}
-        options={[
-          { name: "xs", value: "xs" },
-          { name: "sm", value: "sm" },
-          { name: "md", value: "md" },
-          { name: "lg", value: "lg" },
-          { name: "xl", value: "xl" },
-        ]}
-      />
-      <Color2Picker
-        label="背景颜色"
-        value={background ?? ""}
-        defaultValue="#4F46E5"
-        onChange={(color) => {
-          setProp((props: ButtonProps) => (props.background = color), 500);
-        }}
-      />
-      <Color2Picker
-        label="字体颜色"
-        value={color?.match(/#[A-Fa-f0-9]{6}/)?.[0] ?? ""}
-        defaultValue="#FFFFFF"
-        onChange={(color) => {
-          setProp((props: ButtonProps) => (props.color = color), 500);
-        }}
-      />
+      <Accordion label="颜色">
+        <Color2Picker
+          label="背景颜色"
+          value={background ?? ""}
+          onChange={(color) => {
+            setProp((props: ButtonProps) => (props.background = color), 500);
+          }}
+        />
+        <Color2Picker
+          label="字体颜色"
+          value={color?.match(/#[A-Fa-f0-9]{6}/)?.[0] ?? ""}
+          onChange={(color) => {
+            setProp((props: ButtonProps) => (props.color = color), 500);
+          }}
+        />
+      </Accordion>
+      <Accordion label="基本样式" className="gap-2">
+        <Input
+          value={text}
+          label="文本"
+          onChange={(v) => {
+            setProp((props: ButtonProps) => (props.text = v), 500);
+          }}
+        />
+        <SelectMenus
+          onChange={(v) => {
+            setProp((props: ButtonProps) => {
+              return (props.size = v as SIZE);
+            });
+          }}
+          label="按钮尺寸"
+          defaultSelected={size}
+          options={[
+            { name: "xs", value: "xs" },
+            { name: "sm", value: "sm" },
+            { name: "md", value: "md" },
+            { name: "lg", value: "lg" },
+            { name: "xl", value: "xl" },
+          ]}
+        />
+      </Accordion>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useEditor } from "@craftjs/core";
 
 const SettingsPanel: React.FC = () => {
@@ -17,15 +17,9 @@ const SettingsPanel: React.FC = () => {
     return { selected };
   });
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
-
-  return selected && selected.settings ? (
-    React.createElement(selected.settings)
-  ) : (
-    <div>delete</div>
-  );
+  return selected && selected.settings
+    ? React.createElement(selected.settings)
+    : null;
 };
 
 export default SettingsPanel;

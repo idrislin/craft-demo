@@ -15,22 +15,13 @@ const UserComponent: React.FC<UserComponentProps> = (props) => {
 
   const {
     connectors: { connect, drag },
-    hasSelectedNode,
-  } = useNode((node) => ({
-    name: node.data.name,
-    hasSelectedNode: node.events.selected,
-  }));
+  } = useNode((node) => ({ name: node.data.name }));
 
   return (
     <Component
-      ref={(ref: HTMLElement) => ref && connect(drag(ref))}
-      className={clsx(
-        hasSelectedNode ? "outline-blue-500" : "outline-transparent",
-        "relative  w-min outline-dashed outline-1",
-
-        className
-      )}
       {...leftProps}
+      className={clsx("w-min", className)}
+      ref={(ref: HTMLElement) => ref && connect(drag(ref))}
     >
       {children}
     </Component>

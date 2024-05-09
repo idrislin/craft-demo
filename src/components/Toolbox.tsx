@@ -20,6 +20,14 @@ const Toolbox: React.FC = () => {
   const components = [
     { name: "按钮", defaultComponent: <Button text="Click me" /> },
     { name: "文本", defaultComponent: <Text text="文本内容..." /> },
+    {
+      name: "Container",
+      defaultComponent: (
+        <Element is={Container} canvas>
+          <Text text="文本内容..." />
+        </Element>
+      ),
+    },
   ];
 
   const layouts = [
@@ -31,18 +39,10 @@ const Toolbox: React.FC = () => {
         </Element>
       ),
     },
-    {
-      name: "Container",
-      defaultComponent: (
-        <Element is={Container} canvas>
-          <Text text="文本内容..." />
-        </Element>
-      ),
-    },
   ];
 
   return (
-    <div className="flex h-full divide-y">
+    <div className="flex h-full divide-y w-72">
       <nav
         className="flex flex-col items-center justify-start shadow w-min isolate"
         aria-label="Tabs"

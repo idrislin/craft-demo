@@ -1,11 +1,12 @@
 import ContentEditable from "react-contenteditable";
-import { UserComponent, useNode } from "@craftjs/core";
+import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 import SelectMenus from "../Form/SelectMenus";
 import Color2Picker from "../Form/Color2Picker";
 import clsx from "clsx";
-import DragIndicatorOutlinedIcon from "@mui/icons-material/DragIndicatorOutlined";
 import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";
 import Input from "../Form/Input";
+import UserComponent from "../UserComponent";
+import Accordion from "../Animation/Accordion";
 
 interface TextProps extends BaseElementsProps {
   text: string;
@@ -18,14 +19,14 @@ interface TextProps extends BaseElementsProps {
 const TEXTRGX = /<\/?[^>]+(>|$)/g;
 
 //- 组件主题
-const Text: UserComponent<TextProps> = (props) => {
+const Text: CUserComponent<TextProps> = (props) => {
   const {
     color,
     fontWeight,
     text,
     fontSize,
-    margin = { t: 0, l: 0, r: 0, b: 0 },
-    padding = { t: 0, l: 0, r: 0, b: 0 },
+    margin = [0, 0, 0, 0],
+    padding = [0, 0, 0, 0],
     lineLimit = 0,
   } = props;
 
@@ -40,10 +41,7 @@ const Text: UserComponent<TextProps> = (props) => {
   ]);
 
   const {
-    connectors: { connect, drag },
     actions: { setProp },
-    hasSelectedNode,
-    name,
   } = useNode((node) => ({
     name: node.data.name,
     hasSelectedNode: node.events.selected,
@@ -51,33 +49,17 @@ const Text: UserComponent<TextProps> = (props) => {
   }));
 
   return (
-    <div
-      ref={(ref) => ref && connect(drag(ref))}
+    <UserComponent
       style={{
-        padding: `${padding.t}px ${padding.r}px ${padding.b}px ${padding.l}px`,
-        margin: `${margin.t}px ${margin.r}px ${margin.b}px ${margin.l}px`,
+        padding: padding.join("px ") + "px",
+        margin: margin.join("px ") + "px",
       }}
-      className={clsx(
-        hasSelectedNode ? "outline-blue-500" : "outline-transparent",
-        "relative group outline-dashed outline-1"
-      )}
+      className="!w-full"
     >
-      <div
-        className={clsx(
-          hasSelectedNode ? "flex" : "hidden",
-          "absolute gap-1 items-center justify-center top-0 z-[9999] left-0 -translate-y-full text-sm text-white px-2 py-0.5 bg-blue-500"
-        )}
-      >
-        <DragIndicatorOutlinedIcon className="max-h-4 max-w-4 cursor-grab" />
-        {name}
-      </div>
       <ContentEditable
         html={text}
         tagName="p"
-        className={clsx(
-          "outline-blue-500 focus:outline-dashed hover:outline-gray-500",
-          lineClampMap.get(lineLimit) ?? ""
-        )}
+        className={clsx("outline-none", lineClampMap.get(lineLimit) ?? "")}
         style={{ fontSize, color, fontWeight }}
         onChange={(e) => {
           setProp((props: TextProps) => {
@@ -85,7 +67,7 @@ const Text: UserComponent<TextProps> = (props) => {
           });
         }}
       />
-    </div>
+    </UserComponent>
   );
 };
 
@@ -112,75 +94,78 @@ export const TextSettings = () => {
   return (
     <div className="flex flex-col gap-2">
       {/** 公共属性 */}
-      <LayoutSettingsPanel
-        margin={margin}
-        padding={padding}
-        onMarginChange={(v) => {
-          setProp((props: TextProps) => (props.margin = v));
-        }}
-        onPaddingChange={(v) => {
-          setProp((props: TextProps) => (props.padding = v));
-        }}
-      />
+      <Accordion label="布局">
+        <LayoutSettingsPanel
+          margin={margin}
+          padding={padding}
+          onMarginChange={(v) => {
+            setProp((props: TextProps) => (props.margin = v));
+          }}
+          onPaddingChange={(v) => {
+            setProp((props: TextProps) => (props.padding = v));
+          }}
+        />
+      </Accordion>
       {/*  */}
-      <SelectMenus
-        onChange={(v) => {
-          setProp((props: TextProps) => {
-            return (props.fontSize = v);
-          });
-        }}
-        label="字体大小"
-        defaultSelected="14px"
-        options={[
-          { name: "12px", value: "12px" },
-          { name: "14px", value: "14px" },
-          { name: "16px", value: "16px" },
-          { name: "18px", value: "18px" },
-          { name: "20px", value: "20px" },
-          { name: "22px", value: "22px" },
-          { name: "28px", value: "28px" },
-          { name: "32px", value: "32px" },
-          { name: "40px", value: "40px" },
-        ]}
-      />
-      <Color2Picker
-        label="字体颜色"
-        value={color ?? "#000000"}
-        defaultValue="#000000"
-        onChange={(color) => {
-          setProp((props: TextProps) => (props.color = color), 500);
-        }}
-      />
-      <SelectMenus
-        onChange={(v) => {
-          setProp((props: TextProps) => {
-            return (props.fontWeight = v);
-          });
-        }}
-        label="字体权重"
-        defaultSelected="400"
-        options={[
-          { name: "thin", value: "100" },
-          { name: "extralight", value: "200" },
-          { name: "light", value: "300" },
-          { name: "normal", value: "400" },
-          { name: "medium", value: "500" },
-          { name: "semibold", value: "600" },
-          { name: "bold", value: "700" },
-          { name: "extrabold", value: "800" },
-          { name: "black", value: "900" },
-        ]}
-      />
-      <Input
-        value={(lineLimit ?? 0).toString()}
-        label="行数限制"
-        type="number"
-        min={0}
-        max={6}
-        onChange={(v) => {
-          setProp((props: TextProps) => (props.lineLimit = Number(v)));
-        }}
-      />
+      <Accordion label="基本样式" className="gap-2">
+        <SelectMenus
+          onChange={(v) => {
+            setProp((props: TextProps) => {
+              return (props.fontSize = v);
+            });
+          }}
+          label="字体大小"
+          defaultSelected="14px"
+          options={[
+            { name: "12px", value: "12px" },
+            { name: "14px", value: "14px" },
+            { name: "16px", value: "16px" },
+            { name: "18px", value: "18px" },
+            { name: "20px", value: "20px" },
+            { name: "22px", value: "22px" },
+            { name: "28px", value: "28px" },
+            { name: "32px", value: "32px" },
+            { name: "40px", value: "40px" },
+          ]}
+        />
+        <Color2Picker
+          label="字体颜色"
+          value={color ?? "#000000"}
+          onChange={(color) => {
+            setProp((props: TextProps) => (props.color = color), 500);
+          }}
+        />
+        <SelectMenus
+          onChange={(v) => {
+            setProp((props: TextProps) => {
+              return (props.fontWeight = v);
+            });
+          }}
+          label="字体权重"
+          defaultSelected="400"
+          options={[
+            { name: "thin", value: "100" },
+            { name: "extralight", value: "200" },
+            { name: "light", value: "300" },
+            { name: "normal", value: "400" },
+            { name: "medium", value: "500" },
+            { name: "semibold", value: "600" },
+            { name: "bold", value: "700" },
+            { name: "extrabold", value: "800" },
+            { name: "black", value: "900" },
+          ]}
+        />
+        <Input
+          value={(lineLimit ?? 0).toString()}
+          label="行数限制"
+          type="number"
+          min={0}
+          max={6}
+          onChange={(v) => {
+            setProp((props: TextProps) => (props.lineLimit = Number(v)));
+          }}
+        />
+      </Accordion>
     </div>
   );
 };

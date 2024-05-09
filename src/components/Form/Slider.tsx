@@ -2,6 +2,7 @@ import React from "react";
 
 interface SliderProps {
   label: string;
+  labelHidden?: boolean;
   value: number;
   onChange: (value: number) => void;
   min: number;
@@ -9,13 +10,15 @@ interface SliderProps {
 }
 
 const Slider: React.FC<SliderProps> = (props) => {
-  const { label, value, onChange, ...leftProps } = props;
+  const { label, value, labelHidden = false, onChange, ...leftProps } = props;
 
   return (
-    <div>
-      <label className="block text-sm font-medium leading-6 text-gray-900">
-        {label}
-      </label>
+    <div className="w-full">
+      {!labelHidden && (
+        <label className="block text-sm font-medium text-gray-900">
+          {label}
+        </label>
+      )}
 
       <div className="flex items-center gap-2">
         <input
@@ -28,13 +31,11 @@ const Slider: React.FC<SliderProps> = (props) => {
         <input
           value={value}
           onChange={(event) => {
-            if (/\D/.test(event.target.value)) {
-              return;
-            }
+            if (/\D/.test(event.target.value)) return;
             onChange(Math.ceil(parseFloat(event.target.value)));
           }}
           {...leftProps}
-          className="outline-none px-2 block w-12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          className="textfield !w-10 !text-xs"
         />
       </div>
     </div>
