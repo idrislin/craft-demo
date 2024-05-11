@@ -43,7 +43,7 @@ export const Viewport: React.FC<{ children?: React.ReactNode }> = ({
     <div className="viewport">
       <div className="flex h-[calc(100vh-56px)] max-h-[calc(100vh-56px)]">
         <Toolbox />
-        <div className="flex flex-col flex-1 h-full page-container">
+        <div className="flex flex-col flex-1 h-full page-container max-w-[calc(100vw-576px)]">
           <div
             className={clsx([
               "craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto",
@@ -56,7 +56,7 @@ export const Viewport: React.FC<{ children?: React.ReactNode }> = ({
             <div className="relative flex flex-col pt-8 mx-4">{children}</div>
           </div>
         </div>
-        <div className="flex flex-col w-72">
+        <div className="flex flex-col min-w-72 max-w-72">
           <div className="flex-1">
             <SettingsPanel />
           </div>

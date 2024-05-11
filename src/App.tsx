@@ -1,7 +1,6 @@
 import { Editor, Frame, Element } from "@craftjs/core";
 import Text from "./components/Elements/Text";
 import Container from "./components/Layouts/Container";
-import Card from "./components/Layouts/Card";
 import Button from "./components/Elements/Button";
 import { RenderNode } from "./components/RenderNode";
 import { Viewport } from "./components/Viewport";
@@ -18,7 +17,6 @@ function App() {
         resolver={{
           Text,
           Container,
-          Card,
           Button,
         }}
         onRender={RenderNode}
@@ -26,15 +24,21 @@ function App() {
         <Viewport>
           <Frame>
             <Element
+              canvas
               is={Container}
               background="#FFFFFF"
               padding={[12, 16, 12, 16]}
-              canvas
               custom={{ displayName: "Root" }}
             >
-              <Card>
+              <Element
+                canvas
+                is={Container}
+                background="#FFFFFF"
+                padding={[12, 16, 12, 16]}
+                custom={{ displayName: "Container" }}
+              >
                 <Text text="Title" />
-              </Card>
+              </Element>
               <Text text="文本内容..." />
               <Button text="Click me" size="md" />
             </Element>

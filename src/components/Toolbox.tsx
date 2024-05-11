@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Element, useEditor } from "@craftjs/core";
 import Button from "./Elements/Button";
 import clsx from "clsx";
-import ViewComfyOutlinedIcon from "@mui/icons-material/ViewComfyOutlined";
+// import ViewComfyOutlinedIcon from "@mui/icons-material/ViewComfyOutlined";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 import Text from "./Elements/Text";
-import Card from "./Layouts/Card";
+// import Card from "./Layouts/Card";
 import Container from "./Layouts/Container";
 
 const Toolbox: React.FC = () => {
@@ -14,7 +14,7 @@ const Toolbox: React.FC = () => {
 
   const tabs = [
     { name: "组件", icon: <AppsOutlinedIcon /> },
-    { name: "布局", icon: <ViewComfyOutlinedIcon /> },
+    // { name: "布局", icon: <ViewComfyOutlinedIcon /> },
   ];
 
   const components = [
@@ -30,19 +30,19 @@ const Toolbox: React.FC = () => {
     },
   ];
 
-  const layouts = [
-    {
-      name: "Card",
-      defaultComponent: (
-        <Element is={Card} canvas>
-          <Text text="文本内容..." />
-        </Element>
-      ),
-    },
-  ];
+  // const layouts = [
+  //   {
+  //     name: "Card",
+  //     defaultComponent: (
+  //       <Element is={Card} canvas>
+  //         <Text text="文本内容..." />
+  //       </Element>
+  //     ),
+  //   },
+  // ];
 
   return (
-    <div className="flex h-full divide-y w-72">
+    <div className="flex h-full divide-y min-w-72 max-w-72">
       <nav
         className="flex flex-col items-center justify-start shadow w-min isolate"
         aria-label="Tabs"
@@ -79,7 +79,7 @@ const Toolbox: React.FC = () => {
           ))}
         </ul>
       )}
-      {tabSelected === 1 && (
+      {/* {tabSelected === 1 && (
         <ul className="flex flex-col w-full gap-3 px-4 py-2">
           {layouts.map((component) => (
             <li
@@ -94,7 +94,7 @@ const Toolbox: React.FC = () => {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
     </div>
   );
 };

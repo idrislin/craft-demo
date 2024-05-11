@@ -1,12 +1,12 @@
 import React from "react";
-import UserComponent from "../UserComponent";
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 import Color2Picker from "../Form/Color2Picker";
 import Slider from "../Form/Slider";
 import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";
 import Accordion from "../Animation/Accordion";
 import Radio from "../Form/Radio";
-import clsx from "clsx";
+import { Resizer } from "../Resizer";
+import SelectMenus from "../Form/SelectMenus";
 
 interface ContainerProps extends BaseElementsProps {
   children?: React.ReactNode;
@@ -16,6 +16,9 @@ interface ContainerProps extends BaseElementsProps {
   flexDirection?: string;
   alignItems?: string;
   justifyContent?: string;
+  width?: string;
+  height?: string;
+  shadow?: string;
 }
 
 export const ContainerSettings = () => {
@@ -31,8 +34,9 @@ export const ContainerSettings = () => {
     justifyContent,
   } = useNode<ContainerProps>((node) => ({ ...node.data.props }));
 
-  const direction = ["row", "col", "row-reverse", "col-reverse"];
+  const direction = ["column", "row", "column-reverse", "row-reverse"];
   const align = ["start", "center", "end"];
+  const shadow = ["none", "sm", "base", "md", "lg", "xl", "2xl"];
 
   return (
     <div className="flex flex-col gap-2">
@@ -41,14 +45,18 @@ export const ContainerSettings = () => {
           label="背景颜色"
           value={background ?? "#ffffff"}
           onChange={(color) => {
-            setProp((props: ContainerProps) => (props.background = color), 500);
+            setProp((props: ContainerProps) => {
+              props.background = color;
+            }, 500);
           }}
         />
         <Color2Picker
           label="字体颜色"
           value={color ?? "#333333"}
           onChange={(c) => {
-            setProp((props: ContainerProps) => (props.color = c), 500);
+            setProp((props: ContainerProps) => {
+              props.color = c;
+            }, 500);
           }}
         />
       </Accordion>
@@ -57,50 +65,68 @@ export const ContainerSettings = () => {
           margin={margin}
           padding={padding}
           onMarginChange={(v) => {
-            setProp((props: ContainerProps) => (props.margin = v));
+            setProp((props: ContainerProps) => {
+              props.margin = v;
+            });
           }}
           onPaddingChange={(v) => {
-            setProp((props: ContainerProps) => (props.padding = v));
+            setProp((props: ContainerProps) => {
+              props.padding = v;
+            });
           }}
         />
         <Slider
-          label="圆角"
-          max={32}
           min={0}
+          max={32}
+          label="圆角"
           value={Number(borderRadius ?? "0")}
           onChange={(v) => {
-            setProp((props: ContainerProps) => (props.borderRadius = v));
+            setProp((props: ContainerProps) => {
+              props.borderRadius = v;
+            });
+          }}
+        />
+        <SelectMenus
+          label="阴影"
+          defaultSelected="sm"
+          options={shadow.map((v) => ({
+            name: v,
+            value: v,
+          }))}
+          onChange={(v) => {
+            setProp((props: ContainerProps) => {
+              props.shadow = v;
+            });
           }}
         />
       </Accordion>
       <Accordion label="对齐" className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col">
+        <div className="flex flex-col col-span-2">
           <p className="text-xs text-gray-500">Flex Direction</p>
           {direction.map((v) => (
             <Radio
-              label={v}
               key={v}
-              checked={flexDirection === `flex-${v}`}
+              label={v}
+              checked={flexDirection === v}
               onChange={() => {
-                setProp(
-                  (props: ContainerProps) => (props.flexDirection = `flex-${v}`)
-                );
+                setProp((props: ContainerProps) => {
+                  props.flexDirection = v;
+                });
               }}
             />
           ))}
         </div>
-        <div />
         <div className="flex flex-col">
           <p className="text-xs text-gray-500">Align Items</p>
           {align.map((v) => (
             <Radio
-              label={v}
               key={v}
-              checked={alignItems === `items-${v}`}
+              label={v}
+              checked={alignItems === v}
               onChange={() => {
-                setProp(
-                  (props: ContainerProps) => (props.alignItems = `items-${v}`)
-                );
+                setProp((props: ContainerProps) => {
+                  props.alignItems = v;
+                });
               }}
             />
           ))}
@@ -109,14 +135,13 @@ export const ContainerSettings = () => {
           <p className="text-xs text-gray-500">Justify Content</p>
           {align.map((v) => (
             <Radio
-              label={v}
               key={v}
-              checked={justifyContent === `justify-${v}`}
+              label={v}
+              checked={justifyContent === v}
               onChange={() => {
-                setProp(
-                  (props: ContainerProps) =>
-                    (props.justifyContent = `justify-${v}`)
-                );
+                setProp((props: ContainerProps) => {
+                  props.justifyContent = v;
+                });
               }}
             />
           ))}
@@ -125,6 +150,8 @@ export const ContainerSettings = () => {
     </div>
   );
 };
+
+type FlexDirection = "column" | "column-reverse" | "row" | "row-reverse";
 
 const Container: CUserComponent<ContainerProps> = (props) => {
   const {
@@ -136,26 +163,45 @@ const Container: CUserComponent<ContainerProps> = (props) => {
     flexDirection,
     alignItems,
     justifyContent,
+    shadow,
   } = props;
 
+  const shadowMap = new Map([
+    ["none", "none"],
+    ["sm", "0 1px 2px 0 rgb(0 0 0 / 0.05)"],
+    ["base", "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)"],
+    ["md", "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"],
+    [
+      "lg",
+      "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    ],
+    [
+      "xl",
+      "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+    ],
+    ["2xl", "0 25px 50px -12px rgb(0 0 0 / 0.25)"],
+  ]);
+
   return (
-    <UserComponent
+    <Resizer
       style={{
         padding: padding.join("px ") + "px",
         margin: margin.join("px ") + "px",
         background,
         color,
         borderRadius: borderRadius + "px",
-      }}
-      className={clsx(
-        "min-w-[100px] flex !w-[unset] min-h-[100px]",
-        flexDirection,
+        flexDirection: flexDirection as FlexDirection,
         alignItems,
-        justifyContent
-      )}
+        justifyContent,
+        boxShadow:
+          shadow && shadow !== "none"
+            ? `0 0 #0000, 0 0 #0000, ${shadowMap.get(shadow)}`
+            : "none",
+      }}
+      className="min-w-[100px] flex min-h-[100px]"
     >
       {props.children}
-    </UserComponent>
+    </Resizer>
   );
 };
 
@@ -166,9 +212,11 @@ Container.craft = {
     background: "transparent",
     color: "#333333",
     borderRadius: 0,
-    flexDirection: "col",
-    justifyContent: "justify-start",
-    alignItems: "items-start",
+    flexDirection: "column",
+    justifyContent: "start",
+    alignItems: "start",
+    width: "100%",
+    height: "auto",
   },
   rules: { canDrag: () => true },
   related: { settings: ContainerSettings },

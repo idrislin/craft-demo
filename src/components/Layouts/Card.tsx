@@ -113,36 +113,10 @@ export const CardSettings = () => {
           }}
           label="阴影"
           defaultSelected="sm"
-          options={[
-            {
-              name: "none",
-              value: "none",
-            },
-            {
-              name: "sm",
-              value: "sm",
-            },
-            {
-              name: "base",
-              value: "base",
-            },
-            {
-              name: "md",
-              value: "md",
-            },
-            {
-              name: "lg",
-              value: "lg",
-            },
-            {
-              name: "xl",
-              value: "xl",
-            },
-            {
-              name: "2xl",
-              value: "2xl",
-            },
-          ]}
+          options={["none", "sm", "base", "md", "lg", "xl", "2xl"].map((v) => ({
+            name: v,
+            value: v,
+          }))}
         />
       </Accordion>
     </div>
