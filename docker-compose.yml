@@ -1,0 +1,6 @@
+services:
+  frontend:
+    image: vite-app
+    ports:
+      - "3001:3001"
+    restart: always
