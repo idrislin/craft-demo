@@ -2,14 +2,16 @@ import { useNode } from "@craftjs/core";
 import clsx from "clsx";
 import React from "react";
 
-interface UserComponentProps {
-  children: React.ReactNode;
-  as?: React.ElementType;
+type UserComponentProps<T extends React.ElementType> = {
+  children?: React.ReactNode;
+  as?: T;
   className?: string;
   style?: React.CSSProperties;
-}
+} & React.ComponentProps<T>;
 
-const UserComponent: React.FC<UserComponentProps> = (props) => {
+function UserComponent<T extends React.ElementType>(
+  props: UserComponentProps<T>
+) {
   const { as = "div", children, className, ...leftProps } = props;
   const Component = as;
 
@@ -26,6 +28,6 @@ const UserComponent: React.FC<UserComponentProps> = (props) => {
       {children}
     </Component>
   );
-};
+}
 
 export default UserComponent;

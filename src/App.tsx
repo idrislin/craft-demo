@@ -4,6 +4,7 @@ import Container from "./components/Layouts/Container";
 import Button from "./components/Elements/Button";
 import { RenderNode } from "./components/RenderNode";
 import { Viewport } from "./components/Viewport";
+import Image from "./components/Elements/Image";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           Text,
           Container,
           Button,
+          Image,
         }}
         onRender={RenderNode}
       >

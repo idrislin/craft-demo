@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useCallback } from "react";
 import ReactDOM from "react-dom";
 import {
   ArrowUpwardOutlined,
+  DeleteOutlineOutlined,
   DragIndicatorOutlined,
 } from "@mui/icons-material";
 
@@ -14,12 +15,12 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
   }));
 
   const {
-    isHover,
     dom,
     name,
+    parent,
+    isHover,
     moveable,
     connectors: { drag },
-    parent,
   } = useNode((node) => ({
     isHover: node.events.hovered,
     dom: node.dom,
@@ -99,6 +100,17 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
                   <ArrowUpwardOutlined className="max-h-5 max-w-5" />
                 </button>
               )}
+              {
+                <button
+                  className="cursor-pointer"
+                  onClick={() => {
+                    if (!parent) return;
+                    actions.selectNode(parent);
+                  }}
+                >
+                  <DeleteOutlineOutlined className="max-h-5 max-w-5" />
+                </button>
+              }
             </div>,
             document.querySelector(".page-container") ?? document.body
           )
