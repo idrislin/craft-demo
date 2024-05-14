@@ -1,8 +1,9 @@
 import ContentEditable from "react-contenteditable";
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
+import clsx from "clsx";
+
 import SelectMenus from "../Form/SelectMenus";
 import Color2Picker from "../Form/Color2Picker";
-import clsx from "clsx";
 import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";
 import Input from "../Form/Input";
 import UserComponent from "../UserComponent";

@@ -1,5 +1,6 @@
 import React from "react";
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
+
 import Color2Picker from "../Form/Color2Picker";
 import Slider from "../Form/Slider";
 import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";

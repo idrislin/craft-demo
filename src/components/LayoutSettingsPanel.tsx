@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Slider from "./Form/Slider";
 import { useImmer } from "use-immer";
 import { useUpdateEffect } from "ahooks";
 import { first } from "lodash";
 import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
+
+import Slider from "./Form/Slider";
 
 export interface BaseElementsProps {
   margin?: number[];

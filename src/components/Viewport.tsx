@@ -1,10 +1,10 @@
 import { useEditor } from "@craftjs/core";
 import React, { useEffect } from "react";
+import clsx from "clsx";
 import { Layers } from "@craftjs/layers";
 
 import SettingsPanel from "./SettingsPanel";
 import Toolbox from "./Toolbox";
-import clsx from "clsx";
 
 export const Viewport: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -13,23 +13,13 @@ export const Viewport: React.FC<{ children?: React.ReactNode }> = ({
     enabled,
     connectors,
     actions: { setOptions },
-  } = useEditor((state) => ({
-    enabled: state.options.enabled,
-  }));
+  } = useEditor((state) => ({ enabled: state.options.enabled }));
 
   useEffect(() => {
-    if (!window) {
-      return;
-    }
+    if (!window) return;
 
     window.requestAnimationFrame(() => {
-      // Notify doc site
-      window.parent.postMessage(
-        {
-          LANDING_PAGE_LOADED: true,
-        },
-        "*"
-      );
+      window.parent.postMessage({ LANDING_PAGE_LOADED: true }, "*");
 
       setTimeout(() => {
         setOptions((options) => {
@@ -47,11 +37,12 @@ export const Viewport: React.FC<{ children?: React.ReactNode }> = ({
           <div
             className={clsx([
               "craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto",
-              { "bg-[#f2f2f2]": enabled },
+              enabled && "bg-[#f2f2f2]",
             ])}
-            ref={(ref) =>
-              ref && connectors.select(connectors.hover(ref, ""), "")
-            }
+            ref={(ref) => {
+              if (!ref) return;
+              connectors.select(connectors.hover(ref, ""), "");
+            }}
           >
             <div className="relative flex flex-col pt-8 mx-4">{children}</div>
           </div>

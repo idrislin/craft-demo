@@ -1,12 +1,13 @@
 import React from "react";
-import UserComponent from "../UserComponent";
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
+import clsx from "clsx";
+
+import UserComponent from "../UserComponent";
 import Color2Picker from "../Form/Color2Picker";
 import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";
 import Slider from "../Form/Slider";
 import Accordion from "../Animation/Accordion";
 import SelectMenus from "../Form/SelectMenus";
-import clsx from "clsx";
 
 interface CardProps extends BaseElementsProps {
   children?: React.ReactNode;

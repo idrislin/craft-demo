@@ -1,9 +1,9 @@
 import { useNode, useEditor } from "@craftjs/core";
 import { Resizable, ResizableProps } from "re-resizable";
 import React, { useRef, useEffect, useState, useCallback } from "react";
-
 import { useDebounce } from "ahooks";
 import clsx from "clsx";
+
 import {
   getElementDimensions,
   isPercentage,
