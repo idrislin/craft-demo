@@ -10,9 +10,14 @@ import {
 
 export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
   const { id } = useNode();
-  const { actions, query, isActive } = useEditor((_, query) => ({
+  const { actions, query, isActive, children } = useEditor((_, query) => ({
     isActive: query.getEvent("selected").contains(id),
+    children: query.getNodes(),
   }));
+
+  useEffect(() => {
+    console.log(children);
+  }, [children]);
 
   const {
     dom,
@@ -21,15 +26,17 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
     isHover,
     moveable,
     connectors: { drag },
-  } = useNode((node) => ({
-    isHover: node.events.hovered,
-    dom: node.dom,
-    name: node.data.custom.displayName || node.data.displayName,
-    moveable: query.node(node.id).isDraggable(),
-    deletable: query.node(node.id).isDeletable(),
-    parent: node.data.parent,
-    props: node.data.props,
-  }));
+  } = useNode((node) => {
+    return {
+      isHover: node.events.hovered,
+      dom: node.dom,
+      name: node.data.custom.displayName || node.data.displayName,
+      moveable: query.node(node.id).isDraggable(),
+      deletable: query.node(node.id).isDeletable(),
+      parent: node.data.parent,
+      props: node.data.props,
+    };
+  });
 
   const currentRef = useRef<HTMLDivElement | null>(null);
 

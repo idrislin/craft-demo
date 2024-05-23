@@ -138,6 +138,7 @@ export const ContainerSettings = () => {
             <Radio
               key={v}
               label={v}
+              id={"justifContent" + v}
               checked={justifyContent === v}
               onChange={() => {
                 setProp((props: ContainerProps) => {
