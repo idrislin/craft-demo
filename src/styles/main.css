@@ -16,9 +16,9 @@ input[type="range"] {
   .component-selected::after {
     content: " ";
     --tw-border-opacity: 1;
-    border-color: rgba(38, 128, 235, var(--tw-border-opacity));
+    border-color: rgba(38, 128, 235, 1);
     border-style: dashed;
-    border-width: 1px;
+    border-width: 1.5px;
     display: block;
     height: 100%;
     pointer-events: none;
