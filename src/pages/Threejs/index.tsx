@@ -29,6 +29,32 @@ const Box: React.FC<MeshProps> = (props) => {
   );
 };
 
+//* 球体
+const Sphere: React.FC<MeshProps> = (props) => {
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const ref = useRef<THREE.Mesh | null>(null);
+
+  // useFrame((_, delta) => {
+  //   if (!ref.current) return;
+  //   ref.current.rotation.x += delta;
+  // });
+
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      scale={clicked ? 1.5 : 1}
+      onClick={() => setClicked(!clicked)}
+      onPointerOver={(event) => (event.stopPropagation(), setHovered(true))}
+      onPointerOut={() => setHovered(false)}
+    >
+      <sphereGeometry args={[1, 100, 100]} />
+      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+    </mesh>
+  );
+};
+
 const ThreeJSPage: React.FC = () => {
   return (
     <div>
@@ -42,7 +68,8 @@ const ThreeJSPage: React.FC = () => {
           intensity={Math.PI}
         />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <Box position={[0, 0, 0]} />
+        <Box position={[1.2, 0, 0]} />
+        <Sphere position={[-1.2, 0, 0]} />
         <OrbitControls />
       </Canvas>
     </div>

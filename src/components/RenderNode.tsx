@@ -10,14 +10,9 @@ import {
 
 export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
   const { id } = useNode();
-  const { actions, query, isActive, children } = useEditor((_, query) => ({
+  const { actions, query, isActive } = useEditor((_, query) => ({
     isActive: query.getEvent("selected").contains(id),
-    children: query.getNodes(),
   }));
-
-  useEffect(() => {
-    console.log(children);
-  }, [children]);
 
   const {
     dom,
@@ -28,13 +23,13 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
     connectors: { drag },
   } = useNode((node) => {
     return {
-      isHover: node.events.hovered,
       dom: node.dom,
-      name: node.data.custom.displayName || node.data.displayName,
+      props: node.data.props,
+      parent: node.data.parent,
+      isHover: node.events.hovered,
       moveable: query.node(node.id).isDraggable(),
       deletable: query.node(node.id).isDeletable(),
-      parent: node.data.parent,
-      props: node.data.props,
+      name: node.data.custom.displayName || node.data.displayName,
     };
   });
 
@@ -42,17 +37,21 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
 
   useEffect(() => {
     if (!dom) return;
-    if (isActive || isHover) dom.classList.add("component-selected");
-    else dom.classList.remove("component-selected");
-  }, [dom, isActive, isHover]);
+    if ((isActive || isHover) && id !== ROOT_NODE) {
+      dom.classList.add("component-selected");
+    } else {
+      dom.classList.remove("component-selected");
+    }
+  }, [dom, isActive, isHover, id]);
 
   const getPos = useCallback((dom: HTMLElement | null) => {
-    const { top, left, bottom } = dom
+    const { top, left, bottom, width } = dom
       ? dom.getBoundingClientRect()
-      : { top: 0, left: 0, bottom: 0 };
+      : { top: 0, left: 0, bottom: 0, width: 0 };
     return {
-      top: `${top > 0 ? top : bottom}px`,
       left: `${left}px`,
+      middleX: `${left + width / 2}px`,
+      top: `${top > 0 ? top : bottom}px`,
     };
   }, []);
 
@@ -79,13 +78,13 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
 
   return (
     <>
-      {isHover || isActive
+      {(isHover || isActive) && id !== ROOT_NODE
         ? ReactDOM.createPortal(
             <div
               ref={currentRef}
-              className="fixed h-[30px] -mt-[29px] text-xs flex items-center px-2 gap-1 text-white bg-blue-500"
+              className="fixed h-[30px] -translate-x-1/2 rounded-lg -mt-[29px] text-xs flex items-center px-2 gap-1 text-white bg-green-400"
               style={{
-                left: getPos(dom).left,
+                left: getPos(dom).middleX,
                 top: getPos(dom).top,
                 zIndex: 9999,
               }}
@@ -107,17 +106,17 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
                   <ArrowUpwardOutlined className="max-h-5 max-w-5" />
                 </button>
               )}
-              {
+              {id !== ROOT_NODE && (
                 <button
                   className="cursor-pointer"
                   onClick={() => {
                     if (!parent) return;
-                    actions.selectNode(parent);
+                    actions.delete(id);
                   }}
                 >
                   <DeleteOutlineOutlined className="max-h-5 max-w-5" />
                 </button>
-              }
+              )}
             </div>,
             document.querySelector(".page-container") ?? document.body
           )

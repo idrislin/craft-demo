@@ -187,20 +187,20 @@ const Container: CUserComponent<ContainerProps> = (props) => {
   return (
     <Resizer
       style={{
-        padding: padding.join("px ") + "px",
-        margin: margin.join("px ") + "px",
-        background,
         color,
-        borderRadius: borderRadius + "px",
-        flexDirection: flexDirection as FlexDirection,
+        background,
         alignItems,
         justifyContent,
+        borderRadius: borderRadius + "px",
+        margin: margin.join("px ") + "px",
+        padding: padding.join("px ") + "px",
+        flexDirection: flexDirection as FlexDirection,
         boxShadow:
           shadow && shadow !== "none"
             ? `0 0 #0000, 0 0 #0000, ${shadowMap.get(shadow)}`
             : "none",
       }}
-      className="min-w-[100px] flex min-h-[100px]"
+      className="min-w-[100px] h-full w-full flex min-h-[100px]"
     >
       {props.children}
     </Resizer>
@@ -209,7 +209,7 @@ const Container: CUserComponent<ContainerProps> = (props) => {
 
 Container.craft = {
   displayName: "Container",
-  props: {
+  defaultProps: {
     padding: [16, 16, 16, 16],
     background: "transparent",
     color: "#333333",

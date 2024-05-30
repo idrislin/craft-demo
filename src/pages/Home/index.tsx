@@ -30,7 +30,9 @@ const HomePage: React.FC = () => {
               canvas
               is={Container}
               background="#FFFFFF"
-              padding={[12, 16, 12, 16]}
+              height="100%"
+              shadow="md"
+              padding={[44, 44, 44, 44]}
               custom={{ displayName: "Root" }}
             >
               <Element
