@@ -136,12 +136,7 @@ export const Resizer: React.FC<ResizerProps> = ({ children, ...props }) => {
               return acc;
             }, {})
       }
-      className={clsx([
-        {
-          "m-auto": isRootNode,
-          flex: true,
-        },
-      ])}
+      className={clsx([{ "m-auto": isRootNode, flex: true }])}
       ref={(ref) => {
         if (ref) {
           resizable.current = ref;

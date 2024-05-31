@@ -37,7 +37,7 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
 
   useEffect(() => {
     if (!dom) return;
-    if ((isActive || isHover) && id !== ROOT_NODE) {
+    if (isActive || isHover) {
       dom.classList.add("component-selected");
     } else {
       dom.classList.remove("component-selected");
@@ -78,45 +78,55 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
 
   return (
     <>
-      {(isHover || isActive) && id !== ROOT_NODE
+      {isHover || isActive
         ? ReactDOM.createPortal(
             <div
               ref={currentRef}
-              className="fixed h-[30px] -translate-x-1/2 rounded-lg -mt-[29px] text-xs flex items-center px-2 gap-1 text-white bg-green-400"
+              className="fixed h-[30px] shadow-[0_2px_10px_rgba(0,0,0,.15)] -translate-x-1/2 rounded-lg -mt-[29px] text-xs flex items-center gap-1 text-white bg-primary"
               style={{
                 left: getPos(dom).middleX,
                 top: getPos(dom).top,
                 zIndex: 9999,
               }}
             >
-              {moveable && (
-                <button className="cursor-grab" ref={(ref) => ref && drag(ref)}>
-                  <DragIndicatorOutlined className="max-h-5 max-w-5" />
-                </button>
-              )}
-              <p className="mt-0.5">{name}</p>
-              {id !== ROOT_NODE && (
-                <button
-                  className="cursor-pointer"
-                  onClick={() => {
-                    if (!parent) return;
-                    actions.selectNode(parent);
-                  }}
-                >
-                  <ArrowUpwardOutlined className="max-h-5 max-w-5" />
-                </button>
-              )}
-              {id !== ROOT_NODE && (
-                <button
-                  className="cursor-pointer"
-                  onClick={() => {
-                    if (!parent) return;
-                    actions.delete(id);
-                  }}
-                >
-                  <DeleteOutlineOutlined className="max-h-5 max-w-5" />
-                </button>
-              )}
+              <div className="flex px-2">
+                {moveable && (
+                  <button
+                    className="cursor-grab"
+                    ref={(ref) => ref && drag(ref)}
+                  >
+                    <DragIndicatorOutlined className="max-h-5 max-w-5" />
+                  </button>
+                )}
+                <p className="mt-0.5">{name}</p>
+              </div>
+              <div className="flex items-center h-full bg-white rounded-r-lg">
+                {id !== ROOT_NODE && (
+                  <button
+                    className="px-1.5 text-gray-400 cursor-pointer hover:text-primary"
+                    onClick={() => {
+                      if (!parent) return;
+                      actions.selectNode(parent);
+                    }}
+                  >
+                    <ArrowUpwardOutlined className="max-h-5 max-w-5" />
+                  </button>
+                )}
+                {id !== ROOT_NODE && (
+                  <>
+                    <div className="w-px h-full bg-gray-200" />
+                    <button
+                      className="px-1.5 text-gray-400 cursor-pointer hover:text-red-500"
+                      onClick={() => {
+                        if (!parent) return;
+                        actions.delete(id);
+                      }}
+                    >
+                      <DeleteOutlineOutlined className="max-h-5 max-w-5" />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>,
             document.querySelector(".page-container") ?? document.body
           )

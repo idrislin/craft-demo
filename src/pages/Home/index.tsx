@@ -1,11 +1,12 @@
 import { Editor, Frame, Element } from "@craftjs/core";
 
 import Text from "../../components/Elements/Text";
-import Container from "../../components/Layouts/Container";
+import Container from "../../components/Sections/Container";
 import Button from "../../components/Elements/Button";
 import { RenderNode } from "../../components/RenderNode";
 import { Viewport } from "../../components/Viewport";
 import Image from "../../components/Elements/Image";
+import Header from "../../components/Sections/Header";
 
 const HomePage: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const HomePage: React.FC = () => {
           Container,
           Button,
           Image,
+          Header,
         }}
         onRender={RenderNode}
       >
@@ -35,17 +37,38 @@ const HomePage: React.FC = () => {
               padding={[44, 44, 44, 44]}
               custom={{ displayName: "Root" }}
             >
+              <Element canvas is={Header}>
+                <Text text="Title" />
+              </Element>
               <Element
                 canvas
                 is={Container}
                 background="#FFFFFF"
                 padding={[12, 16, 12, 16]}
-                custom={{ displayName: "Container" }}
+                custom={{ displayName: "Summary" }}
               >
                 <Text text="Title" />
               </Element>
-              <Text text="文本内容..." />
-              <Button text="Click me" size="md" />
+
+              <Element
+                canvas
+                is={Container}
+                background="#FFFFFF"
+                padding={[12, 16, 12, 16]}
+                custom={{ displayName: "Experience" }}
+              >
+                <Text text="Title" />
+              </Element>
+
+              <Element
+                canvas
+                is={Container}
+                background="#FFFFFF"
+                padding={[12, 16, 12, 16]}
+                custom={{ displayName: "Education" }}
+              >
+                <Text text="Title" />
+              </Element>
             </Element>
           </Frame>
         </Viewport>

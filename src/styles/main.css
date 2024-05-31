@@ -9,14 +9,22 @@ input[type="range"] {
   accent-color: #4f46e5;
 }
 
+:root{
+  --primary-color: #2dc08d
+}
+
 @layer components {
+  .icon-xs {
+    width: 16px !important;
+    height: 16px !important;
+  }
   .component-selected {
     position: relative;
   }
   .component-selected::after {
     content: " ";
     --tw-border-opacity: 1;
-    border-color: rgb(74, 222, 128);
+    border-color: var(--primary-color);
     border-style: solid;
     border-width: 1px;
     display: block;
@@ -83,9 +91,9 @@ input[type="range"] {
     border-radius: 100%;
     display: block;
     box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.25);
-    z-index: 99999;
+    z-index: 1000;
     pointer-events: none;
-    border: 2px solid rgb(74, 222, 128);
+    border: 2px solid var(--primary-color);
   }
   .resizeableThumb {
     position: absolute;
@@ -95,8 +103,8 @@ input[type="range"] {
     border-radius: 100%;
     display: block;
     box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.25);
-    z-index: 99999;
+    z-index: 1000;
     pointer-events: none;
-    border: 2px solid rgb(74, 222, 128);
+    border: 2px solid var(--primary-color);
   }
 }

@@ -6,7 +6,7 @@ import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 
 import Button from "./Elements/Button";
 import Text from "./Elements/Text";
-import Container from "./Layouts/Container";
+import Container from "./Sections/Container";
 import Image from "./Elements/Image";
 
 const Toolbox: React.FC = () => {
