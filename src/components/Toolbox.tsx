@@ -4,10 +4,10 @@ import clsx from "clsx";
 import ViewComfyOutlinedIcon from "@mui/icons-material/ViewComfyOutlined";
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 
-import Button from "./Elements/Button";
-import Text from "./Elements/Text";
+import Button from "./UserComponent/Button";
+import Text from "./UserComponent/Text";
 import Container from "./Sections/Container";
-import Image from "./Elements/Image";
+import Image from "./UserComponent/Image";
 
 const Toolbox: React.FC = () => {
   const { connectors } = useEditor();

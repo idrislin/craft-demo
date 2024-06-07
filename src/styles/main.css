@@ -9,11 +9,22 @@ input[type="range"] {
   accent-color: #4f46e5;
 }
 
-:root{
-  --primary-color: #2dc08d
+:root {
+  --primary-color: #2dc08d;
 }
 
 @layer components {
+  .iconButton {
+    padding-left: 6px;
+    padding-right: 6px;
+    color: #9ca3af;
+    cursor: pointer;
+  }
+
+  .iconButton:hover {
+    color: var(--primary-color);
+  }
+
   .icon-xs {
     width: 16px !important;
     height: 16px !important;
@@ -106,5 +117,15 @@ input[type="range"] {
     z-index: 1000;
     pointer-events: none;
     border: 2px solid var(--primary-color);
+  }
+  .HeaderIvyLeague::before {
+    content: "\a";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #384347;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
   }
 }
