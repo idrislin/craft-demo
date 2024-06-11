@@ -1,5 +1,5 @@
 import { useEditor } from "@craftjs/core";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useClickAway, useEventListener } from "ahooks";
 import clsx from "clsx";
@@ -10,6 +10,7 @@ import {
   FormatAlignCenterOutlined,
   FormatAlignLeftOutlined,
   FormatAlignRightOutlined,
+  FormatColorTextOutlined,
   ImportExportOutlined,
 } from "@mui/icons-material";
 import {
@@ -17,6 +18,7 @@ import {
   FormatItalicOutlined,
   FormatUnderlined,
 } from "@mui/icons-material";
+import { ChromePicker } from "react-color";
 
 import SettingsPanel from "./SettingsPanel";
 
@@ -29,7 +31,10 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   const [showMenu, setShowMenu] = useState<
     { top: string; left: string } | undefined
   >();
+  const [color, setColor] = useState<string | undefined>("#333333");
+  const [active, setActive] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const colorPickerRef = useRef<HTMLDivElement | null>(null);
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
   const contextMenu = [
     {
@@ -53,6 +58,38 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
       onAction: () => {},
     },
   ];
+  const textEditor = [
+    {
+      id: "bold",
+      content: <FormatBoldOutlined />,
+      onAction: () => handleCommandClick("bold"),
+    },
+    {
+      id: "underline",
+      content: <FormatUnderlined />,
+      onAction: () => handleCommandClick("underline"),
+    },
+    {
+      id: "italic",
+      content: <FormatItalicOutlined />,
+      onAction: () => handleCommandClick("italic"),
+    },
+    {
+      id: "justifyCenter",
+      content: <FormatAlignCenterOutlined />,
+      onAction: () => handleCommandClick("justifyCenter"),
+    },
+    {
+      id: "justifyLeft",
+      content: <FormatAlignLeftOutlined />,
+      onAction: () => handleCommandClick("justifyLeft"),
+    },
+    {
+      id: "justifyRight",
+      content: <FormatAlignRightOutlined />,
+      onAction: () => handleCommandClick("justifyRight"),
+    },
+  ];
 
   //- 点击 context menu 外部
   useClickAway(() => {
@@ -73,6 +110,64 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
     document.execCommand(command, false);
   };
 
+  useEffect(() => {
+    document.execCommand("foreColor", false, color);
+  }, [color]);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      colorPickerRef.current &&
+      !colorPickerRef.current.contains(event.target as Node)
+    ) {
+      setActive(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //- Text Editor Tools
+  const textTool = () => {
+    // if (selected.size === 0) return <div className="h-8" />;
+    return (
+      <div className="relative flex items-center self-center justify-center h-8 mx-auto bg-white divide-x rounded-full w-min">
+        {textEditor.map((value) => (
+          <button
+            key={value.id}
+            className="iconButton"
+            onClick={value.onAction}
+          >
+            {value.content}
+          </button>
+        ))}
+        <div ref={colorPickerRef}>
+          <button
+            className={clsx("iconButton", active && "!text-primary")}
+            onClick={() => setActive((prev) => !prev)}
+          >
+            <FormatColorTextOutlined />
+          </button>
+          {active && (
+            <ChromePicker
+              color={color}
+              disableAlpha
+              className="!shadow-xl top-8 absolute z-[999] select-none"
+              onChange={(color) => {
+                setColor(color.hex);
+              }}
+            />
+          )}
+        </div>
+      </div>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
   return (
     <div className="viewport" ref={rootRef}>
       <div className="flex h-[calc(100vh-56px)] max-h-[calc(100vh-56px)]">
@@ -83,56 +178,13 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
         </div>
         <div className="flex flex-col flex-1 h-full page-container">
           <div
-            className={clsx([
-              "craftjs-renderer flex-1 h-full w-full transition pt-4 pb-8 overflow-auto bg-gray-100",
-            ])}
+            className="flex-1 w-full h-full pt-4 pb-8 overflow-auto transition bg-gray-100 craftjs-renderer"
             ref={(ref) => {
               if (!ref) return;
               connectors.select(connectors.hover(ref, ""), "");
             }}
           >
-            {/* Text Editor Tools */}
-            <div className="flex items-center self-center justify-center h-8 mx-auto bg-white divide-x rounded-full w-min">
-              <button
-                onClick={() => handleCommandClick("bold")}
-                className="iconButton"
-              >
-                <FormatBoldOutlined />
-              </button>
-              <button
-                onClick={() => handleCommandClick("underline")}
-                className="iconButton"
-              >
-                <FormatUnderlined />
-              </button>
-              <button
-                onClick={() => handleCommandClick("italic")}
-                className="iconButton"
-              >
-                <FormatItalicOutlined />
-              </button>
-
-              <button
-                onClick={() => handleCommandClick("justifyCenter")}
-                className="iconButton"
-              >
-                <FormatAlignCenterOutlined />
-              </button>
-
-              <button
-                onClick={() => handleCommandClick("justifyLeft")}
-                className="iconButton"
-              >
-                <FormatAlignLeftOutlined />
-              </button>
-
-              <button
-                onClick={() => handleCommandClick("justifyRight")}
-                className="iconButton"
-              >
-                <FormatAlignRightOutlined />
-              </button>
-            </div>
+            {textTool()}
             <div className="relative flex flex-col pt-4 w-[210mm] mx-auto h-[297mm]">
               {children}
             </div>

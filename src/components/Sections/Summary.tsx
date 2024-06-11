@@ -1,15 +1,13 @@
-import React, { useRef, useState } from "react";
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
-
-import { BaseElementsProps } from "../LayoutSettingsPanel";
-import Text from "../Elements/TextV2";
-import { Resizer } from "../Resizer";
-import ContentEditable from "react-contenteditable";
 import {
   FormatBoldOutlined,
   FormatItalicOutlined,
   FormatUnderlined,
 } from "@mui/icons-material";
+
+import { BaseElementsProps } from "../LayoutSettingsPanel";
+import Text from "../Elements/TextV2";
+import { Resizer } from "../Resizer";
 
 interface SummaryProps extends BaseElementsProps {
   title?: string;
@@ -59,28 +57,11 @@ export default Summary;
 const SummarySettings = () => {
   const {
     actions: { setProp },
-    title,
   } = useNode<SummaryProps>((node) => ({ ...node.data.props }));
-
-  const handleBoldClick = () => {
-    document.execCommand("bold", false);
-  };
 
   return (
     <div className="flex flex-col gap-2 p-5 text-sm">
-      <div>
-        <button onClick={handleBoldClick}>
-          <FormatBoldOutlined />
-        </button>
-
-        <button onClick={handleBoldClick}>
-          <FormatUnderlined />
-        </button>
-
-        <button onClick={handleBoldClick}>
-          <FormatItalicOutlined />
-        </button>
-      </div>
+      <div></div>
     </div>
   );
 };
