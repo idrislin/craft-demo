@@ -3,15 +3,18 @@ import {
   Element,
   useNode,
 } from "@craftjs/core";
+import { first } from "lodash";
+import { SwapVertOutlined } from "@mui/icons-material";
 
 import ExperienceEntry, {
   EmptyExperienceEntry,
   ExperienceEntryParams,
 } from "./ExperienceEntry";
 
-import { BaseElementsProps } from "@/components/LayoutSettingsPanel";
-import { Resizer } from "@/components/Craftjs/Resizer";
-import { Slider, Text } from "@/components/Forms";
+import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
+import { Resizer } from "~/components/Craftjs/Resizer";
+import { Slider, Text } from "~/components/Forms";
+import DragDrop from "~/components/DragDrop/Sortable";
 
 interface ExperienceProps extends BaseElementsProps {
   title?: string;
@@ -67,6 +70,7 @@ const ExperienceSettings = () => {
   const {
     actions: { setProp },
     entries,
+    id,
     gap,
   } = useNode<ExperienceProps>((node) => ({
     entries: node.data.props.entries,
@@ -75,6 +79,28 @@ const ExperienceSettings = () => {
 
   return (
     <div className="flex flex-col gap-3 p-5 text-sm">
+      <div>
+        <div className="flex items-center mb-1">
+          <p>Sort Entry</p>
+          <SwapVertOutlined className="!w-5 !h-5" />
+        </div>
+        <div className="flex flex-col border border-gray-300 border-solid divide-y rounded-lg">
+          <DragDrop
+            id={"experience" + id}
+            renderItem={(item) => <div>{item}</div>}
+            items={(entries ?? []).map((entry) => entry.id)}
+            onDragEnd={(actityIndex, overIndex) => {
+              const res = [...(entries ?? [])];
+              const spliceValue = first(res.splice(actityIndex, 1));
+              if (!spliceValue) return;
+              res.splice(overIndex, 0, spliceValue);
+              setProp((props: ExperienceProps) => {
+                props.entries = res;
+              });
+            }}
+          />
+        </div>
+      </div>
       <Slider
         min={0}
         max={100}

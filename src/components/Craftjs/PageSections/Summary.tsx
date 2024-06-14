@@ -2,10 +2,10 @@ import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 import { SwapVertOutlined } from "@mui/icons-material";
 import { first } from "lodash";
 
-import { BaseElementsProps } from "@/components/LayoutSettingsPanel";
-import { Resizer } from "@/components/Craftjs/Resizer";
-import DragDrop from "@/components/DragDrop/Sortable";
-import { Color2Picker, Text, Slider, Radio } from "@/components/Forms";
+import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
+import { Resizer } from "~/components/Craftjs/Resizer";
+import DragDrop from "~/components/DragDrop/Sortable";
+import { Color2Picker, Text, Slider, Radio } from "~/components/Forms";
 
 type FlexDirection = "column" | "column-reverse" | "row" | "row-reverse";
 

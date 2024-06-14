@@ -3,10 +3,10 @@ import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 
 import LayoutSettingsPanel, {
   BaseElementsProps,
-} from "@/components/LayoutSettingsPanel";
-import Accordion from "@/components/Animation/Accordion";
-import { Resizer } from "@/components/Craftjs/Resizer";
-import { Color2Picker, Radio, SelectMenus, Slider } from "@/components/Forms";
+} from "~/components/LayoutSettingsPanel";
+import Accordion from "~/components/Animation/Accordion";
+import { Resizer } from "~/components/Craftjs/Resizer";
+import { Color2Picker, Radio, SelectMenus, Slider } from "~/components/Forms";
 
 interface ContainerProps extends BaseElementsProps {
   children?: React.ReactNode;

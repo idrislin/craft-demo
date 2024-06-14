@@ -9,9 +9,9 @@ import {
 import clsx from "clsx";
 import { first } from "lodash";
 
-import { BaseElementsProps } from "@/components/LayoutSettingsPanel";
-import { Resizer } from "@/components/Craftjs/Resizer";
-import { Text, Toggles } from "@/components/Forms";
+import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
+import { Resizer } from "~/components/Craftjs/Resizer";
+import { Text, Toggles } from "~/components/Forms";
 
 interface Field {
   value: string;

@@ -9,7 +9,7 @@ import {
   isPercentage,
   percentToPx,
   pxToPercent,
-} from "@/hooks/numToMeasurement";
+} from "~/hooks/numToMeasurement";
 
 interface ResizerProps extends ResizableProps {
   children: React.ReactNode;

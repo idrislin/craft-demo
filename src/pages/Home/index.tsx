@@ -2,12 +2,12 @@ import { Editor, Frame, Element } from "@craftjs/core";
 
 import { Viewport } from "./Viewport";
 
-import Container from "@/components/Craftjs/Container";
-import { RenderNode } from "@/components/Craftjs/RenderNode";
-import Header from "@/components/Craftjs/PageSections/Header";
-import Summary from "@/components/Craftjs/PageSections/Summary";
-import Experience from "@/components/Craftjs/PageSections/Experience";
-import ExperienceEntry from "@/components/Craftjs/PageSections/Experience/ExperienceEntry";
+import Container from "~/components/Craftjs/Container";
+import { RenderNode } from "~/components/Craftjs/RenderNode";
+import Header from "~/components/Craftjs/PageSections/Header";
+import Summary from "~/components/Craftjs/PageSections/Summary";
+import Experience from "~/components/Craftjs/PageSections/Experience";
+import ExperienceEntry from "~/components/Craftjs/PageSections/Experience/ExperienceEntry";
 
 const HomePage: React.FC = () => {
   return (

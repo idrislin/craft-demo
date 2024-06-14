@@ -20,7 +20,7 @@ import {
 } from "@mui/icons-material";
 import { ChromePicker } from "react-color";
 
-import SettingsPanel from "@/components/Craftjs/SettingsPanel";
+import SettingsPanel from "~/components/Craftjs/SettingsPanel";
 
 interface ViewportProps {
   children?: React.ReactNode;

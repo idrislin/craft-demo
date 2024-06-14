@@ -1,6 +1,6 @@
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 
-import { Toggles, Text } from "@/components/Forms";
+import { Toggles, Text } from "~/components/Forms";
 
 export interface ExperienceEntryParams {
   id: string;
