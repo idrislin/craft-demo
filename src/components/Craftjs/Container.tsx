@@ -1,13 +1,12 @@
 import React from "react";
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 
-import Color2Picker from "../Form/Color2Picker";
-import Slider from "../Form/Slider";
-import LayoutSettingsPanel, { BaseElementsProps } from "../LayoutSettingsPanel";
-import Accordion from "../Animation/Accordion";
-import Radio from "../Form/Radio";
-import { Resizer } from "../Resizer";
-import SelectMenus from "../Form/SelectMenus";
+import LayoutSettingsPanel, {
+  BaseElementsProps,
+} from "@/components/LayoutSettingsPanel";
+import Accordion from "@/components/Animation/Accordion";
+import { Resizer } from "@/components/Craftjs/Resizer";
+import { Color2Picker, Radio, SelectMenus, Slider } from "@/components/Forms";
 
 interface ContainerProps extends BaseElementsProps {
   children?: React.ReactNode;

@@ -9,7 +9,7 @@ import {
   isPercentage,
   percentToPx,
   pxToPercent,
-} from "../hooks/numToMeasurement";
+} from "@/hooks/numToMeasurement";
 
 interface ResizerProps extends ResizableProps {
   children: React.ReactNode;
@@ -136,7 +136,6 @@ export const Resizer: React.FC<ResizerProps> = ({ children, ...props }) => {
               return acc;
             }, {})
       }
-      className={clsx([{ "m-auto": isRootNode, flex: true }])}
       ref={(ref) => {
         if (ref) {
           resizable.current = ref;
@@ -144,6 +143,7 @@ export const Resizer: React.FC<ResizerProps> = ({ children, ...props }) => {
           connect(resizable.current.resizable);
         }
       }}
+      className={clsx([{ "m-auto": isRootNode, flex: true }])}
       size={internalDimensions}
       onResizeStart={(e) => {
         updateInternalDimensionsInPx();
@@ -204,7 +204,7 @@ export const Resizer: React.FC<ResizerProps> = ({ children, ...props }) => {
       {...props}
     >
       {children}
-      {active && displayName !== "Root" && (
+      {active && displayName !== "Root" && props.enable !== false && (
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           <span className="resizeableThumb left-0 -top-[5px] -translate-x-1/2"></span>
           <span className="resizeableThumb -right-[5px] -top-[5px]"></span>

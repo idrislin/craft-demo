@@ -15,7 +15,7 @@ const Radio: React.FC<RadioProps> = (props) => {
         id={props.id ?? props.label}
         checked={props.checked}
         onChange={(event) => props.onChange(event.target.checked)}
-        className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+        className="w-4 h-4 cursor-pointer custom-radio"
       />
       <label
         htmlFor={props.id ?? props.label}

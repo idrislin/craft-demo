@@ -4,7 +4,7 @@ import { useUpdateEffect } from "ahooks";
 import { first } from "lodash";
 import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
 
-import Slider from "./Form/Slider";
+import { Slider } from "@/components/Forms";
 
 export interface BaseElementsProps {
   margin?: number[];

@@ -9,10 +9,9 @@ import {
 import clsx from "clsx";
 import { first } from "lodash";
 
-import { Resizer } from "../Resizer";
-import { BaseElementsProps } from "../LayoutSettingsPanel";
-import Toggles from "../Form/Toggles";
-import Text from "../Elements/TextV2";
+import { BaseElementsProps } from "@/components/LayoutSettingsPanel";
+import { Resizer } from "@/components/Craftjs/Resizer";
+import { Text, Toggles } from "@/components/Forms";
 
 interface Field {
   value: string;
@@ -100,12 +99,34 @@ const Header: CUserComponent<HeaderProps> = (props) => {
           }}
           animate={{ borderRadius: imageType === "square" ? "4px" : "100%" }}
           className={clsx(
-            "w-[100px] box-content mb-3 h-[100px] relative bg-cover transition-radius bg-[50%] bg-no-repeat",
+            "w-[100px] box-content overflow-hidden mb-3 h-[100px] relative bg-cover transition-radius bg-[50%] bg-no-repeat",
             !file && "border border-dashed border-gray-300"
           )}
         >
           {(bg == "none" || !file) && (
-            <PersonOutlineOutlined className="absolute inset-x-0 !w-20 !h-20 mx-auto bottom-0 text-gray-400" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100"
+              height="100"
+              viewBox="0 0 150 150"
+              fill="none"
+            >
+              <g clipPath="url(#clip0)">
+                <path d="M150 0H0v150h150V0z" fill="#989898" fillOpacity=".2" />
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M124.162 150.16H133c-3.162-22.104-18.578-40.119-39.14-47.106 9.541-6.07 15.829-16.912 15.829-29.054 0-19.081-15.611-34.693-34.692-34.693-19.08 0-34.692 15.612-34.692 34.693 0 12.142 6.288 22.983 15.828 29.054C35.585 110.037 20.176 128.215 17 150.16h8.832c3.995-23.538 24.491-41.468 49.165-41.468 24.673 0 45.169 17.93 49.165 41.468zM74.997 47.98c-14.31 0-26.02 11.71-26.02 26.02 0 14.31 11.71 26.019 26.02 26.019 14.31 0 26.019-11.709 26.019-26.02 0-14.31-11.709-26.018-26.02-26.018z"
+                  fill="#000"
+                  fillOpacity=".4"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0">
+                  <path fill="#fff" d="M0 0h150v150H0z" />
+                </clipPath>
+              </defs>
+            </svg>
           )}
           <motion.div
             initial={{ opacity: 0 }}

@@ -20,14 +20,16 @@ import {
 } from "@mui/icons-material";
 import { ChromePicker } from "react-color";
 
-import SettingsPanel from "./SettingsPanel";
+import SettingsPanel from "@/components/Craftjs/SettingsPanel";
 
 interface ViewportProps {
   children?: React.ReactNode;
 }
 
 export const Viewport: React.FC<ViewportProps> = ({ children }) => {
-  const { connectors } = useEditor();
+  const { connectors, selected } = useEditor((node) => ({
+    selected: node.events.selected,
+  }));
   const [showMenu, setShowMenu] = useState<
     { top: string; left: string } | undefined
   >();
@@ -122,6 +124,15 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
       setActive(false);
     }
   };
+
+  // useEffect(() => {
+  //   console.log(selected);
+  //   if(selected.size == 0 || (selected.size === 1 && selected.has('ROOT'))) {
+
+  //   }else{
+
+  //   }
+  // }, [selected]);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);

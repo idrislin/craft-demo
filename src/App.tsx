@@ -2,6 +2,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import ThreeJSPage from "./pages/Threejs";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/dist/svg-arrow.css";
+import "tippy.js/themes/material.css";
 
 function App() {
   return (
