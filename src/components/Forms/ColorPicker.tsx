@@ -9,7 +9,7 @@ interface ColorPickerProps {
   onChange: (value: string) => void;
 }
 
-const Color2Picker: React.FC<ColorPickerProps> = (props) => {
+const ColorPicker: React.FC<ColorPickerProps> = (props) => {
   const { label, value, labelHidden = false, onChange } = props;
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -63,4 +63,4 @@ const Color2Picker: React.FC<ColorPickerProps> = (props) => {
   );
 };
 
-export default Color2Picker;
+export default ColorPicker;

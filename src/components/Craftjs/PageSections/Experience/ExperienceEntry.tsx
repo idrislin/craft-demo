@@ -1,6 +1,8 @@
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
+import { useState } from "react";
 
 import { Toggles, Text } from "~/components/Forms";
+import DateRangePicker from "./DateRangePicker";
 
 export interface ExperienceEntryParams {
   id: string;
@@ -30,6 +32,7 @@ interface ExperienceEntryProps {
 
 const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
   const { entry } = props;
+  const [calendar, setCalendar] = useState(false);
 
   const {
     actions: { setProp },
@@ -90,16 +93,21 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
         {entry.hiddenField.includes("datePeriod") ? (
           <div />
         ) : (
-          <Text
-            value={entry.datePeriod}
-            placeholder="Date period"
-            className="text-base font-normal text-black whitespace-nowrap w-min text-end"
-            onChange={(v) => {
-              setProp((props: ExperienceEntryProps) => {
-                props.entry = { ...entry, datePeriod: v };
-              });
-            }}
-          />
+          <>
+            <Text
+              value={entry.datePeriod}
+              placeholder="Date period"
+              className="text-base font-normal text-black whitespace-nowrap w-min text-end"
+              onChange={(v) => {
+                setProp((props: ExperienceEntryProps) => {
+                  props.entry = { ...entry, datePeriod: v };
+                });
+              }}
+            />
+            <div className="absolute inset-x-0 top-0 z-50 flex justify-center mx-auto rounded">
+              <DateRangePicker selected={{}} onChange={() => {}} />
+            </div>
+          </>
         )}
       </div>
       {entry.hiddenField.includes("companyDesc") ? null : (
@@ -178,7 +186,7 @@ const ExperienceEntrySettings = () => {
 };
 
 ExperienceEntry.craft = {
-  displayName: "Header",
+  displayName: "Experience Entry",
   defaultProps: { entry: EmptyExperienceEntry },
   related: { settings: ExperienceEntrySettings },
 };

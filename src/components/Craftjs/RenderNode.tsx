@@ -30,7 +30,6 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
       moveable: query.node(node.id).isDraggable(),
       deletable: query.node(node.id).isDeletable(),
       name: node.data.custom.displayName || node.data.displayName,
-      node: node,
     };
   });
 

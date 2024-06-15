@@ -54,9 +54,9 @@ const Experience: CUserComponent<ExperienceProps> = (props) => {
         {entries?.map((entry) => (
           <Element
             entry={entry}
-            is={ExperienceEntry}
             id={entry.id}
             key={entry.id}
+            is={ExperienceEntry}
           />
         ))}
       </div>

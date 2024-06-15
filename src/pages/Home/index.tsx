@@ -34,6 +34,7 @@ const HomePage: React.FC = () => {
               shadow="md"
               height="100%"
               is={Container}
+              className="ROOT"
               background="#FFFFFF"
               padding={[44, 44, 44, 44]}
               custom={{ displayName: "Root" }}
@@ -66,13 +67,6 @@ const HomePage: React.FC = () => {
                 placeholder="What's the one thing that makes you the best candidate for this job?"
               />
               <Element canvas is={Experience} title="Experience" />
-              <Element
-                canvas
-                is={Container}
-                background="#FFFFFF"
-                padding={[12, 16, 12, 16]}
-                custom={{ displayName: "Education" }}
-              ></Element>
             </Element>
           </Frame>
         </Viewport>

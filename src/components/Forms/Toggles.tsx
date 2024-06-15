@@ -13,7 +13,7 @@ const Toggles: React.FC<TogglesProps> = ({ enabled, onChange }) => {
       checked={enabled}
       onChange={onChange}
       className={clsx(
-        enabled ? "bg-primary" : "bg-gray-200",
+        enabled ? "bg-primary" : "bg-[#d8d9db] hover:bg-[#999]",
         "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-0"
       )}
     >

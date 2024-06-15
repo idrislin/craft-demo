@@ -19,6 +19,7 @@ import {
   FormatUnderlined,
 } from "@mui/icons-material";
 import { ChromePicker } from "react-color";
+import { isEmpty } from "lodash";
 
 import SettingsPanel from "~/components/Craftjs/SettingsPanel";
 
@@ -125,14 +126,18 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(selected);
-  //   if(selected.size == 0 || (selected.size === 1 && selected.has('ROOT'))) {
-
-  //   }else{
-
-  //   }
-  // }, [selected]);
+  useEffect(() => {
+    const elements = document.getElementsByClassName("ROOT");
+    const rootEle = elements[0] as HTMLElement;
+    if (!elements || isEmpty(elements)) return;
+    console.log(selected);
+    if (selected.size === 1 && selected.has("ROOT")) {
+      rootEle.style.setProperty("background", "white");
+      return;
+    } else if (selected.size > 0) {
+      rootEle.style.setProperty("background", "rgb(80 77 98 / 20%)");
+    }
+  }, [selected]);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);

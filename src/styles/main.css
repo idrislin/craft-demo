@@ -110,6 +110,8 @@
   }
   .component-selected {
     position: relative;
+    background-color: white;
+    border-radius: 4px;
   }
   .component-selected::after {
     content: " ";

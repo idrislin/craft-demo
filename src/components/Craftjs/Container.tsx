@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 
@@ -6,7 +7,7 @@ import LayoutSettingsPanel, {
 } from "~/components/LayoutSettingsPanel";
 import Accordion from "~/components/Animation/Accordion";
 import { Resizer } from "~/components/Craftjs/Resizer";
-import { Color2Picker, Radio, SelectMenus, Slider } from "~/components/Forms";
+import { ColorPicker, Radio, SelectMenus, Slider } from "~/components/Forms";
 
 interface ContainerProps extends BaseElementsProps {
   children?: React.ReactNode;
@@ -19,6 +20,7 @@ interface ContainerProps extends BaseElementsProps {
   width?: string;
   height?: string;
   shadow?: string;
+  className?: string;
 }
 
 export const ContainerSettings = () => {
@@ -41,7 +43,7 @@ export const ContainerSettings = () => {
   return (
     <div className="flex flex-col gap-2">
       <Accordion label="颜色">
-        <Color2Picker
+        <ColorPicker
           label="背景颜色"
           value={background ?? "#ffffff"}
           onChange={(color) => {
@@ -50,7 +52,7 @@ export const ContainerSettings = () => {
             }, 500);
           }}
         />
-        <Color2Picker
+        <ColorPicker
           label="字体颜色"
           value={color ?? "#333333"}
           onChange={(c) => {
@@ -165,6 +167,7 @@ const Container: CUserComponent<ContainerProps> = (props) => {
     alignItems,
     justifyContent,
     shadow,
+    className,
   } = props;
 
   const shadowMap = new Map([
@@ -199,7 +202,10 @@ const Container: CUserComponent<ContainerProps> = (props) => {
             ? `0 0 #0000, 0 0 #0000, ${shadowMap.get(shadow)}`
             : "none",
       }}
-      className="min-w-[100px] h-full w-full flex min-h-[100px]"
+      className={clsx(
+        "min-w-[100px] h-full w-full flex min-h-[100px]",
+        className
+      )}
     >
       {props.children}
     </Resizer>

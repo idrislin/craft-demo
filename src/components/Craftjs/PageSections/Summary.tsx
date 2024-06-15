@@ -5,7 +5,7 @@ import { first } from "lodash";
 import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
 import { Resizer } from "~/components/Craftjs/Resizer";
 import DragDrop from "~/components/DragDrop/Sortable";
-import { Color2Picker, Text, Slider, Radio } from "~/components/Forms";
+import { ColorPicker, Text, Slider, Radio } from "~/components/Forms";
 
 type FlexDirection = "column" | "column-reverse" | "row" | "row-reverse";
 
@@ -104,7 +104,7 @@ const SummarySettings = () => {
 
   return (
     <div className="flex flex-col gap-3 p-5 text-sm">
-      <Color2Picker
+      <ColorPicker
         label="Divider Background"
         value={dividerColor}
         onChange={(value) => {
