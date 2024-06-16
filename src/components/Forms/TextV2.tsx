@@ -7,14 +7,11 @@ interface TextProps {
   className?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
+  onFocus?: () => void;
 }
 
-const Text: React.FC<TextProps> = ({
-  value,
-  onChange,
-  className,
-  placeholder,
-}) => {
+const Text: React.FC<TextProps> = (props) => {
+  const { value, onChange, className, placeholder, ...leftProps } = props;
   const [isPlaceholderVisible, setPlaceholderVisible] = useState(true);
 
   useEffect(() => {
@@ -38,6 +35,7 @@ const Text: React.FC<TextProps> = ({
         if (!onChange) return;
         onChange(e.target.value.replace(/<\/?[^>]+(>|$)/g, ""));
       }}
+      {...leftProps}
     />
   );
 };

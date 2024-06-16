@@ -4,6 +4,7 @@ import {
   ClearOutlined,
   EditOutlined,
 } from "@mui/icons-material";
+import { useDebounceEffect, useEventListener } from "ahooks";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { reverse, range } from "lodash";
@@ -13,22 +14,25 @@ import { Toggles } from "~/components/Forms";
 import Tabs from "~/components/Tabs";
 
 interface DateRangePickerProps {
-  selected: { year?: number; month?: string };
-  onChange: (value: { year?: number; month?: string }) => void;
+  open: boolean;
+  onClose: () => void;
+  selected: { from: string; to: string };
+  onChange: (value: { from: string; to: string }) => void;
 }
 
-const DateRangePicker: React.FC<DateRangePickerProps> = ({
-  selected,
-  onChange,
-}) => {
+const DateRangePicker: React.FC<DateRangePickerProps> = (props) => {
+  const { open, onClose, selected, onChange } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [yCurrent, setYCurrent] = useState(0);
+  const [yCurrent1, setYCurrent1] = useState(0);
+  const [yCurrent2, setYCurrent2] = useState(0);
   const [custom, setCustom] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const getYear = (limit: number) => {
-    const y = new Date().getFullYear() - yCurrent * limit;
+    const current = currentIndex == 0 ? yCurrent1 : yCurrent2;
+    const y = new Date().getFullYear() - current * limit;
     return reverse(range(y, y - limit, -1));
   };
 
@@ -52,22 +56,40 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     "Dec",
   ];
 
+  useDebounceEffect(() => {
+    onChange({ from: selected.from, to: inputValue });
+  }, [inputValue]);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if(!open) return;
+    if (
+      wrapperRef.current &&
+      !wrapperRef.current.contains(event.target as Node)
+    ) {
+      console.log('log')
+      onClose();
+    }
+  };
+
+  useEventListener("click", handleClickOutside);
+
   const fromPannel = () => {
     if (currentIndex !== 0) return null;
+    const [month = "--", year = "----"] = selected.from.split("/");
     return (
       <>
         <div className="relative z-10 grid grid-cols-4 px-5 py-4">
           <div className="flex items-center justify-center gap-2">
             <button
               className="hover:text-primary"
-              onClick={() => setYCurrent((p) => p + 1)}
+              onClick={() => setYCurrent1((p) => p + 1)}
             >
               <ChevronLeftOutlined />
             </button>
             <button
-              disabled={yCurrent === 0}
+              disabled={yCurrent1 === 0}
               className="hover:text-primary disabled:cursor-not-allowed disabled:text-gray-300"
-              onClick={() => setYCurrent((p) => p - 1)}
+              onClick={() => setYCurrent1((p) => p - 1)}
             >
               <ChevronRightOutlined />
             </button>
@@ -76,12 +98,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
             <Item
               key={v}
               value={v.toString()}
-              selected={selected.year === v}
+              selected={year === v.toString()}
               onClick={() => {
-                if (selected.year === v) {
-                  onChange({ month: selected.month, year: undefined });
+                if (year === v.toString()) {
+                  onChange({ from: `${month}/----`, to: selected.to });
                 } else {
-                  onChange({ month: selected.month, year: v });
+                  onChange({ from: `${month}/${v}`, to: selected.to });
                 }
               }}
             />
@@ -93,12 +115,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
             <Item
               key={v}
               value={v}
-              selected={selected.month === v}
+              selected={month === v}
               onClick={() => {
-                if (selected.month === v) {
-                  onChange({ year: selected.year, month: undefined });
+                if (month === v) {
+                  onChange({ from: `--/${year}`, to: selected.to });
                 } else {
-                  onChange({ year: selected.year, month: v });
+                  onChange({ from: `${v}/${year}`, to: selected.to });
                 }
               }}
             />
@@ -110,34 +132,49 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
   const toPannel = () => {
     if (currentIndex !== 1) return null;
+    const [month = "--", year = "----"] = selected.to.split("/");
     return (
       <div className="relative">
         <div className="relative z-10 grid grid-cols-4 px-5 py-4">
           <div className="col-span-4 rounded bg-gray-200 p-2.5 flex items-center justify-between">
             <EditOutlined className="!w-4 !h-4" />
             <input
-              className="text-sm bg-transparent ring-0 !outline-none !border-none !shadow-none"
-              disabled={!custom}
-              value={inputValue}
               ref={inputRef}
+              value={inputValue}
+              disabled={!custom}
+              className="text-sm bg-transparent ring-0 !outline-none !border-none !shadow-none"
               onChange={(event) => {
                 setInputValue(event?.target.value);
               }}
               placeholder="Present"
             />
-            <Toggles enabled={custom} onChange={() => setCustom((p) => !p)} />
+            <Toggles
+              enabled={custom}
+              onChange={() => {
+                if (!custom) {
+                  onChange({
+                    from: selected.from,
+                    to: inputValue || "Present",
+                  });
+                } else {
+                  onChange({ from: selected.from, to: "--/----" });
+                  setInputValue("");
+                }
+                setCustom((prev) => !prev);
+              }}
+            />
           </div>
           <div className="flex items-center justify-center gap-2">
             <button
               className="hover:text-primary"
-              onClick={() => setYCurrent((p) => p + 1)}
+              onClick={() => setYCurrent2((p) => p + 1)}
             >
               <ChevronLeftOutlined />
             </button>
             <button
-              disabled={yCurrent === 0}
+              disabled={yCurrent2 === 0}
               className="hover:text-primary disabled:cursor-not-allowed disabled:text-gray-300"
-              onClick={() => setYCurrent((p) => p - 1)}
+              onClick={() => setYCurrent2((p) => p - 1)}
             >
               <ChevronRightOutlined />
             </button>
@@ -146,12 +183,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
             <Item
               key={v}
               value={v.toString()}
-              selected={selected.year === v}
+              selected={year === v.toString()}
               onClick={() => {
-                if (selected.year === v) {
-                  onChange({ month: selected.month, year: undefined });
+                if (year === v.toString()) {
+                  onChange({ to: `${month}/----`, from: selected.from });
                 } else {
-                  onChange({ month: selected.month, year: v });
+                  onChange({ to: `${month}/${v}`, from: selected.from });
                 }
               }}
             />
@@ -163,12 +200,12 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
             <Item
               key={v}
               value={v}
-              selected={selected.month === v}
+              selected={month === v}
               onClick={() => {
-                if (selected.month === v) {
-                  onChange({ year: selected.year, month: undefined });
+                if (month === v) {
+                  onChange({ to: `--/${year}`, from: selected.from });
                 } else {
-                  onChange({ year: selected.year, month: v });
+                  onChange({ to: `${v}/${year}`, from: selected.from });
                 }
               }}
             />
@@ -181,8 +218,10 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     );
   };
 
+  if (!open) return null;
+
   return (
-    <div className="bg-white shadow-xl w-[300px] rounded">
+    <div ref={wrapperRef} className="bg-white shadow-xl w-[300px] rounded">
       <Tabs
         tabs={[
           { name: "From", value: "from" },

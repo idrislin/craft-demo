@@ -1,8 +1,9 @@
 import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import DateRangePicker from "./DateRangePicker";
 
 import { Toggles, Text } from "~/components/Forms";
-import DateRangePicker from "./DateRangePicker";
 
 export interface ExperienceEntryParams {
   id: string;
@@ -32,12 +33,17 @@ interface ExperienceEntryProps {
 
 const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
   const { entry } = props;
-  const [calendar, setCalendar] = useState(false);
+  const [calendar, setCalendar] = useState({ from: "", to: "" });
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const {
     actions: { setProp },
     connectors: { connect, drag },
   } = useNode((node) => ({ name: node.data.name }));
+
+  useEffect(() => {
+    console.log(calendar);
+  }, [calendar]);
 
   return (
     <div
@@ -97,6 +103,10 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
             <Text
               value={entry.datePeriod}
               placeholder="Date period"
+              onFocus={() => {
+                console.log("12");
+                setCalendarOpen(true);
+              }}
               className="text-base font-normal text-black whitespace-nowrap w-min text-end"
               onChange={(v) => {
                 setProp((props: ExperienceEntryProps) => {
@@ -104,9 +114,16 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
                 });
               }}
             />
-            <div className="absolute inset-x-0 top-0 z-50 flex justify-center mx-auto rounded">
-              <DateRangePicker selected={{}} onChange={() => {}} />
-            </div>
+            {calendarOpen ? (
+              <div className="absolute inset-x-0 top-0 z-50 flex justify-center mx-auto rounded">
+                <DateRangePicker
+                  open={calendarOpen}
+                  selected={calendar}
+                  onClose={() => setCalendarOpen(false)}
+                  onChange={(value) => setCalendar(value)}
+                />
+              </div>
+            ) : null}
           </>
         )}
       </div>
