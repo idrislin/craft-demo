@@ -32,8 +32,8 @@ interface HeaderProps extends BaseElementsProps {
 
 const Header: CUserComponent<HeaderProps> = (props) => {
   const {
-    margin = [0, 0, 0, 0],
-    padding = [0, 0, 0, 0],
+    margin = [0],
+    padding = [0],
     alignItems,
     justifyContent = "center",
     title,

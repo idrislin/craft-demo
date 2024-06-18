@@ -8,10 +8,18 @@ interface TextProps {
   onChange?: (value: string) => void;
   placeholder?: string;
   onFocus?: () => void;
+  tagName?: string;
 }
 
 const Text: React.FC<TextProps> = (props) => {
-  const { value, onChange, className, placeholder, ...leftProps } = props;
+  const {
+    value,
+    onChange,
+    className,
+    placeholder,
+    tagName = "p",
+    ...leftProps
+  } = props;
   const [isPlaceholderVisible, setPlaceholderVisible] = useState(true);
 
   useEffect(() => {
@@ -21,7 +29,7 @@ const Text: React.FC<TextProps> = (props) => {
   return (
     <ContentEditable
       html={value}
-      tagName="p"
+      tagName={tagName}
       aria-placeholder={placeholder}
       className={clsx(
         `outline-none after:opacity-40`,

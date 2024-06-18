@@ -21,6 +21,7 @@ interface ContainerProps extends BaseElementsProps {
   height?: string;
   shadow?: string;
   className?: string;
+  resizeable?: false | undefined;
 }
 
 export const ContainerSettings = () => {
@@ -158,8 +159,8 @@ type FlexDirection = "column" | "column-reverse" | "row" | "row-reverse";
 
 const Container: CUserComponent<ContainerProps> = (props) => {
   const {
-    margin = [0, 0, 0, 0],
-    padding = [0, 0, 0, 0],
+    margin = [0],
+    padding = [0],
     background,
     color,
     borderRadius,
@@ -168,6 +169,7 @@ const Container: CUserComponent<ContainerProps> = (props) => {
     justifyContent,
     shadow,
     className,
+    resizeable,
   } = props;
 
   const shadowMap = new Map([
@@ -206,6 +208,7 @@ const Container: CUserComponent<ContainerProps> = (props) => {
         "min-w-[100px] h-full w-full flex min-h-[100px]",
         className
       )}
+      enable={resizeable}
     >
       {props.children}
     </Resizer>

@@ -5,6 +5,7 @@ import ThreeJSPage from "./pages/Threejs";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/dist/svg-arrow.css";
 import "tippy.js/themes/material.css";
+import "tippy.js/themes/light.css";
 
 function App() {
   return (

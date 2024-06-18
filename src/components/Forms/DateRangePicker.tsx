@@ -61,12 +61,11 @@ const DateRangePicker: React.FC<DateRangePickerProps> = (props) => {
   }, [inputValue]);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if(!open) return;
+    if (!open) return;
     if (
       wrapperRef.current &&
       !wrapperRef.current.contains(event.target as Node)
     ) {
-      console.log('log')
       onClose();
     }
   };

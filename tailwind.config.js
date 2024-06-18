@@ -5,6 +5,7 @@ export default {
     extend: {
       boxShadow: {
         popover: "0 0 4px 0 rgba(0, 0, 0, .3)",
+        button: "0 2px 20px rgba(0,0,0,.1)",
       },
       zIndex: {
         popover: 1039,
@@ -27,6 +28,10 @@ export default {
           DEFAULT: "#d8d7db",
           hover: "#999",
         },
+        purple: {
+          DEFAULT: "#8c7cdb",
+        },
+        black: "#384347",
       },
       width: {
         "page-a4": "2480px",

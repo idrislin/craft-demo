@@ -21,15 +21,14 @@ import {
 import { ChromePicker } from "react-color";
 import { isEmpty } from "lodash";
 
-import SettingsPanel from "~/components/Craftjs/SettingsPanel";
-
 interface ViewportProps {
   children?: React.ReactNode;
 }
 
 export const Viewport: React.FC<ViewportProps> = ({ children }) => {
-  const { connectors, selected } = useEditor((node) => ({
+  const { connectors, selected, nodes } = useEditor((node) => ({
     selected: node.events.selected,
+    nodes: node.nodes,
   }));
   const [showMenu, setShowMenu] = useState<
     { top: string; left: string } | undefined
@@ -130,22 +129,26 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
     const elements = document.getElementsByClassName("ROOT");
     const rootEle = elements[0] as HTMLElement;
     if (!elements || isEmpty(elements)) return;
-    console.log(selected);
-    if (selected.size === 1 && selected.has("ROOT")) {
+    if (
+      nodes[selected.values().next().value]?.data?.custom?.displayName ===
+      "PAGE"
+    ) {
+      rootEle.style.setProperty("background", "white");
+      return;
+    }
+    if (
+      selected.size == 0 ||
+      (selected.size === 1 && (selected.has("ROOT") || selected.has("")))
+    ) {
       rootEle.style.setProperty("background", "white");
       return;
     } else if (selected.size > 0) {
       rootEle.style.setProperty("background", "rgb(80 77 98 / 20%)");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEventListener("click", handleClickOutside);
 
   //- Text Editor Tools
   const textTool = () => {
@@ -187,11 +190,6 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   return (
     <div className="viewport" ref={rootRef}>
       <div className="flex h-[calc(100vh-56px)] max-h-[calc(100vh-56px)]">
-        <div className="flex flex-col min-w-72 max-w-72">
-          <div className="flex-1">
-            <SettingsPanel />
-          </div>
-        </div>
         <div className="flex flex-col flex-1 h-full page-container">
           <div
             className="flex-1 w-full h-full pt-4 pb-8 overflow-auto transition bg-gray-100 craftjs-renderer"
@@ -201,9 +199,7 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
             }}
           >
             {textTool()}
-            <div className="relative flex flex-col pt-4 w-[210mm] mx-auto h-[297mm]">
-              {children}
-            </div>
+            {children}
           </div>
         </div>
       </div>
@@ -213,8 +209,8 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
           ref={contextMenuRef}
           style={{
             position: "fixed",
-            left: showMenu?.left ?? "0px",
             top: showMenu?.top ?? "0px",
+            left: showMenu?.left ?? "0px",
           }}
           className={clsx(
             "overflow-hidden transition-opacity flex flex-col divide-y bg-white rounded-md shadow-popover z-popover opacity-1",

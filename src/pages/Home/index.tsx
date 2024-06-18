@@ -1,6 +1,7 @@
-import { Editor, Frame, Element } from "@craftjs/core";
+import { Editor } from "@craftjs/core";
 
 import { Viewport } from "./Viewport";
+import NodesTree from "./NodesTree";
 
 import Container from "~/components/Craftjs/Container";
 import { RenderNode } from "~/components/Craftjs/RenderNode";
@@ -8,6 +9,8 @@ import Header from "~/components/Craftjs/PageSections/Header";
 import Summary from "~/components/Craftjs/PageSections/Summary";
 import Experience from "~/components/Craftjs/PageSections/Experience";
 import ExperienceEntry from "~/components/Craftjs/PageSections/Experience/ExperienceEntry";
+import Education from "~/components/Craftjs/PageSections/Education";
+import EducationEntry from "~/components/Craftjs/PageSections/Education/EducationEntry";
 
 const HomePage: React.FC = () => {
   return (
@@ -24,51 +27,16 @@ const HomePage: React.FC = () => {
           Summary,
           Experience,
           ExperienceEntry,
+          Education,
+          EducationEntry,
+        }}
+        onNodesChange={() => {
+          console.log("nodes change callback");
         }}
         onRender={RenderNode}
       >
         <Viewport>
-          <Frame>
-            <Element
-              canvas
-              shadow="md"
-              height="100%"
-              is={Container}
-              className="ROOT"
-              background="#FFFFFF"
-              padding={[44, 44, 44, 44]}
-              custom={{ displayName: "Root" }}
-            >
-              <Element
-                canvas
-                is={Header}
-                imageType="square"
-                image={{ value: "Image", label: "Image", show: true }}
-                title={{ value: "YOUR NAME", label: "Title", show: true }}
-                subtitle={{
-                  value: "The role you are applying for?",
-                  label: "SubTitle",
-                  show: true,
-                }}
-                fields={[
-                  { value: "Phone", label: "Phone", show: true },
-                  { value: "Email", label: "Email", show: true },
-                  { value: "LinkedIn/Portfolio", label: "Link", show: true },
-                  { value: "Extra Link", label: "Extra Link", show: false },
-                  { value: "Location", label: "Location", show: true },
-                  { value: "Extra Field", label: "Extra Field", show: false },
-                ]}
-              />
-              <Element
-                canvas
-                is={Summary}
-                title="Summary"
-                entries={[{ id: "Entry 1", value: "" }]}
-                placeholder="What's the one thing that makes you the best candidate for this job?"
-              />
-              <Element canvas is={Experience} title="Experience" />
-            </Element>
-          </Frame>
+          <NodesTree />
         </Viewport>
       </Editor>
     </div>

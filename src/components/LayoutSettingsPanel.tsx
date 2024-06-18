@@ -22,12 +22,12 @@ const LayoutSettingsPanel: React.FC<LayoutSettingsPanelProps> = (props) => {
     <>
       <LayoutSlider
         label="外边距"
-        value={margin ?? [0, 0, 0, 0]}
+        value={margin ?? [0]}
         onChange={(v) => onMarginChange(v)}
       />
       <LayoutSlider
         label="内边距"
-        value={padding ?? [0, 0, 0, 0]}
+        value={padding ?? [0]}
         onChange={(v) => onPaddingChange(v)}
       />
     </>

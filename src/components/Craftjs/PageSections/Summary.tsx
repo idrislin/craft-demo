@@ -20,8 +20,8 @@ interface SummaryProps extends BaseElementsProps {
 
 const Summary: CUserComponent<SummaryProps> = (props) => {
   const {
-    margin = [0, 0, 0, 0],
-    padding = [0, 0, 0, 0],
+    margin = [0],
+    padding = [0],
     title,
     placeholder,
     dividerColor,
@@ -104,6 +104,19 @@ const SummarySettings = () => {
 
   return (
     <div className="flex flex-col gap-3 p-5 text-sm">
+      <button
+        className="outlinedButton"
+        onClick={() => {
+          if (!entries) return;
+          const res = [...entries];
+          res.push({ id: `Entry ${entries.length + 1}`, value: "" });
+          setProp((props: SummaryProps) => {
+            props.entries = res;
+          });
+        }}
+      >
+        New Entry
+      </button>
       <ColorPicker
         label="Divider Background"
         value={dividerColor}
@@ -163,19 +176,6 @@ const SummarySettings = () => {
           });
         }}
       />
-      <button
-        className="outlinedButton"
-        onClick={() => {
-          if (!entries) return;
-          const res = [...entries];
-          res.push({ id: `Entry ${entries.length + 1}`, value: "" });
-          setProp((props: SummaryProps) => {
-            props.entries = res;
-          });
-        }}
-      >
-        New Entry
-      </button>
     </div>
   );
 };

@@ -2,16 +2,17 @@ import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
 
 import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
 import { Resizer } from "~/components/Craftjs/Resizer";
-import { Slider, Text } from "~/components/Forms";
+import { Text, Slider } from "~/components/Forms";
 
-interface ExperienceProps extends BaseElementsProps {
+interface EducationProps extends BaseElementsProps {
+  gap?: string;
   title?: string;
   dividerColor?: string;
-  gap?: string;
+  deletable?: boolean;
   children?: React.ReactNode;
 }
 
-const Experience: CUserComponent<ExperienceProps> = (props) => {
+const Education: CUserComponent<EducationProps> = (props) => {
   const { margin = [0], padding = [0], title, gap = "0px" } = props;
 
   return (
@@ -36,13 +37,13 @@ const Experience: CUserComponent<ExperienceProps> = (props) => {
   );
 };
 
-export default Experience;
+export default Education;
 
-const ExperienceSettings = () => {
+const EducationSettings = () => {
   const {
     actions: { setProp },
     gap,
-  } = useNode<ExperienceProps>((node) => ({
+  } = useNode<EducationProps>((node) => ({
     gap: node.data.props.gap,
   }));
 
@@ -54,7 +55,7 @@ const ExperienceSettings = () => {
         label="Gap(px)"
         value={Number(gap?.replace("px", ""))}
         onChange={(v) => {
-          setProp((props: ExperienceProps) => {
+          setProp((props: EducationProps) => {
             props.gap = v + "px";
           });
         }}
@@ -63,14 +64,15 @@ const ExperienceSettings = () => {
   );
 };
 
-Experience.craft = {
-  displayName: "Experience",
+Education.craft = {
+  displayName: "Education",
   defaultProps: {
     padding: [0],
     margin: [0, 0, 6, 0],
     gap: "0px",
+    deletable: true,
+    title: "Education",
   },
-  rules: { canDrop: (node) => node.data.type == "ExperienceEntry" },
-  related: { settings: ExperienceSettings },
+  related: { settings: EducationSettings },
   custom: { toolbar: ["add", "delete", "setting"] },
 };

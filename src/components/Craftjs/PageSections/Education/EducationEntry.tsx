@@ -4,33 +4,75 @@ import { useEffect, useState } from "react";
 import { Toggles, Text, DateRangePicker } from "~/components/Forms";
 import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
 
-export interface ExperienceEntryParams {
+export interface EducationEntryParams {
   id: string;
   datePeriod: string;
-  companyName: string;
+  schoolTitle: string;
   location: string;
-  title: string;
-  companyDesc: string;
+  gpa: string;
+  bullets: string;
   value: string;
   hiddenField: string[];
 }
 
-export const EmptyExperienceEntry = {
+export const EmptyEducationEntry = {
   id: "Entry 1",
   value: "",
-  companyDesc: "",
-  companyName: "",
-  datePeriod: "",
   location: "",
-  title: "",
-  hiddenField: [],
+  schoolTitle: "",
+  datePeriod: "",
+  bullets: "",
+  gpa: "--",
+  hiddenField: ["gpa", "location", "bullets"],
 };
 
-interface ExperienceEntryProps extends BaseElementsProps {
-  entry: ExperienceEntryParams;
+const GPAComponent: React.FC<{
+  value: string[];
+  onChange: (v: string[]) => void;
+}> = ({ value, onChange }) => {
+  return (
+    <div className="flex items-center gap-2 text-sm text-black whitespace-nowrap w-min">
+      <Text
+        value={value[0]}
+        placeholder="GPA"
+        className="text-base font-normal text-black whitespace-nowrap w-min text-end"
+        onChange={(v) => {
+          const res = [...value];
+          res[0] = v;
+          onChange(res);
+        }}
+      />
+      <Text
+        value={value[1]}
+        placeholder="4.0"
+        className="text-base font-normal text-black whitespace-nowrap w-min text-end"
+        onChange={(v) => {
+          const res = [...value];
+          res[1] = v;
+          onChange(res);
+        }}
+      />
+      <p> / </p>
+      <Text
+        value={value[2]}
+        placeholder="4.0"
+        className="text-base font-normal text-black whitespace-nowrap w-min text-end"
+        onChange={(v) => {
+          const res = [...value];
+          res[2] = v;
+          onChange(res);
+        }}
+      />
+    </div>
+  );
+};
+
+interface EducationEntryProps extends BaseElementsProps {
+  entry: EducationEntryParams;
+  deletable?: boolean;
 }
 
-const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
+const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
   const { entry, padding = [0, 0] } = props;
   const [calendar, setCalendar] = useState({ from: "", to: "" });
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -44,7 +86,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
     const res = { ...entry };
     if (!calendar.from && !calendar.to) res.datePeriod = "";
     else res.datePeriod = `${calendar.from} - ${calendar.to}`;
-    setProp((props: ExperienceEntryProps) => {
+    setProp((props: EducationEntryProps) => {
       props.entry = res;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,20 +100,16 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
       ref={(ref: HTMLDivElement) => ref && connect(drag(ref))}
     >
       <div className="flex items-center justify-between">
-        {entry.hiddenField.includes("companyName") ? (
-          <div />
-        ) : (
-          <Text
-            value={entry.companyName}
-            placeholder="Company Name"
-            className="w-full text-lg font-normal text-black break-all whitespace-pre-wrap text-start"
-            onChange={(v) => {
-              setProp((props: ExperienceEntryProps) => {
-                props.entry = { ...entry, companyName: v };
-              });
-            }}
-          />
-        )}
+        <Text
+          value={entry.schoolTitle}
+          placeholder="School or University"
+          className="w-full text-lg font-normal text-black break-all whitespace-pre-wrap text-start"
+          onChange={(v) => {
+            setProp((props: EducationEntryProps) => {
+              props.entry = { ...entry, schoolTitle: v };
+            });
+          }}
+        />
         {entry.hiddenField.includes("location") ? (
           <div />
         ) : (
@@ -80,7 +118,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
             placeholder="Location"
             className="text-base font-normal text-black whitespace-nowrap w-min text-end"
             onChange={(v) => {
-              setProp((props: ExperienceEntryProps) => {
+              setProp((props: EducationEntryProps) => {
                 props.entry = { ...entry, location: v };
               });
             }}
@@ -88,20 +126,33 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
         )}
       </div>
       <div className="flex items-center justify-between">
-        {entry.hiddenField.includes("title") ? (
-          <div />
-        ) : (
+        <div className="flex items-center">
           <Text
-            value={entry.title}
-            placeholder="Title"
-            className="w-full text-base font-normal text-black break-all whitespace-pre-wrap text-start"
+            value={entry.value}
+            placeholder="Degree and Field of Study"
+            className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
             onChange={(v) => {
-              setProp((props: ExperienceEntryProps) => {
-                props.entry = { ...entry, title: v };
+              setProp((props: EducationEntryProps) => {
+                props.entry = { ...entry, value: v };
               });
             }}
           />
-        )}
+          {entry.hiddenField.includes("gpa") ? null : (
+            <div className="h-6 min-w-[2px] mx-2 bg-gray-500" />
+          )}
+          {entry.hiddenField.includes("gpa") ? (
+            <div />
+          ) : (
+            <GPAComponent
+              value={entry.gpa.split("-")}
+              onChange={(v) => {
+                setProp((props: EducationEntryProps) => {
+                  props.entry = { ...entry, gpa: v.join("-") };
+                });
+              }}
+            />
+          )}
+        </div>
         {entry.hiddenField.includes("datePeriod") ? (
           <div />
         ) : (
@@ -131,26 +182,14 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
           </>
         )}
       </div>
-      {entry.hiddenField.includes("companyDesc") ? null : (
+      {entry.hiddenField.includes("bullets") ? null : (
         <Text
-          value={entry.companyDesc}
-          placeholder="Company Description"
+          value={entry.bullets}
+          placeholder="What knowledge or experience did you acquire during your studies there?(e.g. Delivered a comprehensive marketing strategy)"
           className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
           onChange={(v) => {
-            setProp((props: ExperienceEntryProps) => {
-              props.entry = { ...entry, companyDesc: v };
-            });
-          }}
-        />
-      )}
-      {entry.hiddenField.includes("value") ? null : (
-        <Text
-          value={entry.value}
-          placeholder="Which of your achievements match the job your're applying to?"
-          className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
-          onChange={(v) => {
-            setProp((props: ExperienceEntryProps) => {
-              props.entry = { ...entry, value: v };
+            setProp((props: EducationEntryProps) => {
+              props.entry = { ...entry, bullets: v };
             });
           }}
         />
@@ -159,29 +198,30 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
   );
 };
 
-export default ExperienceEntry;
+export default EducationEntry;
 
-const ExperienceEntrySettings = () => {
+const EducationEntrySettings = () => {
   const {
     actions: { setProp },
     entry,
-  } = useNode<ExperienceEntryProps>((node) => ({
+  } = useNode<EducationEntryProps>((node) => ({
     entry: node.data.props.entry,
   }));
 
   const fieldKeys = [
-    { label: "Compony Name", value: "companyName" },
+    { label: "GPA", value: "gpa" },
     { label: "Location", value: "location" },
-    { label: "Title", value: "title" },
-    { label: "Date Period", value: "datePeriod" },
-    { label: "Company Description", value: "companyDesc" },
-    { label: "Content", value: "value" },
+    { label: "Period", value: "datePeriod" },
+    { label: "Bullets", value: "bullets" },
   ];
 
   return (
-    <div className="flex flex-col gap-2 p-5 text-sm">
+    <div className="flex flex-col gap-2 p-2 text-sm">
       {fieldKeys.map((field) => (
-        <div className="flex items-center justify-between" key={field.value}>
+        <div
+          className="flex items-center min-w-[200px] justify-between"
+          key={field.value}
+        >
           <p>{`Show ${field.label}`}</p>
           <Toggles
             enabled={!entry.hiddenField.includes(field.value)}
@@ -192,7 +232,7 @@ const ExperienceEntrySettings = () => {
               } else {
                 res.push(field.value);
               }
-              setProp((props: ExperienceEntryProps) => {
+              setProp((props: EducationEntryProps) => {
                 props.entry = {
                   ...entry,
                   hiddenField: res,
@@ -206,9 +246,9 @@ const ExperienceEntrySettings = () => {
   );
 };
 
-ExperienceEntry.craft = {
-  displayName: "Experience Entry",
-  defaultProps: { entry: EmptyExperienceEntry },
-  related: { settings: ExperienceEntrySettings },
+EducationEntry.craft = {
+  displayName: "Education Entry",
+  defaultProps: { entry: EmptyEducationEntry },
+  related: { settings: EducationEntrySettings },
   custom: { toolbar: ["move", "delete", "setting"] },
 };

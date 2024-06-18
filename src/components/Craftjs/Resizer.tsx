@@ -42,7 +42,7 @@ export const Resizer: React.FC<ResizerProps> = ({ children, ...props }) => {
         parent &&
         state.nodes[parent] &&
         state.nodes[parent].data.props.flexDirection,
-      isRootNode: query.node(id).isRoot(),
+      isRootNode: query?.node(id)?.isRoot() ?? false,
     };
   });
 
