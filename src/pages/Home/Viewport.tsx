@@ -1,8 +1,8 @@
-import { useEditor } from "@craftjs/core";
-import React, { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { useClickAway, useEventListener } from "ahooks";
-import clsx from "clsx";
+import { useEditor } from '@craftjs/core';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useClickAway, useEventListener } from 'ahooks';
+import clsx from 'clsx';
 import {
   AddBoxOutlined,
   DescriptionOutlined,
@@ -12,14 +12,17 @@ import {
   FormatAlignRightOutlined,
   FormatColorTextOutlined,
   ImportExportOutlined,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 import {
   FormatBoldOutlined,
   FormatItalicOutlined,
   FormatUnderlined,
-} from "@mui/icons-material";
-import { ChromePicker } from "react-color";
-import { isEmpty } from "lodash";
+} from '@mui/icons-material';
+import { ChromePicker } from 'react-color';
+import { isEmpty } from 'lodash';
+import { useSetAtom } from 'jotai';
+
+import { sectionModalAtom } from '~/components/Craftjs/AddSectionModal';
 
 interface ViewportProps {
   children?: React.ReactNode;
@@ -33,63 +36,68 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   const [showMenu, setShowMenu] = useState<
     { top: string; left: string } | undefined
   >();
-  const [color, setColor] = useState<string | undefined>("#333333");
+  const [color, setColor] = useState<string | undefined>('#333333');
   const [active, setActive] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const colorPickerRef = useRef<HTMLDivElement | null>(null);
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
+  const openSectionsModal = useSetAtom(sectionModalAtom);
+
   const contextMenu = [
     {
-      label: "Add New Section",
+      label: 'Add New Section',
       icon: <AddBoxOutlined className="icon-xs" />,
-      onAction: () => {},
+      onAction: () => {
+        setShowMenu(undefined);
+        openSectionsModal(true);
+      },
     },
     {
-      label: "Rearrange Sections",
+      label: 'Rearrange Sections',
       icon: <ImportExportOutlined className="icon-xs" />,
       onAction: () => {},
     },
     {
-      label: "Change Template",
+      label: 'Change Template',
       icon: <DescriptionOutlined className="icon-xs" />,
       onAction: () => {},
     },
     {
-      label: "Download",
+      label: 'Download',
       icon: <FileDownloadOutlined className="icon-xs" />,
       onAction: () => {},
     },
   ];
   const textEditor = [
     {
-      id: "bold",
+      id: 'bold',
       content: <FormatBoldOutlined />,
-      onAction: () => handleCommandClick("bold"),
+      onAction: () => handleCommandClick('bold'),
     },
     {
-      id: "underline",
+      id: 'underline',
       content: <FormatUnderlined />,
-      onAction: () => handleCommandClick("underline"),
+      onAction: () => handleCommandClick('underline'),
     },
     {
-      id: "italic",
+      id: 'italic',
       content: <FormatItalicOutlined />,
-      onAction: () => handleCommandClick("italic"),
+      onAction: () => handleCommandClick('italic'),
     },
     {
-      id: "justifyCenter",
+      id: 'justifyCenter',
       content: <FormatAlignCenterOutlined />,
-      onAction: () => handleCommandClick("justifyCenter"),
+      onAction: () => handleCommandClick('justifyCenter'),
     },
     {
-      id: "justifyLeft",
+      id: 'justifyLeft',
       content: <FormatAlignLeftOutlined />,
-      onAction: () => handleCommandClick("justifyLeft"),
+      onAction: () => handleCommandClick('justifyLeft'),
     },
     {
-      id: "justifyRight",
+      id: 'justifyRight',
       content: <FormatAlignRightOutlined />,
-      onAction: () => handleCommandClick("justifyRight"),
+      onAction: () => handleCommandClick('justifyRight'),
     },
   ];
 
@@ -100,10 +108,18 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
 
   //- 自定义 context menu
   useEventListener(
-    "contextmenu",
+    'contextmenu',
     (ev) => {
       ev.preventDefault();
-      setShowMenu({ top: `${ev.clientY}px`, left: `${ev.clientX}px` });
+      let left = ev.clientX;
+      let top = ev.clientY;
+      if (ev.clientX + 185 > document.body.clientWidth) {
+        left -= 185;
+      }
+      if (ev.clientY + contextMenu.length * 36 > document.body.clientHeight) {
+        top -= contextMenu.length * 36;
+      }
+      setShowMenu({ top: `${top}px`, left: `${left}px` });
     },
     { target: rootRef }
   );
@@ -113,7 +129,7 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    document.execCommand("foreColor", false, color);
+    document.execCommand('foreColor', false, color);
   }, [color]);
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -126,29 +142,29 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    const elements = document.getElementsByClassName("ROOT");
+    const elements = document.getElementsByClassName('ROOT');
     const rootEle = elements[0] as HTMLElement;
     if (!elements || isEmpty(elements)) return;
     if (
       nodes[selected.values().next().value]?.data?.custom?.displayName ===
-      "PAGE"
+      'PAGE'
     ) {
-      rootEle.style.setProperty("background", "white");
+      rootEle.style.setProperty('background', 'white');
       return;
     }
     if (
       selected.size == 0 ||
-      (selected.size === 1 && (selected.has("ROOT") || selected.has("")))
+      (selected.size === 1 && (selected.has('ROOT') || selected.has('')))
     ) {
-      rootEle.style.setProperty("background", "white");
+      rootEle.style.setProperty('background', 'white');
       return;
     } else if (selected.size > 0) {
-      rootEle.style.setProperty("background", "rgb(80 77 98 / 20%)");
+      rootEle.style.setProperty('background', 'rgb(80 77 98 / 20%)');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
-  useEventListener("click", handleClickOutside);
+  useEventListener('click', handleClickOutside);
 
   //- Text Editor Tools
   const textTool = () => {
@@ -166,7 +182,7 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
         ))}
         <div ref={colorPickerRef}>
           <button
-            className={clsx("iconButton", active && "!text-primary")}
+            className={clsx('iconButton', active && '!text-primary')}
             onClick={() => setActive((prev) => !prev)}
           >
             <FormatColorTextOutlined />
@@ -188,14 +204,14 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   };
 
   return (
-    <div className="viewport" ref={rootRef}>
+    <div id="viewport" className="viewport" ref={rootRef}>
       <div className="flex h-[calc(100vh-56px)] max-h-[calc(100vh-56px)]">
         <div className="flex flex-col flex-1 h-full page-container">
           <div
             className="flex-1 w-full h-full pt-4 pb-8 overflow-auto transition bg-gray-100 craftjs-renderer"
             ref={(ref) => {
               if (!ref) return;
-              connectors.select(connectors.hover(ref, ""), "");
+              connectors.select(connectors.hover(ref, ''), '');
             }}
           >
             {textTool()}
@@ -208,18 +224,19 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
           id="context-menu"
           ref={contextMenuRef}
           style={{
-            position: "fixed",
-            top: showMenu?.top ?? "0px",
-            left: showMenu?.left ?? "0px",
+            position: 'fixed',
+            top: showMenu?.top ?? '0px',
+            left: showMenu?.left ?? '0px',
           }}
           className={clsx(
-            "overflow-hidden transition-opacity flex flex-col divide-y bg-white rounded-md shadow-popover z-popover opacity-1",
-            !showMenu && "hidden"
+            'overflow-hidden transition-opacity flex flex-col divide-y bg-white rounded-md shadow-popover z-popover opacity-1',
+            !showMenu && 'hidden'
           )}
         >
           {contextMenu.map((menu) => (
             <div
               key={menu.label}
+              onClick={menu.onAction}
               className="cursor-default flex items-center gap-2 text-sm min-w-[160px] py-2 px-4 hover:bg-dark hover:text-white"
             >
               {menu.icon}
