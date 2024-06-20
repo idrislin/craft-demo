@@ -1,13 +1,13 @@
-import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
-import { SwapVertOutlined } from "@mui/icons-material";
-import { first } from "lodash";
+import { UserComponent as CUserComponent, useNode } from '@craftjs/core';
+import { SwapVertOutlined } from '@mui/icons-material';
+import { first } from 'lodash';
 
-import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
-import { Resizer } from "~/components/Craftjs/Resizer";
-import DragDrop from "~/components/DragDrop/Sortable";
-import { ColorPicker, Text, Slider, Radio } from "~/components/Forms";
+import { BaseElementsProps } from '~/components/LayoutSettingsPanel';
+import { Resizer } from '~/components/Craftjs/Resizer';
+import DragDrop from '~/components/DragDrop/Sortable';
+import { ColorPicker, Text, Slider, Radio } from '~/components/Forms';
 
-type FlexDirection = "column" | "column-reverse" | "row" | "row-reverse";
+type FlexDirection = 'column' | 'column-reverse' | 'row' | 'row-reverse';
 
 interface SummaryProps extends BaseElementsProps {
   title?: string;
@@ -26,8 +26,8 @@ const Summary: CUserComponent<SummaryProps> = (props) => {
     placeholder,
     dividerColor,
     entries,
-    gap = "0px",
-    flexDirection = "column",
+    gap = '0px',
+    flexDirection = 'column',
   } = props;
 
   const {
@@ -38,8 +38,8 @@ const Summary: CUserComponent<SummaryProps> = (props) => {
     <Resizer
       className="!w-full flex flex-col justify-start min-h-[80px]"
       style={{
-        margin: margin.join("px ") + "px",
-        padding: padding.join("px ") + "px",
+        margin: margin.join('px ') + 'px',
+        padding: padding.join('px ') + 'px',
       }}
       enable={{
         top: false,
@@ -53,7 +53,7 @@ const Summary: CUserComponent<SummaryProps> = (props) => {
       }}
     >
       <Text
-        value={title ?? ""}
+        value={title ?? ''}
         className="w-full text-lg font-medium text-center text-black whitespace-pre-wrap"
       />
       <div
@@ -87,7 +87,7 @@ export default Summary;
 const SummarySettings = () => {
   const {
     actions: { setProp },
-    dividerColor = "#030303",
+    dividerColor = '#030303',
     id,
     entries,
     gap,
@@ -100,7 +100,7 @@ const SummarySettings = () => {
     dom: node.dom,
     node: node,
   }));
-  const direction = ["column", "row"];
+  const direction = ['column', 'row'];
 
   return (
     <div className="flex flex-col gap-3 p-5 text-sm">
@@ -109,7 +109,7 @@ const SummarySettings = () => {
         onClick={() => {
           if (!entries) return;
           const res = [...entries];
-          res.push({ id: `Entry ${entries.length + 1}`, value: "" });
+          res.push({ id: `Entry ${entries.length + 1}`, value: '' });
           setProp((props: SummaryProps) => {
             props.entries = res;
           });
@@ -133,7 +133,7 @@ const SummarySettings = () => {
         </div>
         <div className="flex flex-col border border-gray-300 border-solid divide-y rounded-lg">
           <DragDrop
-            id={"summary" + id}
+            id={'summary' + id}
             renderItem={(item) => <div>{item}</div>}
             items={(entries ?? []).map((entry) => entry.id)}
             onDragEnd={(actityIndex, overIndex) => {
@@ -169,10 +169,10 @@ const SummarySettings = () => {
         min={0}
         max={100}
         label="Gap(px)"
-        value={Number(gap?.replace("px", ""))}
+        value={Number(gap?.replace('px', ''))}
         onChange={(v) => {
           setProp((props: SummaryProps) => {
-            props.gap = v + "px";
+            props.gap = v + 'px';
           });
         }}
       />
@@ -180,13 +180,30 @@ const SummarySettings = () => {
   );
 };
 
+const SummaryDisplay = () => {
+  return (
+    <div className="flex flex-col items-center preview-renderer">
+      <p className="w-full text-lg font-medium text-center text-black whitespace-pre-wrap">
+        Summary
+      </p>
+      <div className="w-full h-px my-1 bg-[#030303]" />
+      <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+        What's the one thing that makes you the best candidate for this job?
+      </p>
+    </div>
+  );
+};
+
 Summary.craft = {
-  displayName: "Summary",
+  displayName: 'Summary',
   defaultProps: {
-    padding: [6, 12, 6, 12],
+    gap: '0px',
     margin: [0, 0, 6, 0],
-    gap: "0px",
-    entries: [{ id: "Entry 1", value: "" }],
+    padding: [6, 12, 6, 12],
+    entries: [{ id: 'Entry 1', value: '' }],
+    title: 'Summary',
+    placeholder:
+      "What's the one thing that makes you the best candidate for this job?",
   },
-  related: { settings: SummarySettings },
+  related: { settings: SummarySettings, display: SummaryDisplay },
 };

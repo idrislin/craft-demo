@@ -66,6 +66,37 @@ const EducationSettings = () => {
   );
 };
 
+const EducationDisplay = () => {
+  return (
+    <div className="flex flex-col justify-start preview-renderer">
+      <div className="pt-1.5 mx-3 mb-1 border-b-[1.5px] border-solid border-[#030303]">
+        <p className="w-full text-lg font-medium text-center text-black whitespace-pre-wrap">
+          Education
+        </p>
+      </div>
+      <div className="w-full">
+        <div className="flex items-center justify-between">
+          <p className="w-full text-lg font-normal text-black break-all whitespace-pre-wrap text-start">
+            School or University
+          </p>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+            Degree and Field of Study
+          </p>
+          <div className="text-sm font-normal text-black whitespace-nowrap w-min text-end">
+            period
+          </div>
+        </div>
+        <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+          What knowledge or experience did you acquire during your studies
+          there?(e.g. Delivered a comprehensive marketing strategy)
+        </p>
+      </div>
+    </div>
+  );
+};
+
 Education.craft = {
   displayName: 'Education',
   defaultProps: {
@@ -75,7 +106,7 @@ Education.craft = {
     deletable: true,
     title: 'Education',
   },
-  related: { settings: EducationSettings },
+  related: { settings: EducationSettings, display: EducationDisplay },
   custom: { toolbar: ['add', 'delete', 'setting'] },
   rules: {
     canMoveIn: (nodes) =>

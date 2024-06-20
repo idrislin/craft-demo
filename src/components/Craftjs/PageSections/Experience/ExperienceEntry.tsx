@@ -1,8 +1,8 @@
-import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
-import { useEffect, useState } from "react";
+import { UserComponent as CUserComponent, useNode } from '@craftjs/core';
+import { useEffect, useState } from 'react';
 
-import { Toggles, Text, DateRangePicker } from "~/components/Forms";
-import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
+import { Toggles, Text, DateRangePicker } from '~/components/Forms';
+import { BaseElementsProps } from '~/components/LayoutSettingsPanel';
 
 export interface ExperienceEntryParams {
   id: string;
@@ -16,13 +16,13 @@ export interface ExperienceEntryParams {
 }
 
 export const EmptyExperienceEntry = {
-  id: "Entry 1",
-  value: "",
-  companyDesc: "",
-  companyName: "",
-  datePeriod: "",
-  location: "",
-  title: "",
+  id: 'Entry 1',
+  value: '',
+  companyDesc: '',
+  companyName: '',
+  datePeriod: '',
+  location: '',
+  title: '',
   hiddenField: [],
 };
 
@@ -32,7 +32,7 @@ interface ExperienceEntryProps extends BaseElementsProps {
 
 const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
   const { entry, padding = [0, 0] } = props;
-  const [calendar, setCalendar] = useState({ from: "", to: "" });
+  const [calendar, setCalendar] = useState({ from: '', to: '' });
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const {
@@ -42,7 +42,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
 
   useEffect(() => {
     const res = { ...entry };
-    if (!calendar.from && !calendar.to) res.datePeriod = "";
+    if (!calendar.from && !calendar.to) res.datePeriod = '';
     else res.datePeriod = `${calendar.from} - ${calendar.to}`;
     setProp((props: ExperienceEntryProps) => {
       props.entry = res;
@@ -52,13 +52,12 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
 
   return (
     <div
-      key={entry.id}
-      style={{ padding: padding.join("px ") + "px" }}
+      style={{ padding: padding.join('px ') + 'px' }}
       className="w-full"
       ref={(ref: HTMLDivElement) => ref && connect(drag(ref))}
     >
       <div className="flex items-center justify-between">
-        {entry.hiddenField.includes("companyName") ? (
+        {entry.hiddenField.includes('companyName') ? (
           <div />
         ) : (
           <Text
@@ -72,7 +71,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
             }}
           />
         )}
-        {entry.hiddenField.includes("location") ? (
+        {entry.hiddenField.includes('location') ? (
           <div />
         ) : (
           <Text
@@ -88,7 +87,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
         )}
       </div>
       <div className="flex items-center justify-between">
-        {entry.hiddenField.includes("title") ? (
+        {entry.hiddenField.includes('title') ? (
           <div />
         ) : (
           <Text
@@ -102,7 +101,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
             }}
           />
         )}
-        {entry.hiddenField.includes("datePeriod") ? (
+        {entry.hiddenField.includes('datePeriod') ? (
           <div />
         ) : (
           <>
@@ -114,7 +113,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
               className="text-sm font-normal text-black whitespace-nowrap w-min text-end"
             >
               <p>{entry.datePeriod}</p>
-              {entry.datePeriod && entry.datePeriod !== "" ? null : (
+              {entry.datePeriod && entry.datePeriod !== '' ? null : (
                 <p className="opacity-40">Date period</p>
               )}
             </div>
@@ -131,7 +130,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
           </>
         )}
       </div>
-      {entry.hiddenField.includes("companyDesc") ? null : (
+      {entry.hiddenField.includes('companyDesc') ? null : (
         <Text
           value={entry.companyDesc}
           placeholder="Company Description"
@@ -143,7 +142,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
           }}
         />
       )}
-      {entry.hiddenField.includes("value") ? null : (
+      {entry.hiddenField.includes('value') ? null : (
         <Text
           value={entry.value}
           placeholder="Which of your achievements match the job your're applying to?"
@@ -170,12 +169,12 @@ const ExperienceEntrySettings = () => {
   }));
 
   const fieldKeys = [
-    { label: "Compony Name", value: "companyName" },
-    { label: "Location", value: "location" },
-    { label: "Title", value: "title" },
-    { label: "Date Period", value: "datePeriod" },
-    { label: "Company Description", value: "companyDesc" },
-    { label: "Content", value: "value" },
+    { label: 'Compony Name', value: 'companyName' },
+    { label: 'Location', value: 'location' },
+    { label: 'Title', value: 'title' },
+    { label: 'Date Period', value: 'datePeriod' },
+    { label: 'Company Description', value: 'companyDesc' },
+    { label: 'Content', value: 'value' },
   ];
 
   return (
@@ -207,8 +206,8 @@ const ExperienceEntrySettings = () => {
 };
 
 ExperienceEntry.craft = {
-  displayName: "Experience Entry",
+  displayName: 'Experience Entry',
   defaultProps: { entry: EmptyExperienceEntry },
   related: { settings: ExperienceEntrySettings },
-  custom: { toolbar: ["move", "delete", "setting"] },
+  custom: { toolbar: ['move', 'delete', 'setting'] },
 };

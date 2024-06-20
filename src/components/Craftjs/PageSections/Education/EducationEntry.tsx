@@ -1,8 +1,8 @@
-import { UserComponent as CUserComponent, useNode } from "@craftjs/core";
-import { useEffect, useState } from "react";
+import { UserComponent as CUserComponent, useNode } from '@craftjs/core';
+import { useEffect, useState } from 'react';
 
-import { Toggles, Text, DateRangePicker } from "~/components/Forms";
-import { BaseElementsProps } from "~/components/LayoutSettingsPanel";
+import { Toggles, Text, DateRangePicker } from '~/components/Forms';
+import { BaseElementsProps } from '~/components/LayoutSettingsPanel';
 
 export interface EducationEntryParams {
   id: string;
@@ -16,14 +16,14 @@ export interface EducationEntryParams {
 }
 
 export const EmptyEducationEntry = {
-  id: "Entry 1",
-  value: "",
-  location: "",
-  schoolTitle: "",
-  datePeriod: "",
-  bullets: "",
-  gpa: "--",
-  hiddenField: ["gpa", "location", "bullets"],
+  id: 'Entry 1',
+  value: '',
+  location: '',
+  schoolTitle: '',
+  datePeriod: '',
+  bullets: '',
+  gpa: '--',
+  hiddenField: ['gpa', 'location', 'bullets'],
 };
 
 const GPAComponent: React.FC<{
@@ -74,7 +74,7 @@ interface EducationEntryProps extends BaseElementsProps {
 
 const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
   const { entry, padding = [0, 0] } = props;
-  const [calendar, setCalendar] = useState({ from: "", to: "" });
+  const [calendar, setCalendar] = useState({ from: '', to: '' });
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const {
@@ -84,7 +84,7 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
 
   useEffect(() => {
     const res = { ...entry };
-    if (!calendar.from && !calendar.to) res.datePeriod = "";
+    if (!calendar.from && !calendar.to) res.datePeriod = '';
     else res.datePeriod = `${calendar.from} - ${calendar.to}`;
     setProp((props: EducationEntryProps) => {
       props.entry = res;
@@ -94,9 +94,8 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
 
   return (
     <div
-      key={entry.id}
-      style={{ padding: padding.join("px ") + "px" }}
       className="w-full"
+      style={{ padding: padding.join('px ') + 'px' }}
       ref={(ref: HTMLDivElement) => ref && connect(drag(ref))}
     >
       <div className="flex items-center justify-between">
@@ -110,7 +109,7 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
             });
           }}
         />
-        {entry.hiddenField.includes("location") ? (
+        {entry.hiddenField.includes('location') ? (
           <div />
         ) : (
           <Text
@@ -137,23 +136,23 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
               });
             }}
           />
-          {entry.hiddenField.includes("gpa") ? null : (
+          {entry.hiddenField.includes('gpa') ? null : (
             <div className="h-6 min-w-[2px] mx-2 bg-gray-500" />
           )}
-          {entry.hiddenField.includes("gpa") ? (
+          {entry.hiddenField.includes('gpa') ? (
             <div />
           ) : (
             <GPAComponent
-              value={entry.gpa.split("-")}
+              value={entry.gpa.split('-')}
               onChange={(v) => {
                 setProp((props: EducationEntryProps) => {
-                  props.entry = { ...entry, gpa: v.join("-") };
+                  props.entry = { ...entry, gpa: v.join('-') };
                 });
               }}
             />
           )}
         </div>
-        {entry.hiddenField.includes("datePeriod") ? (
+        {entry.hiddenField.includes('datePeriod') ? (
           <div />
         ) : (
           <>
@@ -165,7 +164,7 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
               className="text-sm font-normal text-black whitespace-nowrap w-min text-end"
             >
               <p>{entry.datePeriod}</p>
-              {entry.datePeriod && entry.datePeriod !== "" ? null : (
+              {entry.datePeriod && entry.datePeriod !== '' ? null : (
                 <p className="opacity-40">Date period</p>
               )}
             </div>
@@ -182,7 +181,7 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
           </>
         )}
       </div>
-      {entry.hiddenField.includes("bullets") ? null : (
+      {entry.hiddenField.includes('bullets') ? null : (
         <Text
           value={entry.bullets}
           placeholder="What knowledge or experience did you acquire during your studies there?(e.g. Delivered a comprehensive marketing strategy)"
@@ -209,10 +208,10 @@ const EducationEntrySettings = () => {
   }));
 
   const fieldKeys = [
-    { label: "GPA", value: "gpa" },
-    { label: "Location", value: "location" },
-    { label: "Period", value: "datePeriod" },
-    { label: "Bullets", value: "bullets" },
+    { label: 'GPA', value: 'gpa' },
+    { label: 'Location', value: 'location' },
+    { label: 'Period', value: 'datePeriod' },
+    { label: 'Bullets', value: 'bullets' },
   ];
 
   return (
@@ -247,8 +246,8 @@ const EducationEntrySettings = () => {
 };
 
 EducationEntry.craft = {
-  displayName: "Education Entry",
+  displayName: 'Education Entry',
   defaultProps: { entry: EmptyEducationEntry },
   related: { settings: EducationEntrySettings },
-  custom: { toolbar: ["move", "delete", "setting"] },
+  custom: { toolbar: ['move', 'delete', 'setting'] },
 };

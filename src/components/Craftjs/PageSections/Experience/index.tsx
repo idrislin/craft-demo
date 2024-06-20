@@ -65,14 +65,51 @@ const ExperienceSettings = () => {
   );
 };
 
+const ExperienceDisplay = () => {
+  return (
+    <div className="flex flex-col justify-start preview-renderer">
+      <div className="pt-1.5 mx-3 mb-1 border-b-[1.5px] border-solid border-[#030303]">
+        <p className="w-full text-lg font-medium text-center text-black whitespace-pre-wrap">
+          Experience
+        </p>
+      </div>
+      <div className="w-full">
+        <div className="flex items-center justify-between">
+          <p className="w-full text-lg font-normal text-black break-all whitespace-pre-wrap text-start">
+            Company Name
+          </p>
+          <p className="text-base font-normal text-black whitespace-nowrap w-min text-end">
+            Location
+          </p>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="w-full text-base font-normal text-black break-all whitespace-pre-wrap text-start">
+            Title
+          </p>
+          <p className="text-sm font-normal text-black whitespace-nowrap w-min text-end">
+            Date period
+          </p>
+        </div>
+        <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+          Company Description
+        </p>
+        <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+          Which of your achievements match the job your're applying to?
+        </p>
+      </div>
+    </div>
+  );
+};
+
 Experience.craft = {
   displayName: 'Experience',
   defaultProps: {
     padding: [0],
     margin: [0, 0, 6, 0],
     gap: '0px',
+    title: 'Experience',
   },
-  related: { settings: ExperienceSettings },
+  related: { settings: ExperienceSettings, display: ExperienceDisplay },
   custom: { toolbar: ['add', 'delete', 'setting'] },
   rules: {
     canMoveIn: (nodes) =>

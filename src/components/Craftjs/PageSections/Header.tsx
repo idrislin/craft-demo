@@ -292,8 +292,8 @@ const HeaderSettings = () => {
 
 const HeaderDisplay = () => {
   return (
-    <div className="flex flex-col items-center justify-center w-full">
-      <div className="rounded w-[100px] box-content overflow-hidden mb-3 h-[100px]">
+    <div className="flex flex-col items-center mt-3 preview-renderer">
+      <div className="rounded w-[100px] box-content overflow-hidden mb-3 min-h-[100px] h-[100px]">
         <PersonSVG />
       </div>
       <p className="text-xl font-bold whitespace-pre-wrap text-secondary">
@@ -318,13 +318,34 @@ const HeaderDisplay = () => {
 Header.craft = {
   displayName: 'Header',
   defaultProps: {
-    padding: [6, 12, 6, 12],
-    margin: [0, 0, 6, 0],
+    imageType: 'square',
     alignItems: 'center',
+    margin: [0, 0, 6, 0],
+    padding: [6, 12, 6, 12],
     justifyContent: 'center',
-    title: { value: 'Title', label: 'Title', show: true },
-    subtitle: { value: 'subtitle', label: 'SubTitle', show: true },
-    fields: [{ value: 'field', label: 'field', show: true }],
+    image: { show: true, label: 'Image', value: 'Image' },
+    title: { value: 'YOUR NAME', label: 'Title', show: true },
+    subtitle: {
+      value: 'The role you are applying for?',
+      label: 'SubTitle',
+      show: true,
+    },
+    fields: [
+      { value: 'Phone', label: 'Phone', show: true },
+      { value: 'Email', label: 'Email', show: true },
+      {
+        value: 'LinkedIn/Portfolio',
+        label: 'Link',
+        show: true,
+      },
+      { value: 'Extra Link', label: 'Extra Link', show: false },
+      { value: 'Location', label: 'Location', show: true },
+      {
+        value: 'Extra Field',
+        label: 'Extra Field',
+        show: false,
+      },
+    ],
   },
   related: { settings: HeaderSettings, display: HeaderDisplay },
 };

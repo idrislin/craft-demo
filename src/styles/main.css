@@ -7,6 +7,11 @@
   --primary-color-hover: #26a378;
 }
 
+.preview-renderer {
+  height: 140px;
+  width: 443px;
+}
+
 .custom-radio {
   display: none;
 }
@@ -114,7 +119,7 @@
     border-radius: 4px;
   }
   .component-selected::after {
-    content: " ";
+    content: ' ';
     --tw-border-opacity: 1;
     border-color: var(--primary-color);
     border-style: solid;
@@ -201,7 +206,7 @@
     border: 2px solid var(--primary-color);
   }
   .HeaderIvyLeague::before {
-    content: "\a";
+    content: '\a';
     width: 4px;
     height: 4px;
     border-radius: 50%;
