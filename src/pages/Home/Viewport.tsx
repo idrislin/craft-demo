@@ -11,7 +11,6 @@ import {
   FormatAlignLeftOutlined,
   FormatAlignRightOutlined,
   FormatColorTextOutlined,
-  ImportExportOutlined,
 } from '@mui/icons-material';
 import {
   FormatBoldOutlined,
@@ -22,7 +21,7 @@ import { ChromePicker } from 'react-color';
 import { isEmpty } from 'lodash';
 import { useSetAtom } from 'jotai';
 
-import { rearrangeSectionModalAtom, sectionModalAtom } from '~/state';
+import { sectionModalAtom } from '~/state';
 import { LSKEY } from '~/lib/const';
 
 interface ViewportProps {
@@ -43,7 +42,7 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   const colorPickerRef = useRef<HTMLDivElement | null>(null);
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
   const openSectionsModal = useSetAtom(sectionModalAtom);
-  const openRearrangeModal = useSetAtom(rearrangeSectionModalAtom);
+  // const openRearrangeModal = useSetAtom(rearrangeSectionModalAtom);
   const [lsData] = useLocalStorageState<string | undefined>(LSKEY, {
     defaultValue: '',
   });
@@ -64,14 +63,14 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
         openSectionsModal(true);
       },
     },
-    {
-      label: 'Rearrange Sections',
-      icon: <ImportExportOutlined className="icon-xs" />,
-      onAction: () => {
-        setShowMenu(undefined);
-        openRearrangeModal(true);
-      },
-    },
+    // {
+    //   label: 'Rearrange Sections',
+    //   icon: <ImportExportOutlined className="icon-xs" />,
+    //   onAction: () => {
+    //     setShowMenu(undefined);
+    //     openRearrangeModal(true);
+    //   },
+    // },
     {
       label: 'Change Template',
       icon: <DescriptionOutlined className="icon-xs" />,

@@ -66,7 +66,7 @@ const HomePage: React.FC = () => {
         <Viewport>
           <NodesTree />
           <AddSectionModal />
-          <RearrangeSectionModal />
+          {/* <RearrangeSectionModal /> */}
         </Viewport>
       </Editor>
     </div>
