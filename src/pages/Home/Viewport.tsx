@@ -1,7 +1,7 @@
 import { useEditor } from '@craftjs/core';
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useClickAway, useEventListener } from 'ahooks';
+import { useClickAway, useEventListener, useLocalStorageState } from 'ahooks';
 import clsx from 'clsx';
 import {
   AddBoxOutlined,
@@ -22,14 +22,15 @@ import { ChromePicker } from 'react-color';
 import { isEmpty } from 'lodash';
 import { useSetAtom } from 'jotai';
 
-import { sectionModalAtom } from '~/components/Craftjs/AddSectionModal';
+import { rearrangeSectionModalAtom, sectionModalAtom } from '~/state';
+import { LSKEY } from '~/lib/const';
 
 interface ViewportProps {
   children?: React.ReactNode;
 }
 
 export const Viewport: React.FC<ViewportProps> = ({ children }) => {
-  const { connectors, selected, nodes } = useEditor((node) => ({
+  const { connectors, selected, nodes, actions } = useEditor((node) => ({
     selected: node.events.selected,
     nodes: node.nodes,
   }));
@@ -42,6 +43,17 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   const colorPickerRef = useRef<HTMLDivElement | null>(null);
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
   const openSectionsModal = useSetAtom(sectionModalAtom);
+  const openRearrangeModal = useSetAtom(rearrangeSectionModalAtom);
+  const [lsData] = useLocalStorageState<string | undefined>(LSKEY, {
+    defaultValue: '',
+  });
+
+  useEffect(() => {
+    if (lsData && lsData !== '') {
+      actions.deserialize(lsData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lsData]);
 
   const contextMenu = [
     {
@@ -55,7 +67,10 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
     {
       label: 'Rearrange Sections',
       icon: <ImportExportOutlined className="icon-xs" />,
-      onAction: () => {},
+      onAction: () => {
+        setShowMenu(undefined);
+        openRearrangeModal(true);
+      },
     },
     {
       label: 'Change Template',
@@ -143,23 +158,31 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
 
   useEffect(() => {
     const elements = document.getElementsByClassName('ROOT');
-    const rootEle = elements[0] as HTMLElement;
     if (!elements || isEmpty(elements)) return;
     if (
       nodes[selected.values().next().value]?.data?.custom?.displayName ===
       'PAGE'
     ) {
-      rootEle.style.setProperty('background', 'white');
+      for (const element of elements) {
+        (element as HTMLElement).style.setProperty('background', 'white');
+      }
       return;
     }
     if (
       selected.size == 0 ||
       (selected.size === 1 && (selected.has('ROOT') || selected.has('')))
     ) {
-      rootEle.style.setProperty('background', 'white');
+      for (const element of elements) {
+        (element as HTMLElement).style.setProperty('background', 'white');
+      }
       return;
     } else if (selected.size > 0) {
-      rootEle.style.setProperty('background', 'rgb(80 77 98 / 20%)');
+      for (const element of elements) {
+        (element as HTMLElement).style.setProperty(
+          'background',
+          'rgb(80 77 98 / 20%)'
+        );
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
@@ -170,7 +193,7 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
   const textTool = () => {
     // if (selected.size === 0) return <div className="h-8" />;
     return (
-      <div className="relative flex items-center self-center justify-center h-8 mx-auto bg-white divide-x rounded-full w-min">
+      <div className="sticky top-0 z-[999] flex items-center shadow-lg self-center justify-center h-8 mx-auto bg-white divide-x rounded-full w-min">
         {textEditor.map((value) => (
           <button
             key={value.id}

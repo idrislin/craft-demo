@@ -5,14 +5,13 @@ import { first } from 'lodash';
 import { BaseElementsProps } from '~/components/LayoutSettingsPanel';
 import { Resizer } from '~/components/Craftjs/Resizer';
 import DragDrop from '~/components/DragDrop/Sortable';
-import { ColorPicker, Text, Slider, Radio } from '~/components/Forms';
+import { Text, Slider, Radio } from '~/components/Forms';
 
 type FlexDirection = 'column' | 'column-reverse' | 'row' | 'row-reverse';
 
 interface SummaryProps extends BaseElementsProps {
   title?: string;
   placeholder?: string;
-  dividerColor?: string;
   entries?: { id: string; value: string }[];
   gap?: string;
   flexDirection?: FlexDirection;
@@ -24,7 +23,6 @@ const Summary: CUserComponent<SummaryProps> = (props) => {
     padding = [0],
     title,
     placeholder,
-    dividerColor,
     entries,
     gap = '0px',
     flexDirection = 'column',
@@ -52,14 +50,12 @@ const Summary: CUserComponent<SummaryProps> = (props) => {
         topLeft: false,
       }}
     >
-      <Text
-        value={title ?? ''}
-        className="w-full text-lg font-medium text-center text-black whitespace-pre-wrap"
-      />
-      <div
-        className="w-full h-px my-1 bg-[#030303]"
-        style={{ backgroundColor: dividerColor }}
-      />
+      <div className="border-b-[1.5px] border-solid border-[#030303] mb-1">
+        <Text
+          value={title ?? ''}
+          className="w-full text-lg font-medium text-center text-black whitespace-pre-wrap"
+        />
+      </div>
       <div className="flex" style={{ gap, flexDirection }}>
         {entries?.map((entry, i) => (
           <Text
@@ -87,7 +83,6 @@ export default Summary;
 const SummarySettings = () => {
   const {
     actions: { setProp },
-    dividerColor = '#030303',
     id,
     entries,
     gap,
@@ -117,15 +112,6 @@ const SummarySettings = () => {
       >
         New Entry
       </button>
-      <ColorPicker
-        label="Divider Background"
-        value={dividerColor}
-        onChange={(value) => {
-          setProp((props: SummaryProps) => {
-            props.dividerColor = value;
-          });
-        }}
-      />
       <div>
         <div className="flex items-center mb-1">
           <p>Sort Entry</p>

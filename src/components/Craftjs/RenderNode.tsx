@@ -73,9 +73,9 @@ export const RenderNode: React.FC<{ render: JSX.Element }> = ({ render }) => {
     const { current: currentDOM } = currentRef;
 
     if (!currentDOM) return;
-    const { top, left } = getPos(dom);
+    const { top, middleX } = getPos(dom);
     currentDOM.style.top = top;
-    currentDOM.style.left = left;
+    currentDOM.style.left = middleX;
   }, [dom, getPos]);
 
   useEffect(() => {

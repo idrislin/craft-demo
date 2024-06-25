@@ -1,17 +1,17 @@
 import React from 'react';
-import { atom, useAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { Element, UserComponent, useEditor } from '@craftjs/core';
 import { CloseOutlined, DoneOutlined } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { last } from 'lodash';
 
-import Header from './PageSections/Header';
-import Summary from './PageSections/Summary';
-import Education from './PageSections/Education';
-import Experience from './PageSections/Experience';
+import Header from '../PageSections/Header';
+import Summary from '../PageSections/Summary';
+import Education from '../PageSections/Education';
+import Experience from '../PageSections/Experience';
 
-export const sectionModalAtom = atom(false);
+import { sectionModalAtom } from '~/state';
 
 interface Section {
   title: string;
@@ -90,6 +90,7 @@ const AddSectionModal: React.FC = () => {
                                 const pageNodes =
                                   last(nodes.ROOT.data?.nodes ?? []) ?? '';
                                 actions.addNodeTree(nodeTree, pageNodes);
+                                actions.selectNode(nodeTree.rootNodeId);
                               }}
                               className="px-6 py-2 text-lg font-medium text-white bg-purple-400 border-none rounded"
                             >
