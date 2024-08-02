@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
-import { Canvas, MeshProps, useFrame } from "react-three-fiber";
-import { OrbitControls } from "@react-three/drei";
-import * as THREE from "three";
+import React, { useState, useRef } from 'react';
+import { Canvas, MeshProps } from 'react-three-fiber';
+import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
 
 //* 立方体
 const Box: React.FC<MeshProps> = (props) => {
@@ -24,7 +24,7 @@ const Box: React.FC<MeshProps> = (props) => {
       onPointerOut={() => setHovered(false)}
     >
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
     </mesh>
   );
 };
@@ -50,7 +50,7 @@ const Sphere: React.FC<MeshProps> = (props) => {
       onPointerOut={() => setHovered(false)}
     >
       <sphereGeometry args={[1, 100, 100]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
     </mesh>
   );
 };
@@ -58,8 +58,8 @@ const Sphere: React.FC<MeshProps> = (props) => {
 const ThreeJSPage: React.FC = () => {
   return (
     <div>
-      <Canvas style={{ height: "100vh" }}>
-        <ambientLight intensity={Math.PI / 2} />{" "}
+      <Canvas style={{ height: '100vh' }}>
+        <ambientLight intensity={Math.PI / 2} />{' '}
         <spotLight
           position={[10, 10, 10]}
           angle={0.15}

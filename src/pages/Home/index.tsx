@@ -16,7 +16,7 @@ import EducationEntry from '~/components/Craftjs/PageSections/Education/Educatio
 import AddSectionModal from '~/components/Craftjs/Modal/AddSectionModal';
 import { LSKEY } from '~/lib/const';
 import { serializedAtom } from '~/state';
-import RearrangeSectionModal from '~/components/Craftjs/Modal/RearrangeSectionModal';
+// import RearrangeSectionModal from '~/components/Craftjs/Modal/RearrangeSectionModal';
 
 const HomePage: React.FC = () => {
   const [serializedNodes, setSerializedNodes] = useAtom(serializedAtom);
@@ -34,11 +34,13 @@ const HomePage: React.FC = () => {
 
   useInterval(() => {
     setMessage(serializedNodes);
-    console.log(
-      'stash nodes at ',
-      new Date().toLocaleString(),
-      serializedNodes
-    );
+    if (import.meta.env.DEV) {
+      console.log(
+        'stash nodes at ',
+        new Date().toLocaleString(),
+        serializedNodes
+      );
+    }
   }, 300000);
 
   return (

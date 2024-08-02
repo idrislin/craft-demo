@@ -7,7 +7,7 @@ import {
   SerializedNode,
   SerializedNodes,
 } from '@craftjs/core';
-import { FeedOutlined, RedoOutlined, UndoOutlined } from '@mui/icons-material';
+import { FeedOutlined } from '@mui/icons-material';
 
 import Container from '~/components/Craftjs/Container';
 import Header from '~/components/Craftjs/PageSections/Header';
@@ -67,16 +67,16 @@ const NodesTree: React.FC<NodesTreeProps> = () => {
     target[parentId].nodes = res;
   };
 
-  const addNodes = (
-    target: SerializedNodes,
-    nodeId: string,
-    node: SerializedNode,
-    parentId: string
-  ) => {
-    node.parent = parentId;
-    target[nodeId] = node;
-    target[parentId].nodes = [...target[parentId].nodes, nodeId];
-  };
+  // const addNodes = (
+  //   target: SerializedNodes,
+  //   nodeId: string,
+  //   node: SerializedNode,
+  //   parentId: string
+  // ) => {
+  //   node.parent = parentId;
+  //   target[nodeId] = node;
+  //   target[parentId].nodes = [...target[parentId].nodes, nodeId];
+  // };
 
   const reorderNodes = () => {
     const resSerialize: SerializedNodes = query.getSerializedNodes();
@@ -84,7 +84,6 @@ const NodesTree: React.FC<NodesTreeProps> = () => {
 
     //* step 1: 遍历 nodes 找出 ROOT 之下的所有节点
     const allNodes = query.getNodes();
-    console.log('allNodes', allNodes);
     const pageNodes: Node[] = [];
     const pageChildren = new Map<string, Node[]>();
     Object.keys(allNodes).forEach((key) => {
@@ -100,6 +99,7 @@ const NodesTree: React.FC<NodesTreeProps> = () => {
         })) ?? [];
       pageChildren.set(key, c);
     });
+
     //- 二维数组： i 对应 page-index，填充需要添加的元素
     const overflowNodes: Node[][] = Array.from(
       { length: pageNodes.length + 1 },
@@ -116,11 +116,11 @@ const NodesTree: React.FC<NodesTreeProps> = () => {
         continue;
       }
       let contentHeight = 40 + 40; //- paddingY
-      //- 遍历对应 page 的 children
       const children = [
         ...overflowNodes[i],
         ...(pageChildren.get(pageNodes[i].id) ?? []),
       ];
+      //- 遍历对应 page 的 children
       childrenLoop: for (let j = 0; j < children.length; j++) {
         if (
           children[j].data.custom.height + contentHeight <
@@ -131,53 +131,51 @@ const NodesTree: React.FC<NodesTreeProps> = () => {
         } else {
           //- 高度超过，如果拥有子节点，则找出极限
 
-          // const child2 = children[j].data.nodes;
-          // let rect: DOMRect | undefined = undefined;
-          // for (let k = 0; k < child2.length; k++) {
-          //   const kChild = allNodes[child2[k]]?.dom?.getBoundingClientRect();
-          //   if (k == 0) rect = kChild;
-          //   else if (rect) rect.height = rect.height + (kChild?.height ?? 0);
-          //   if (k == 0 && kChild?.top !== children[j].data?.custom.top) {
-          //     //- 有上边距
-          //     contentHeight +=
-          //       (kChild?.top ?? 0) - children[j].data?.custom.top;
-          //   }
-          //   if (
-          //     (kChild?.height ?? 0) + contentHeight >
-          //     (pageNodes[i].dom?.clientHeight ?? 0)
-          //   ) {
-          //     const { nodes, rootNodeId } = query
-          //       .parseReactElement(
-          //         <Element
-          //           canvas
-          //           padding={[2]}
-          //           is={Container}
-          //           resizeable={false}
-          //           custom={{
-          //             displayName: 'Container',
-          //           }}
-          //         ></Element>
-          //       )
-          //       .toNodeTree();
-          //     console.log(rootNodeId);
+          const child2 = children[j].data.nodes;
+          let rect: DOMRect | undefined = undefined;
+          for (let k = 0; k < child2.length; k++) {
+            const kChild = allNodes[child2[k]]?.dom?.getBoundingClientRect();
+            if (k == 0) rect = kChild;
+            else if (rect) rect.height = rect.height + (kChild?.height ?? 0);
+            if (k == 0 && kChild?.top !== children[j].data?.custom.top) {
+              //- 有上边距
+              contentHeight +=
+                (kChild?.top ?? 0) - children[j].data?.custom.top;
+            }
+            if (
+              (kChild?.height ?? 0) + contentHeight >
+              (pageNodes[i].dom?.clientHeight ?? 0)
+            ) {
+              const { nodes, rootNodeId } = query
+                .parseReactElement(
+                  <Element
+                    canvas
+                    padding={[2]}
+                    is={Container}
+                    resizeable={false}
+                    custom={{ displayName: 'Container' }}
+                  ></Element>
+                )
+                .toNodeTree();
+              console.log(rootNodeId);
 
-          //     resSerialize[rootNodeId] = nodeTree2serialized(
-          //       {
-          //         ...nodes[rootNodeId],
-          //         data: { ...nodes[rootNodeId].data, custom: rect },
-          //       },
-          //       pageNodes[i + 1].id
-          //     );
-          //     pageChildren.set(pageNodes[i].id, )
-          //   }
-          // }
+              resSerialize[rootNodeId] = nodeTree2serialized(
+                {
+                  ...nodes[rootNodeId],
+                  data: { ...nodes[rootNodeId].data, custom: rect },
+                },
+                pageNodes[i + 1].id
+              );
+              // pageChildren.set(pageNodes[i].id);
+            }
+          }
           overflowNodes[i + 1] = children.slice(j);
 
           continue pageNodesLoop;
         }
       }
     }
-    console.log(overflowNodes);
+
     for (let i = 1; i < overflowNodes.length; i++) {
       if (overflowNodes[i].length == 0) continue;
 
@@ -188,45 +186,19 @@ const NodesTree: React.FC<NodesTreeProps> = () => {
         0
       );
     }
-    console.log(resSerialize);
+
     actions.deserialize(resSerialize);
     return;
   };
 
   return (
     <div className="pt-5">
-      <div className="w-[156px] fixed top-20 bg-white left-5 rounded-md border-y-8 shadow-button border-solid border-[#f5f7fc]">
-        <div>
-          <div className="flex items-center justify-center h-6">
-            <button
-              onClick={() => {
-                console.log('undo1');
-                actions.history.undo();
-              }}
-              // disabled={query.history.canUndo()}
-              className="flex items-center justify-center text-black transition-all rounded-full cursor-pointer disabled:text-gray-300 disabled:cursor-not-allowed hover:bg-purple hover:bg-opacity-20"
-            >
-              <UndoOutlined />
-            </button>
-            <div className="border-l border-solid border-[#e4e4e4] h-5 mx-6" />
-            <button
-              onClick={() => {
-                actions.history.redo();
-              }}
-              // disabled={query.history.canRedo()}
-              className="flex items-center justify-center text-black transition-all rounded-full cursor-pointer disabled:text-gray-300 disabled:cursor-not-allowed hover:bg-purple hover:bg-opacity-20"
-            >
-              <RedoOutlined />
-            </button>
-          </div>
-          <button
-            onClick={reorderNodes}
-            className="fixed z-50 flex items-center justify-center text-black transition-all bg-white rounded cursor-pointer shadow-button top-20 right-10 w-9 h-9 hover:bg-purple hover:bg-opacity-20 hover:text-purple"
-          >
-            <FeedOutlined />
-          </button>
-        </div>
-      </div>
+      <button
+        onClick={reorderNodes}
+        className="fixed z-50 flex items-center justify-center text-black transition-all bg-white rounded cursor-pointer shadow-button top-20 right-10 w-9 h-9 hover:bg-purple hover:bg-opacity-20 hover:text-purple"
+      >
+        <FeedOutlined />
+      </button>
       <Frame>
         <div className="flex flex-col items-center gap-10">
           <Element
