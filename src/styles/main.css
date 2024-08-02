@@ -215,4 +215,9 @@
     position: relative;
     vertical-align: middle;
   }
+
+  .triangleBorder {
+    border-bottom: 40px solid var(--primary-color);
+    border-left: 40px solid transparent;
+  }
 }

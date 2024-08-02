@@ -23,6 +23,7 @@ import { useSetAtom } from 'jotai';
 
 import { sectionModalAtom } from '~/state';
 import { LSKEY } from '~/lib/const';
+import TemplateSelect from '~/components/Craftjs/TemplatesSelect';
 
 interface ViewportProps {
   children?: React.ReactNode;
@@ -74,7 +75,9 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
     {
       label: 'Change Template',
       icon: <DescriptionOutlined className="icon-xs" />,
-      onAction: () => {},
+      onAction: () => {
+        setShowMenu(undefined);
+      },
     },
     {
       label: 'Download',
@@ -227,10 +230,11 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
 
   return (
     <div id="viewport" className="viewport" ref={rootRef}>
-      <div className="flex h-[calc(100vh-56px)] max-h-[calc(100vh-56px)]">
+      <div className="flex h-[calc(100vh-56px)] max-h-[calc(100vh-56px)] bg-gray-100">
+        <TemplateSelect />
         <div className="flex flex-col flex-1 h-full page-container">
           <div
-            className="flex-1 w-full h-full pt-4 pb-8 overflow-auto transition bg-gray-100 craftjs-renderer"
+            className="flex-1 w-full h-full pt-4 pb-8 overflow-auto transition craftjs-renderer"
             ref={(ref) => {
               if (!ref) return;
               connectors.select(connectors.hover(ref, ''), '');

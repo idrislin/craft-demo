@@ -99,7 +99,7 @@ const AddSectionModal: React.FC = () => {
                           </motion.div>
                           {/* subscript */}
                           {section.subscript ? (
-                            <span className="absolute bottom-0 right-0 w-0 h-0 border-b-[40px] border-solid border-l-transparent border-b-green border-l-[40px]">
+                            <span className="absolute bottom-0 right-0 w-0 h-0 triangleBorder">
                               <i className="absolute text-white right-1 top-3">
                                 <DoneOutlined className="!text-sm" />
                               </i>

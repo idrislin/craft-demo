@@ -39,7 +39,7 @@ const PersonSVG: React.FC = () => {
       viewBox="0 0 150 150"
       fill="none"
     >
-      <g clipPath="url(#clip0)">
+      <g clipPath="url(#PersonSVG)">
         <path d="M150 0H0v150h150V0z" fill="#989898" fillOpacity=".2" />
         <path
           fillRule="evenodd"
@@ -50,7 +50,7 @@ const PersonSVG: React.FC = () => {
         />
       </g>
       <defs>
-        <clipPath id="clip0">
+        <clipPath id="PersonSVG">
           <path fill="#fff" d="M0 0h150v150H0z" />
         </clipPath>
       </defs>
