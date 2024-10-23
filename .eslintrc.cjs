@@ -12,11 +12,10 @@ module.exports = {
   rules: {
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/naming-convention': 'off',
-    'hydrogen/prefer-image-component': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'no-useless-escape': 'off',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
     'no-case-declarations': 'off',
-    'react/no-array-index-key': 'off',
     'jest/no-deprecated-functions': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
@@ -29,12 +28,4 @@ module.exports = {
       },
     ],
   },
-  // settings: {
-  //   "import/resolver": {
-  //     alias: {
-  //       map: [["@", "./src"]],
-  //       extensions: [".js", ".jsx", ".ts", ".tsx", ".vue"],
-  //     },
-  //   },
-  // },
 };
