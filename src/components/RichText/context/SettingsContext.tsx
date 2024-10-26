@@ -1,9 +1,17 @@
 import * as React from 'react';
-import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 
 const hostName = window.location.hostname;
 export const isDevPlayground: boolean =
-  hostName !== 'playground.lexical.dev' && hostName !== 'lexical-playground.vercel.app';
+  hostName !== 'playground.lexical.dev' &&
+  hostName !== 'lexical-playground.vercel.app';
 
 export const DEFAULT_SETTINGS = {
   disableBeforeInput: false,
@@ -57,7 +65,11 @@ const Context: React.Context<SettingsContextShape> = createContext({
   settings: INITIAL_SETTINGS,
 });
 
-export const SettingsContext = ({ children }: { children: ReactNode }): JSX.Element => {
+export const SettingsContext = ({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element => {
   const [settings, setSettings] = useState(INITIAL_SETTINGS);
 
   const setOption = useCallback((setting: SettingName, value: boolean) => {

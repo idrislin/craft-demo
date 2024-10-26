@@ -1,7 +1,8 @@
 import { $patchStyleText } from '@lexical/selection';
 import { $getSelection, LexicalEditor } from 'lexical';
-import DropDown, { DropDownItem } from './DropDown';
 import { useCallback } from 'react';
+
+import DropDown, { DropDownItem } from './DropDown';
 
 interface DropDownDropDownLineHeightProps {
   selectionLineHeight?: string;
@@ -29,7 +30,7 @@ const DropDownLineHeight: React.FC<DropDownDropDownLineHeightProps> = ({
         }
       });
     },
-    [editor],
+    [editor]
   );
 
   return (

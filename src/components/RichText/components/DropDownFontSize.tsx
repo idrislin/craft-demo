@@ -1,7 +1,8 @@
 import { $patchStyleText } from '@lexical/selection';
 import { $getSelection, LexicalEditor } from 'lexical';
-import DropDown, { DropDownItem } from './DropDown';
 import { useCallback } from 'react';
+
+import DropDown, { DropDownItem } from './DropDown';
 
 interface DropDownFontSizeProps {
   selectionFontSize: string;
@@ -51,7 +52,7 @@ const DropDownFontSize: React.FC<DropDownFontSizeProps> = ({
         }
       });
     },
-    [editor],
+    [editor]
   );
 
   return (

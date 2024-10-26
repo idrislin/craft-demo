@@ -1,7 +1,14 @@
-import { CaretDownOutlined } from '@ant-design/icons';
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import clsx from 'clsx';
 import * as React from 'react';
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 
 type DropDownContextType = {
@@ -43,7 +50,7 @@ export const DropDownItem: React.FC<DropDownItemProps> = (props) => {
       onClick={onClick}
       className={clsx(
         'first:mt-2 hover:bg-[#eee] last:mb-2 text-sm border-0 outline-none mx-2 p-2 cursor-pointer flex items-center gap-2 rounded max-w-[250px] min-w-[100px]',
-        active ? 'bg-[#eee]' : 'bg-white',
+        active ? 'bg-[#eee]' : 'bg-white'
       )}
     >
       {children}
@@ -58,13 +65,14 @@ const DropDownItems: React.FC<{
 }> = (props) => {
   const { children, dropDownRef, onClose } = props;
   const [items, setItems] = useState<React.RefObject<HTMLButtonElement>[]>();
-  const [highlightedItem, setHighlightedItem] = useState<React.RefObject<HTMLButtonElement>>();
+  const [highlightedItem, setHighlightedItem] =
+    useState<React.RefObject<HTMLButtonElement>>();
 
   const registerItem = useCallback(
     (itemRef: React.RefObject<HTMLButtonElement>) => {
       setItems((prev) => (prev ? [...prev, itemRef] : [itemRef]));
     },
-    [setItems],
+    [setItems]
   );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -98,13 +106,14 @@ const DropDownItems: React.FC<{
     () => ({
       registerItem,
     }),
-    [registerItem],
+    [registerItem]
   );
 
   useEffect(() => {
     if (items && !highlightedItem) setHighlightedItem(items[0]);
 
-    if (highlightedItem && highlightedItem.current) highlightedItem.current.focus();
+    if (highlightedItem && highlightedItem.current)
+      highlightedItem.current.focus();
   }, [items, highlightedItem]);
 
   return (
@@ -154,7 +163,10 @@ const DropDown: React.FC<DropDownProps> = (props) => {
     if (showDropDown && button !== null && dropDown !== null) {
       const { top, left } = button.getBoundingClientRect();
       dropDown.style.top = `${top + button.offsetHeight + dropDownPadding}px`;
-      dropDown.style.left = `${Math.min(left, window.innerWidth - dropDown.offsetWidth - 20)}px`;
+      dropDown.style.left = `${Math.min(
+        left,
+        window.innerWidth - dropDown.offsetWidth - 20
+      )}px`;
     }
   }, [dropDownRef, buttonRef, showDropDown]);
 
@@ -165,7 +177,11 @@ const DropDown: React.FC<DropDownProps> = (props) => {
       const handle = (event: MouseEvent) => {
         const target = event.target;
         if (stopCloseOnClickSelf) {
-          if (dropDownRef.current && dropDownRef.current.contains(target as Node)) return;
+          if (
+            dropDownRef.current &&
+            dropDownRef.current.contains(target as Node)
+          )
+            return;
         }
         if (!button.contains(target as Node)) setShowDropDown(false);
       };
@@ -210,13 +226,17 @@ const DropDown: React.FC<DropDownProps> = (props) => {
           'disabled:text-gray-300 disabled:cursor-default disabled:hover:bg-transparent',
           type === 'button'
             ? 'h-9 w-9 border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]'
-            : 'flex items-center min-w-[100px] justify-between gap-2 h-9 px-3 py-2 align-middle border-none rounded cursor-pointer bg-none',
-          showDropDown ? 'bg-gray-100' : 'bg-white',
+            : 'flex items-center min-w-[100px] justify-between hover:bg-[#0000000d] gap-2 h-9 px-3 py-2 align-middle border-none rounded cursor-pointer bg-none',
+          showDropDown ? 'bg-gray-100' : 'bg-white'
         )}
       >
         {buttonLabel && <span>{buttonLabel}</span>}
         {type === 'dropdown' && (
-          <CaretDownOutlined className="w-3 h-3 text-gray-400" width={12} height={12} />
+          <ArrowDropDownOutlinedIcon
+            className="w-3 h-3 text-gray-400"
+            width={12}
+            height={12}
+          />
         )}
       </button>
 
@@ -225,7 +245,7 @@ const DropDown: React.FC<DropDownProps> = (props) => {
           <DropDownItems dropDownRef={dropDownRef} onClose={handleClose}>
             {children}
           </DropDownItems>,
-          document.body,
+          document.body
         )}
     </>
   );

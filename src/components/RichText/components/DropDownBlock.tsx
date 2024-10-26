@@ -5,13 +5,23 @@ import {
 } from '@lexical/list';
 import { $createQuoteNode } from '@lexical/rich-text';
 import { $setBlocksType } from '@lexical/selection';
-import { $createParagraphNode, $getSelection, $isRangeSelection, LexicalEditor } from 'lexical';
+import {
+  $createParagraphNode,
+  $getSelection,
+  $isRangeSelection,
+  LexicalEditor,
+} from 'lexical';
 import { $createCodeNode } from '@lexical/code';
+import {
+  ChecklistOutlined,
+  CodeOutlined,
+  FormatListBulletedOutlined,
+  FormatListNumberedOutlined,
+  FormatQuoteOutlined,
+  ViewHeadlineOutlined,
+} from '@mui/icons-material';
+
 import DropDown, { DropDownItem } from './DropDown';
-import { CheckSquareOutlined, OrderedListOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import SvgQuote from '../icons/Quote';
-import SvgCode from '../icons/Code';
-import SvgParagraph from '../icons/Paragraph';
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -34,7 +44,10 @@ interface BlockFormatDropDownProps {
   disabled?: boolean;
 }
 
-const BlockFormatDropDown: React.FC<BlockFormatDropDownProps> = ({ editor, blockType }) => {
+const BlockFormatDropDown: React.FC<BlockFormatDropDownProps> = ({
+  editor,
+  blockType,
+}) => {
   const formatParagraph = () => {
     editor.update(() => {
       const selection = $getSelection();
@@ -101,28 +114,34 @@ const BlockFormatDropDown: React.FC<BlockFormatDropDownProps> = ({ editor, block
 
   return (
     <DropDown buttonLabel={blockTypeToBlockName[blockType]}>
-      <DropDownItem active={blockType === 'paragraph'} onClick={formatParagraph}>
-        <SvgParagraph />
+      <DropDownItem
+        active={blockType === 'paragraph'}
+        onClick={formatParagraph}
+      >
+        <ViewHeadlineOutlined />
         <span className="text">Normal</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'bullet'} onClick={formatBulletList}>
-        <UnorderedListOutlined />
+        <FormatListBulletedOutlined />
         <span className="text">Bullet List</span>
       </DropDownItem>
-      <DropDownItem active={blockType === 'number'} onClick={formatNumberedList}>
-        <OrderedListOutlined />
+      <DropDownItem
+        active={blockType === 'number'}
+        onClick={formatNumberedList}
+      >
+        <FormatListNumberedOutlined />
         <span className="text">Numbered List</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'check'} onClick={formatCheckList}>
-        <CheckSquareOutlined />
+        <ChecklistOutlined />
         <span className="text">Check List</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'quote'} onClick={formatQuote}>
-        <SvgQuote />
+        <FormatQuoteOutlined />
         <span className="text">Quote</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'code'} onClick={formatCode}>
-        <SvgCode />
+        <CodeOutlined />
         <span className="text">Code Block</span>
       </DropDownItem>
     </DropDown>

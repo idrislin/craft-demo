@@ -8,6 +8,7 @@ import {
   LexicalCommand,
 } from 'lexical';
 import { useEffect } from 'react';
+
 import { $createPageBreakNode, PageBreakNode } from '../nodes/PageBreakNode';
 
 export const INSERT_PAGE_BREAK: LexicalCommand<undefined> = createCommand();
@@ -17,7 +18,9 @@ const PageBreakPlugin: React.FC = () => {
 
   useEffect(() => {
     if (!editor.hasNodes([PageBreakNode])) {
-      throw new Error('PageBreakPlugin: PageBreakNode is not registered on editor');
+      throw new Error(
+        'PageBreakPlugin: PageBreakNode is not registered on editor'
+      );
     }
 
     return mergeRegister(
@@ -36,8 +39,8 @@ const PageBreakPlugin: React.FC = () => {
 
           return true;
         },
-        COMMAND_PRIORITY_EDITOR,
-      ),
+        COMMAND_PRIORITY_EDITOR
+      )
     );
   }, [editor]);
 

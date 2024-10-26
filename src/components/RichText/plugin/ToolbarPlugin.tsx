@@ -1,5 +1,9 @@
 import { $isLinkNode } from '@lexical/link';
-import { $isListNode, INSERT_ORDERED_LIST_COMMAND, ListNode } from '@lexical/list';
+import {
+  $isListNode,
+  INSERT_ORDERED_LIST_COMMAND,
+  ListNode,
+} from '@lexical/list';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $isHeadingNode, $isQuoteNode } from '@lexical/rich-text';
 import {
@@ -38,33 +42,35 @@ import {
 } from 'lexical';
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import DropDownFontSize from '../components/DropDownFontSize';
+import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
 import {
-  AlignCenterOutlined,
-  AlignLeftOutlined,
-  AlignRightOutlined,
-  BgColorsOutlined,
-  BoldOutlined,
-  DeleteOutlined,
-  FontColorsOutlined,
-  ItalicOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  MinusOutlined,
+  CodeOutlined,
+  FormatAlignCenterOutlined,
+  FormatAlignLeftOutlined,
+  FormatAlignRightOutlined,
+  FormatBoldOutlined,
+  FormatClearOutlined,
+  FormatColorFillOutlined,
+  FormatColorTextOutlined,
+  FormatIndentDecreaseOutlined,
+  FormatIndentIncreaseOutlined,
+  FormatItalicOutlined,
+  FormatStrikethroughOutlined,
+  FormatUnderlinedOutlined,
+  HorizontalRuleOutlined,
   RedoOutlined,
-  StrikethroughOutlined,
-  UnderlineOutlined,
+  SubscriptOutlined,
+  SuperscriptOutlined,
   UndoOutlined,
-} from '@ant-design/icons';
+} from '@mui/icons-material';
+
+import DropDownFontSize from '../components/DropDownFontSize';
 import { getSelectedNode } from '../utils/getSelectedNode';
 import DropdownColorPicker from '../components/DropDownColorPicker';
 import BlockFormatDropDown from '../components/DropDownBlock';
-import SvgSubscript from '../icons/Subscript';
-import SvgSuperscript from '../icons/Superscript';
-import SvgCode from '../icons/Code';
 import DropDownLineHeight from '../components/DropDownLineHeight';
+
 import { INSERT_PAGE_BREAK } from './PageDividerPlugin';
-import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -82,10 +88,13 @@ const blockTypeToBlockName = {
 };
 
 function Divider() {
-  return <div className="h-8 mx-2 w-px float-left block shadow-[inset_-1px_0_#0000001a]" />;
+  return (
+    <div className="h-8 mx-2 w-px float-left block shadow-[inset_-1px_0_#0000001a]" />
+  );
 }
 
-interface ToolbarButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ToolbarButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   active?: boolean;
 }
 
@@ -98,7 +107,7 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = (props) => {
         'h-9 w-9 border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]',
         'disabled:text-gray-300 disabled:cursor-default disabled:hover:bg-transparent',
         active ? 'bg-[#0000000d]' : 'bg-transparent',
-        className,
+        className
       )}
       {...rest}
     >
@@ -112,8 +121,11 @@ export default function ToolbarPlugin() {
   const [activeEditor, setActiveEditor] = useState(editor);
   const toolbarRef = useRef(null);
 
-  const [blockType, setBlockType] = useState<keyof typeof blockTypeToBlockName>('paragraph');
-  const [selectedElementKey, setSelectedElementKey] = useState<NodeKey | null>(null);
+  const [blockType, setBlockType] =
+    useState<keyof typeof blockTypeToBlockName>('paragraph');
+  const [selectedElementKey, setSelectedElementKey] = useState<NodeKey | null>(
+    null
+  );
 
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
@@ -145,7 +157,9 @@ export default function ToolbarPlugin() {
       if (activeEditor !== editor && $isEditorIsNestedEditor(activeEditor)) {
         const rootElement = activeEditor.getRootElement();
         setIsImageCaption(
-          !!rootElement?.parentElement?.classList.contains('image-caption-container'),
+          !!rootElement?.parentElement?.classList.contains(
+            'image-caption-container'
+          )
         );
       } else {
         setIsImageCaption(false);
@@ -181,25 +195,40 @@ export default function ToolbarPlugin() {
       if (elementDOM !== null) {
         setSelectedElementKey(elementKey);
         if ($isListNode(element)) {
-          const parentList = $getNearestNodeOfType<ListNode>(anchorNode, ListNode);
-          const type = parentList ? parentList.getListType() : element.getListType();
+          const parentList = $getNearestNodeOfType<ListNode>(
+            anchorNode,
+            ListNode
+          );
+          const type = parentList
+            ? parentList.getListType()
+            : element.getListType();
           setBlockType(type);
         } else {
-          const type = $isHeadingNode(element) ? element.getTag() : element.getType();
+          const type = $isHeadingNode(element)
+            ? element.getTag()
+            : element.getType();
           if (type in blockTypeToBlockName) {
             setBlockType(type as keyof typeof blockTypeToBlockName);
           }
         }
       }
       // Handle buttons
-      setFontColor($getSelectionStyleValueForProperty(selection, 'color', '#000'));
-      setBgColor($getSelectionStyleValueForProperty(selection, 'background-color', '#fff'));
+      setFontColor(
+        $getSelectionStyleValueForProperty(selection, 'color', '#000')
+      );
+      setBgColor(
+        $getSelectionStyleValueForProperty(
+          selection,
+          'background-color',
+          '#fff'
+        )
+      );
       let matchingParent;
       if ($isLinkNode(parent)) {
         // If node is a link, we need to fetch the parent paragraph node to set format
         matchingParent = $findMatchingParent(
           node,
-          (parentNode) => $isElementNode(parentNode) && !parentNode.isInline(),
+          (parentNode) => $isElementNode(parentNode) && !parentNode.isInline()
         );
       }
 
@@ -209,7 +238,7 @@ export default function ToolbarPlugin() {
           ? matchingParent.getFormatType()
           : $isElementNode(node)
           ? node.getFormatType()
-          : parent?.getFormatType() || 'left',
+          : parent?.getFormatType() || 'left'
       );
     }
     if ($isRangeSelection(selection)) {
@@ -222,8 +251,12 @@ export default function ToolbarPlugin() {
       setIsSuperscript(selection.hasFormat('superscript'));
       setIsCode(selection.hasFormat('code'));
 
-      setFontSize($getSelectionStyleValueForProperty(selection, 'font-size', '16px'));
-      setLineHeight($getSelectionStyleValueForProperty(selection, 'line-height'));
+      setFontSize(
+        $getSelectionStyleValueForProperty(selection, 'font-size', '16px')
+      );
+      setLineHeight(
+        $getSelectionStyleValueForProperty(selection, 'line-height')
+      );
     }
   }, [activeEditor, editor]);
 
@@ -236,7 +269,7 @@ export default function ToolbarPlugin() {
         $updateToolbar();
         return false;
       },
-      COMMAND_PRIORITY_CRITICAL,
+      COMMAND_PRIORITY_CRITICAL
     );
   }, [editor, $updateToolbar]);
 
@@ -254,7 +287,7 @@ export default function ToolbarPlugin() {
           setCanUndo(payload);
           return false;
         },
-        COMMAND_PRIORITY_CRITICAL,
+        COMMAND_PRIORITY_CRITICAL
       ),
       activeEditor.registerCommand<boolean>(
         CAN_REDO_COMMAND,
@@ -262,8 +295,8 @@ export default function ToolbarPlugin() {
           setCanRedo(payload);
           return false;
         },
-        COMMAND_PRIORITY_CRITICAL,
-      ),
+        COMMAND_PRIORITY_CRITICAL
+      )
     );
   }, [$updateToolbar, activeEditor, editor]);
 
@@ -279,10 +312,10 @@ export default function ToolbarPlugin() {
           const selection = $getSelection();
           if (selection !== null) $patchStyleText(selection, styles);
         },
-        skipHistoryStack ? { tag: 'historic' } : {},
+        skipHistoryStack ? { tag: 'historic' } : {}
       );
     },
-    [activeEditor],
+    [activeEditor]
   );
 
   //-
@@ -338,7 +371,7 @@ export default function ToolbarPlugin() {
     (value: string, skipHistoryStack: boolean) => {
       applyStyleText({ color: value }, skipHistoryStack);
     },
-    [applyStyleText],
+    [applyStyleText]
   );
 
   //- background color handler
@@ -346,7 +379,7 @@ export default function ToolbarPlugin() {
     (value: string, skipHistoryStack: boolean) => {
       applyStyleText({ 'background-color': value }, skipHistoryStack);
     },
-    [applyStyleText],
+    [applyStyleText]
   );
 
   return (
@@ -371,67 +404,102 @@ export default function ToolbarPlugin() {
 
       {/* font size */}
       <DropDownFontSize selectionFontSize={fontSize} editor={activeEditor} />
-      <DropDownLineHeight selectionLineHeight={lineHeight} editor={activeEditor} />
+      <DropDownLineHeight
+        selectionLineHeight={lineHeight}
+        editor={activeEditor}
+      />
       <Divider />
 
       {/* font style */}
       <DropdownColorPicker
         color={fontColor}
         onChange={onFontColorSelect}
-        icon={<FontColorsOutlined />}
+        icon={<FormatColorTextOutlined />}
       />
-      <DropdownColorPicker color={bgColor} onChange={onBgColorSelect} icon={<BgColorsOutlined />} />
+      <DropdownColorPicker
+        color={bgColor}
+        onChange={onBgColorSelect}
+        icon={<FormatColorFillOutlined />}
+      />
       <ToolbarButton active={isBold} onClick={() => formatText('bold')}>
-        <BoldOutlined />
+        <FormatBoldOutlined />
       </ToolbarButton>
       <ToolbarButton active={isItalic} onClick={() => formatText('italic')}>
-        <ItalicOutlined />
+        <FormatItalicOutlined />
       </ToolbarButton>
-      <ToolbarButton active={isUnderline} onClick={() => formatText('underline')}>
-        <UnderlineOutlined />
+      <ToolbarButton
+        active={isUnderline}
+        onClick={() => formatText('underline')}
+      >
+        <FormatUnderlinedOutlined />
       </ToolbarButton>
-      <ToolbarButton active={isStrikethrough} onClick={() => formatText('strikethrough')}>
-        <StrikethroughOutlined />
+      <ToolbarButton
+        active={isStrikethrough}
+        onClick={() => formatText('strikethrough')}
+      >
+        <FormatStrikethroughOutlined />
       </ToolbarButton>
       <ToolbarButton active={isCode} onClick={() => formatText('code')}>
-        <SvgCode />
+        <CodeOutlined />
       </ToolbarButton>
       <Divider />
 
       {/* script/subscript/superscript */}
-      <ToolbarButton active={isSubscript} onClick={() => formatText('subscript')}>
-        <SvgSubscript />
+      <ToolbarButton
+        active={isSubscript}
+        onClick={() => formatText('subscript')}
+      >
+        <SubscriptOutlined />
       </ToolbarButton>
-      <ToolbarButton active={isSuperscript} onClick={() => formatText('superscript')}>
-        <SvgSuperscript />
+      <ToolbarButton
+        active={isSuperscript}
+        onClick={() => formatText('superscript')}
+      >
+        <SuperscriptOutlined />
       </ToolbarButton>
       <ToolbarButton onClick={clearFormatting}>
-        <DeleteOutlined />
+        <FormatClearOutlined />
       </ToolbarButton>
       <Divider />
 
       {/* alignment */}
-      <ToolbarButton onClick={() => editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined)}>
-        <MenuUnfoldOutlined />
+      <ToolbarButton
+        onClick={() =>
+          editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined)
+        }
+      >
+        <FormatIndentIncreaseOutlined />
       </ToolbarButton>
-      <ToolbarButton onClick={() => editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined)}>
-        <MenuFoldOutlined />
+      <ToolbarButton
+        onClick={() =>
+          editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined)
+        }
+      >
+        <FormatIndentDecreaseOutlined />
       </ToolbarButton>
-      <ToolbarButton onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}>
-        <AlignLeftOutlined />
+      <ToolbarButton
+        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}
+      >
+        <FormatAlignLeftOutlined />
       </ToolbarButton>
-      <ToolbarButton onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}>
-        <AlignCenterOutlined />
+      <ToolbarButton
+        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}
+      >
+        <FormatAlignCenterOutlined />
       </ToolbarButton>
-      <ToolbarButton onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}>
-        <AlignRightOutlined />
+      <ToolbarButton
+        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}
+      >
+        <FormatAlignRightOutlined />
       </ToolbarButton>
       <Divider />
 
       <ToolbarButton
-        onClick={() => editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)}
+        onClick={() =>
+          editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)
+        }
       >
-        <MinusOutlined />
+        <HorizontalRuleOutlined />
       </ToolbarButton>
 
       {/*  */}
