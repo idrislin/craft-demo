@@ -37,14 +37,16 @@ import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
 
-import DropDownFontSize from '../components/DropDownFontSize';
-import { getSelectedNode } from '../utils/getSelectedNode';
-import DropdownColorPicker from '../components/DropDownColorPicker';
-import BlockFormatDropDown from '../components/DropDownBlock';
-import DropDownLineHeight from '../components/DropDownLineHeight';
+import DropDownFontSize from '../../components/DropDownFontSize';
+import { getSelectedNode } from '../../utils/getSelectedNode';
+import DropdownColorPicker from '../../components/DropDownColorPicker';
+import BlockFormatDropDown from '../../components/DropDownBlock';
+import DropDownLineHeight from '../../components/DropDownLineHeight';
+import DropDownAlignment from '../../components/DropDownAlignment';
 import {
   IconBackgound,
   IconCode,
+  IconFileImage,
   IconFontColor,
   IconHorizontalRule,
   IconRedo,
@@ -56,10 +58,10 @@ import {
   IconTypeSuperscript,
   IconTypeUnderline,
   IconUndo,
-} from '../icons';
-import DropDownAlignment from '../components/DropDownAlignment';
-
-import { INSERT_PAGE_BREAK } from './PageDividerPlugin';
+} from '../../icons';
+import { INSERT_PAGE_BREAK } from '../PageDividerPlugin';
+import { InsertImageDialog } from '../ImagesPlugin';
+import useModal from '../../utils/useModal';
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -138,6 +140,7 @@ export default function ToolbarPlugin() {
 
   const [isImageCaption, setIsImageCaption] = useState(false);
   const [isRTL, setIsRTL] = useState(false);
+  const [modal, showModal] = useModal();
 
   //- update toolbar state
   const $updateToolbar = useCallback(() => {
@@ -471,6 +474,18 @@ export default function ToolbarPlugin() {
           <Divider />
         </>
       )}
+
+      <ToolbarButton
+        onClick={() => {
+          showModal('Insert Image', (onClose) => (
+            <InsertImageDialog activeEditor={activeEditor} onClose={onClose} />
+          ));
+        }}
+      >
+        <IconFileImage />
+      </ToolbarButton>
+
+      {modal}
     </div>
   );
 }

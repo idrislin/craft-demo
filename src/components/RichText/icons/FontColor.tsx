@@ -1,10 +1,10 @@
-import * as React from "react";
-import type { SVGProps } from "react";
+import * as React from 'react';
+import type { SVGProps } from 'react';
 const SvgFontColor = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={14}
-    height={14}
+    width={22}
+    height={22}
     viewBox="0 0 512 512"
     {...props}
   >

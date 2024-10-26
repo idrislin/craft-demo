@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin';
@@ -12,15 +11,21 @@ import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { ClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin';
 import { ClickableLinkPlugin } from '@lexical/react/LexicalClickableLinkPlugin';
 import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
+import { CAN_USE_DOM } from '@lexical/utils';
 
-import SerializationPlugin from './plugin/SerializationPlugin';
-import ToolbarPlugin from './plugin/ToolbarPlugin';
-import TreeViewPlugin from './plugin/TreeViewPlugin';
+import SerializationPlugin from './plugins/SerializationPlugin';
+import ToolbarPlugin from './plugins/ToolbarPlugin';
+import TreeViewPlugin from './plugins/TreeViewPlugin';
 import theme from './themes/CommentEditorTheme';
 import { useSharedHistoryContext } from './context/SharedHistoryContext';
 import { useSettings } from './context/SettingsContext';
 import PlaygroundNodes from './nodes/PlaygroundNodes';
-import PageBreakPlugin from './plugin/PageDividerPlugin';
+import PageBreakPlugin from './plugins/PageDividerPlugin';
+import DraggableBlockPlugin from './plugins/DraggableBlockPlugin';
+import LexicalContentEditable from './components/ContentEditable';
+import EmojisPlugin from './plugins/EmojisPlugin';
+import NewMentionsPlugin from './plugins/MentionsPlugin';
+import ImagesPlugin from './plugins/ImagesPlugin';
 
 interface RichTextV3Props {}
 
@@ -55,6 +60,34 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
   };
 
   const [value, setValue] = useState<string>('');
+  const [floatingAnchorElem, setFloatingAnchorElem] =
+    useState<HTMLDivElement | null>(null);
+
+  const [isSmallWidthViewport, setIsSmallWidthViewport] =
+    useState<boolean>(false);
+
+  const onRef = (_floatingAnchorElem: HTMLDivElement) => {
+    if (_floatingAnchorElem !== null) {
+      setFloatingAnchorElem(_floatingAnchorElem);
+    }
+  };
+
+  useEffect(() => {
+    const updateViewPortWidth = () => {
+      const isNextSmallWidthViewport =
+        CAN_USE_DOM && window.matchMedia('(max-width: 1025px)').matches;
+
+      if (isNextSmallWidthViewport !== isSmallWidthViewport) {
+        setIsSmallWidthViewport(isNextSmallWidthViewport);
+      }
+    };
+    updateViewPortWidth();
+    window.addEventListener('resize', updateViewPortWidth);
+
+    return () => {
+      window.removeEventListener('resize', updateViewPortWidth);
+    };
+  }, [isSmallWidthViewport]);
 
   return (
     <div className="">
@@ -65,20 +98,21 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
           <AutoFocusPlugin />
           <ClearEditorPlugin />
 
+          <NewMentionsPlugin />
+          <EmojisPlugin />
           <HashtagPlugin />
 
           <div className="relative bg-white">
             <RichTextPlugin
               contentEditable={
-                <ContentEditable
-                  className="min-h-[150px] resize-none caret-[rgb(5,5,5)] relative outline-none py-4 px-2.5"
-                  aria-placeholder="Enter some rich text..."
-                  placeholder={
-                    <div className="text-gray-400 overflow-hidden absolute truncate top-4 left-2.5 select-none pointer-events-none">
-                      Enter some rich text...
-                    </div>
-                  }
-                />
+                <div className="min-h-[150px] border-none flex relative outline-none z-0 overflow-auto resize-y">
+                  <div
+                    ref={onRef}
+                    className="flex-auto relative resize-y -z-[1]"
+                  >
+                    <LexicalContentEditable placeholder="Enter some rich text..." />
+                  </div>
+                </div>
               }
               ErrorBoundary={LexicalErrorBoundary}
             />
@@ -90,6 +124,7 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
               />
             ) : (
             )} */}
+            <ImagesPlugin />
             <HistoryPlugin externalHistoryState={historyState} />
 
             <ListPlugin />
@@ -106,6 +141,12 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
             />
 
             <PageBreakPlugin />
+
+            {floatingAnchorElem && !isSmallWidthViewport && (
+              <>
+                <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+              </>
+            )}
 
             {(isCharLimit || isCharLimitUtf8) && (
               <CharacterLimitPlugin
