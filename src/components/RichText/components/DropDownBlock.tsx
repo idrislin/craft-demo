@@ -12,14 +12,15 @@ import {
   LexicalEditor,
 } from 'lexical';
 import { $createCodeNode } from '@lexical/code';
+
 import {
-  ChecklistOutlined,
-  CodeOutlined,
-  FormatListBulletedOutlined,
-  FormatListNumberedOutlined,
-  FormatQuoteOutlined,
-  ViewHeadlineOutlined,
-} from '@mui/icons-material';
+  IconChatSquareQuote,
+  IconChecklist,
+  IconCode,
+  IconListOl,
+  IconListUl,
+  IconTextParagraph,
+} from '../icons';
 
 import DropDown, { DropDownItem } from './DropDown';
 
@@ -118,30 +119,30 @@ const BlockFormatDropDown: React.FC<BlockFormatDropDownProps> = ({
         active={blockType === 'paragraph'}
         onClick={formatParagraph}
       >
-        <ViewHeadlineOutlined />
+        <IconTextParagraph />
         <span className="text">Normal</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'bullet'} onClick={formatBulletList}>
-        <FormatListBulletedOutlined />
+        <IconListUl />
         <span className="text">Bullet List</span>
       </DropDownItem>
       <DropDownItem
         active={blockType === 'number'}
         onClick={formatNumberedList}
       >
-        <FormatListNumberedOutlined />
+        <IconListOl />
         <span className="text">Numbered List</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'check'} onClick={formatCheckList}>
-        <ChecklistOutlined />
+        <IconChecklist />
         <span className="text">Check List</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'quote'} onClick={formatQuote}>
-        <FormatQuoteOutlined />
+        <IconChatSquareQuote />
         <span className="text">Quote</span>
       </DropDownItem>
       <DropDownItem active={blockType === 'code'} onClick={formatCode}>
-        <CodeOutlined />
+        <IconCode />
         <span className="text">Code Block</span>
       </DropDownItem>
     </DropDown>

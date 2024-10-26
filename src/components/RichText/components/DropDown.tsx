@@ -1,7 +1,6 @@
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import clsx from 'clsx';
-import * as React from 'react';
-import {
+import React, {
   ReactNode,
   useCallback,
   useEffect,
@@ -225,12 +224,16 @@ const DropDown: React.FC<DropDownProps> = (props) => {
         className={clsx(
           'disabled:text-gray-300 disabled:cursor-default disabled:hover:bg-transparent',
           type === 'button'
-            ? 'h-9 w-9 border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]'
-            : 'flex items-center min-w-[100px] justify-between hover:bg-[#0000000d] gap-2 h-9 px-3 py-2 align-middle border-none rounded cursor-pointer bg-none',
+            ? 'h-9 w-9 flex items-center justify-center border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]'
+            : 'flex items-center min-w-[100px] text-sm justify-between hover:bg-[#0000000d] gap-2 h-9 pl-3 py-2 align-middle border-none rounded cursor-pointer bg-none',
           showDropDown ? 'bg-gray-100' : 'bg-white'
         )}
       >
-        {buttonLabel && <span>{buttonLabel}</span>}
+        {buttonLabel && typeof buttonLabel === 'string' ? (
+          <span>{buttonLabel}</span>
+        ) : (
+          buttonLabel
+        )}
         {type === 'dropdown' && (
           <ArrowDropDownOutlinedIcon
             className="w-3 h-3 text-gray-400"

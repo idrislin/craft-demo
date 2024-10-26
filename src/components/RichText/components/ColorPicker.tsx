@@ -1,7 +1,6 @@
-import { calculateZoomLevel } from '@lexical/utils';
 import clsx from 'clsx';
+import { calculateZoomLevel } from '@lexical/utils';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import * as React from 'react';
 
 let skipAddingToHistoryStack = false;
 

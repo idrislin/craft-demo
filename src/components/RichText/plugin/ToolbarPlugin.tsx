@@ -1,9 +1,5 @@
 import { $isLinkNode } from '@lexical/link';
-import {
-  $isListNode,
-  INSERT_ORDERED_LIST_COMMAND,
-  ListNode,
-} from '@lexical/list';
+import { $isListNode, ListNode } from '@lexical/list';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $isHeadingNode, $isQuoteNode } from '@lexical/rich-text';
 import {
@@ -30,11 +26,8 @@ import {
   CAN_UNDO_COMMAND,
   COMMAND_PRIORITY_CRITICAL,
   ElementFormatType,
-  FORMAT_ELEMENT_COMMAND,
   FORMAT_TEXT_COMMAND,
-  INDENT_CONTENT_COMMAND,
   NodeKey,
-  OUTDENT_CONTENT_COMMAND,
   REDO_COMMAND,
   SELECTION_CHANGE_COMMAND,
   TextFormatType,
@@ -43,32 +36,28 @@ import {
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
-import {
-  CodeOutlined,
-  FormatAlignCenterOutlined,
-  FormatAlignLeftOutlined,
-  FormatAlignRightOutlined,
-  FormatBoldOutlined,
-  FormatClearOutlined,
-  FormatColorFillOutlined,
-  FormatColorTextOutlined,
-  FormatIndentDecreaseOutlined,
-  FormatIndentIncreaseOutlined,
-  FormatItalicOutlined,
-  FormatStrikethroughOutlined,
-  FormatUnderlinedOutlined,
-  HorizontalRuleOutlined,
-  RedoOutlined,
-  SubscriptOutlined,
-  SuperscriptOutlined,
-  UndoOutlined,
-} from '@mui/icons-material';
 
 import DropDownFontSize from '../components/DropDownFontSize';
 import { getSelectedNode } from '../utils/getSelectedNode';
 import DropdownColorPicker from '../components/DropDownColorPicker';
 import BlockFormatDropDown from '../components/DropDownBlock';
 import DropDownLineHeight from '../components/DropDownLineHeight';
+import {
+  IconBackgound,
+  IconCode,
+  IconFontColor,
+  IconHorizontalRule,
+  IconRedo,
+  IconTrash,
+  IconTypeBold,
+  IconTypeItalic,
+  IconTypeStrikethrough,
+  IconTypeSubscript,
+  IconTypeSuperscript,
+  IconTypeUnderline,
+  IconUndo,
+} from '../icons';
+import DropDownAlignment from '../components/DropDownAlignment';
 
 import { INSERT_PAGE_BREAK } from './PageDividerPlugin';
 
@@ -104,7 +93,7 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = (props) => {
     <button
       type="button"
       className={clsx(
-        'h-9 w-9 border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]',
+        'h-9 w-9 flex items-center justify-center border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]',
         'disabled:text-gray-300 disabled:cursor-default disabled:hover:bg-transparent',
         active ? 'bg-[#0000000d]' : 'bg-transparent',
         className
@@ -392,13 +381,13 @@ export default function ToolbarPlugin() {
         disabled={!canUndo}
         onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
       >
-        <UndoOutlined />
+        <IconUndo />
       </ToolbarButton>
       <ToolbarButton
         disabled={!canRedo}
         onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
       >
-        <RedoOutlined />
+        <IconRedo />
       </ToolbarButton>
       <Divider />
 
@@ -414,33 +403,33 @@ export default function ToolbarPlugin() {
       <DropdownColorPicker
         color={fontColor}
         onChange={onFontColorSelect}
-        icon={<FormatColorTextOutlined />}
+        icon={<IconFontColor />}
       />
       <DropdownColorPicker
         color={bgColor}
         onChange={onBgColorSelect}
-        icon={<FormatColorFillOutlined />}
+        icon={<IconBackgound />}
       />
       <ToolbarButton active={isBold} onClick={() => formatText('bold')}>
-        <FormatBoldOutlined />
+        <IconTypeBold />
       </ToolbarButton>
       <ToolbarButton active={isItalic} onClick={() => formatText('italic')}>
-        <FormatItalicOutlined />
+        <IconTypeItalic />
       </ToolbarButton>
       <ToolbarButton
         active={isUnderline}
         onClick={() => formatText('underline')}
       >
-        <FormatUnderlinedOutlined />
+        <IconTypeUnderline />
       </ToolbarButton>
       <ToolbarButton
         active={isStrikethrough}
         onClick={() => formatText('strikethrough')}
       >
-        <FormatStrikethroughOutlined />
+        <IconTypeStrikethrough />
       </ToolbarButton>
       <ToolbarButton active={isCode} onClick={() => formatText('code')}>
-        <CodeOutlined />
+        <IconCode />
       </ToolbarButton>
       <Divider />
 
@@ -449,49 +438,22 @@ export default function ToolbarPlugin() {
         active={isSubscript}
         onClick={() => formatText('subscript')}
       >
-        <SubscriptOutlined />
+        <IconTypeSubscript />
       </ToolbarButton>
       <ToolbarButton
         active={isSuperscript}
         onClick={() => formatText('superscript')}
       >
-        <SuperscriptOutlined />
+        <IconTypeSuperscript />
       </ToolbarButton>
       <ToolbarButton onClick={clearFormatting}>
-        <FormatClearOutlined />
+        <IconTrash />
       </ToolbarButton>
       <Divider />
 
       {/* alignment */}
-      <ToolbarButton
-        onClick={() =>
-          editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined)
-        }
-      >
-        <FormatIndentIncreaseOutlined />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() =>
-          editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined)
-        }
-      >
-        <FormatIndentDecreaseOutlined />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}
-      >
-        <FormatAlignLeftOutlined />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')}
-      >
-        <FormatAlignCenterOutlined />
-      </ToolbarButton>
-      <ToolbarButton
-        onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')}
-      >
-        <FormatAlignRightOutlined />
-      </ToolbarButton>
+      <DropDownAlignment value={elementFormat} editor={activeEditor} />
+
       <Divider />
 
       <ToolbarButton
@@ -499,7 +461,7 @@ export default function ToolbarPlugin() {
           editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)
         }
       >
-        <HorizontalRuleOutlined />
+        <IconHorizontalRule />
       </ToolbarButton>
 
       {/*  */}
