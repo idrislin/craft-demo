@@ -16,30 +16,16 @@ const Direction = {
 
 interface ImageResizerProps {
   editor: LexicalEditor;
-  buttonRef: { current: null | HTMLButtonElement };
   imageRef: { current: null | HTMLElement };
   maxWidth?: number;
   onResizeEnd: (width: 'inherit' | number, height: 'inherit' | number) => void;
   onResizeStart: () => void;
-  setShowCaption: (show: boolean) => void;
-  showCaption: boolean;
-  captionsEnabled: boolean;
 }
 
 const ImageResizer: React.FC<ImageResizerProps> = (props) => {
-  const {
-    onResizeStart,
-    onResizeEnd,
-    buttonRef,
-    imageRef,
-    maxWidth,
-    editor,
-    showCaption,
-    setShowCaption,
-    captionsEnabled,
-  } = props;
+  const { onResizeStart, onResizeEnd, imageRef, maxWidth, editor } = props;
   const imageResizerClass =
-    'block w-[7px] h-[7px] absolute bg-blue-500 border border-solid border-white';
+    'block w-1.5 h-1.5 rounded-full bg-white outline outline-solid absolute outline-[--primary-color] border border-solid border-white';
   const controlWrapperRef = useRef<HTMLDivElement>(null);
   const userSelect = useRef({
     priority: '',
@@ -135,9 +121,7 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
     event: React.PointerEvent<HTMLDivElement>,
     direction: number
   ) => {
-    if (!editor.isEditable()) {
-      return;
-    }
+    if (!editor.isEditable()) return;
 
     const image = imageRef.current;
     const controlWrapper = controlWrapperRef.current;
@@ -249,31 +233,17 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
   };
   return (
     <div ref={controlWrapperRef}>
-      {!showCaption && captionsEnabled && (
-        <button
-          className="block absolute bottom-5 left-0 right-0 w-[30%] p-2.5 my-0 mx-auto border border-solid border-[rgba(255,255,255,0.3)] rounded bg-[rgba(0,0,0,0.5)] min-w-[100px] text-white cursor-pointer select-none"
-          ref={buttonRef}
-          onClick={() => {
-            setShowCaption(!showCaption);
-          }}
-        >
-          Add Caption
-        </button>
-      )}
       <div
         className={clsx(
           imageResizerClass,
-          '-top-1.5 left-[48%] cursor-n-resize'
+          '-top-1 left-1/2 -translate-x-1/2 cursor-n-resize'
         )}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north);
         }}
       />
       <div
-        className={clsx(
-          imageResizerClass,
-          '-top-1.5 -right-1.5 cursor-ne-resize'
-        )}
+        className={clsx(imageResizerClass, '-top-1 -right-1 cursor-ne-resize')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.east);
         }}
@@ -281,7 +251,7 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
       <div
         className={clsx(
           imageResizerClass,
-          'bottom-[48%] -right-1.5 cursor-e-resize'
+          'bottom-1/2 -translate-y-1/2 -right-1 cursor-e-resize'
         )}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.east);
@@ -290,7 +260,7 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
       <div
         className={clsx(
           imageResizerClass,
-          '-bottom-0.5 -right-1.5 cursor-se-resize'
+          '-bottom-1 -right-1 cursor-se-resize'
         )}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.east);
@@ -299,7 +269,7 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
       <div
         className={clsx(
           imageResizerClass,
-          '-bottom-0.5 left-[48%] cursor-s-resize'
+          '-bottom-1 left-1/2 -translate-x-1/2 cursor-s-resize'
         )}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south);
@@ -308,7 +278,7 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
       <div
         className={clsx(
           imageResizerClass,
-          '-bottom-0.5 -left-1.5 cursor-swe-resize'
+          '-bottom-1 -left-1 cursor-swe-resize'
         )}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.west);
@@ -317,17 +287,14 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
       <div
         className={clsx(
           imageResizerClass,
-          'bottom-[48%] -left-1.5 cursor-w-resize'
+          'bottom-1/2 -left-1 -translate-y-1/2 cursor-w-resize'
         )}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.west);
         }}
       />
       <div
-        className={clsx(
-          imageResizerClass,
-          '-top-1.5 -left-1.5 cursor-nw-resize'
-        )}
+        className={clsx(imageResizerClass, '-top-1 -left-1 cursor-nw-resize')}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.west);
         }}

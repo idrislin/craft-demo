@@ -4,16 +4,7 @@ import type {
   LexicalEditor,
   NodeKey,
 } from 'lexical';
-import { HashtagNode } from '@lexical/hashtag';
-import { LinkNode } from '@lexical/link';
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import { useCollaborationContext } from '@lexical/react/LexicalCollaborationContext';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { LexicalNestedComposer } from '@lexical/react/LexicalNestedComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { mergeRegister } from '@lexical/utils';
@@ -31,25 +22,11 @@ import {
   KEY_DELETE_COMMAND,
   KEY_ENTER_COMMAND,
   KEY_ESCAPE_COMMAND,
-  LineBreakNode,
-  ParagraphNode,
-  RootNode,
   SELECTION_CHANGE_COMMAND,
-  TextNode,
 } from 'lexical';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 
-import KeywordsPlugin from '../../plugins/KeywordsPlugin';
-import LinkPlugin from '../../plugins/LinkPlugin';
-import MentionsPlugin from '../../plugins/MentionsPlugin';
-import TreeViewPlugin from '../../plugins/TreeViewPlugin';
-import EmojisPlugin from '../../plugins/EmojisPlugin';
-import { useSettings } from '../../context/SettingsContext';
-import { useSharedHistoryContext } from '../../context/SharedHistoryContext';
-import { KeywordNode } from '../KeywordNode';
-import { EmojiNode } from '../EmojiNode';
 import ImageResizer from '../../components/ImageResizer';
-import LexicalContentEditable from '../../components/ContentEditable';
 
 import { $isImageNode } from '.';
 
@@ -133,27 +110,20 @@ export default function ImageComponent({
   height,
   maxWidth,
   resizable,
-  showCaption,
-  caption,
-  captionsEnabled,
 }: {
   altText: string;
-  caption: LexicalEditor;
   height: 'inherit' | number;
   maxWidth: number;
   nodeKey: NodeKey;
   resizable: boolean;
-  showCaption: boolean;
   src: string;
   width: 'inherit' | number;
-  captionsEnabled: boolean;
 }): JSX.Element {
   const imageRef = useRef<null | HTMLImageElement>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] =
     useLexicalNodeSelection(nodeKey);
   const [isResizing, setIsResizing] = useState<boolean>(false);
-  const { isCollabActive } = useCollaborationContext();
   const [editor] = useLexicalComposerContext();
   const [selection, setSelection] = useState<BaseSelection | null>(null);
   const activeEditorRef = useRef<LexicalEditor | null>(null);
@@ -188,16 +158,7 @@ export default function ImageComponent({
         $isNodeSelection(latestSelection) &&
         latestSelection.getNodes().length === 1
       ) {
-        if (showCaption) {
-          // Move focus into nested editor
-          $setSelection(null);
-          event.preventDefault();
-          caption.focus();
-          return true;
-        } else if (
-          buttonElem !== null &&
-          buttonElem !== document.activeElement
-        ) {
+        if (buttonElem !== null && buttonElem !== document.activeElement) {
           event.preventDefault();
           buttonElem.focus();
           return true;
@@ -205,15 +166,12 @@ export default function ImageComponent({
       }
       return false;
     },
-    [caption, isSelected, showCaption]
+    [isSelected]
   );
 
   const $onEscape = useCallback(
     (event: KeyboardEvent) => {
-      if (
-        activeEditorRef.current === caption ||
-        buttonRef.current === event.target
-      ) {
+      if (buttonRef.current === event.target) {
         $setSelection(null);
         editor.update(() => {
           setSelected(true);
@@ -226,7 +184,7 @@ export default function ImageComponent({
       }
       return false;
     },
-    [caption, editor, setSelected]
+    [editor, setSelected]
   );
 
   const onClick = useCallback(
@@ -350,15 +308,6 @@ export default function ImageComponent({
     setSelected,
   ]);
 
-  const setShowCaption = () => {
-    editor.update(() => {
-      const node = $getNodeByKey(nodeKey);
-      if ($isImageNode(node)) {
-        node.setShowCaption(true);
-      }
-    });
-  };
-
   const onResizeEnd = (
     nextWidth: 'inherit' | number,
     nextHeight: 'inherit' | number
@@ -380,17 +329,12 @@ export default function ImageComponent({
     setIsResizing(true);
   };
 
-  const { historyState } = useSharedHistoryContext();
-  const {
-    settings: { showNestedEditorTreeView },
-  } = useSettings();
-
   const draggable = isSelected && $isNodeSelection(selection) && !isResizing;
   const isFocused = (isSelected || isResizing) && isEditable;
   return (
     <Suspense fallback={null}>
       <>
-        <div draggable={draggable}>
+        <div draggable={draggable} className="relative">
           {isLoadError ? (
             'image load error'
           ) : (
@@ -410,50 +354,13 @@ export default function ImageComponent({
             />
           )}
         </div>
-
-        {showCaption && (
-          <div className="image-caption-container">
-            <LexicalNestedComposer
-              initialEditor={caption}
-              initialNodes={[
-                RootNode,
-                TextNode,
-                LineBreakNode,
-                ParagraphNode,
-                LinkNode,
-                EmojiNode,
-                HashtagNode,
-                KeywordNode,
-              ]}
-            >
-              <AutoFocusPlugin />
-              <MentionsPlugin />
-              <LinkPlugin />
-              <EmojisPlugin />
-              <HashtagPlugin />
-              <KeywordsPlugin />
-              <HistoryPlugin externalHistoryState={historyState} />
-              <RichTextPlugin
-                contentEditable={
-                  <LexicalContentEditable placeholder="Enter a caption..." />
-                }
-                ErrorBoundary={LexicalErrorBoundary}
-              />
-              {showNestedEditorTreeView === true ? <TreeViewPlugin /> : null}
-            </LexicalNestedComposer>
-          </div>
-        )}
         {resizable && $isNodeSelection(selection) && isFocused && (
           <ImageResizer
-            showCaption={showCaption}
-            setShowCaption={setShowCaption}
             editor={editor}
-            buttonRef={buttonRef}
             imageRef={imageRef}
             maxWidth={maxWidth}
             onResizeStart={onResizeStart}
             onResizeEnd={onResizeEnd}
-            captionsEnabled={!isLoadError && captionsEnabled}
           />
         )}
       </>

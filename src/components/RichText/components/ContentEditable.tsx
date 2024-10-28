@@ -13,7 +13,7 @@ const LexicalContentEditable: React.FC<LexicalContentEditableProps> = ({
       aria-placeholder={placeholder}
       className="min-h-[150px] resize-none caret-[rgb(5,5,5)] relative outline-none py-4 px-6"
       placeholder={
-        <div className="text-gray-400 overflow-hidden absolute truncate top-4 left-2.5 select-none pointer-events-none">
+        <div className="absolute overflow-hidden text-gray-400 truncate pointer-events-none select-none top-4 left-6">
           {placeholder}
         </div>
       }
