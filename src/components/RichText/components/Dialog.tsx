@@ -12,9 +12,12 @@ export const DialogButtonsList: React.FC<Props> = ({ children }) => {
 export const DialogActions: React.FC<Props> = ({
   'data-test-id': dataTestId,
   children,
-}: Props) => {
+}) => {
   return (
-    <div className="flex justify-end mt-5" data-test-id={dataTestId}>
+    <div
+      className="flex justify-end p-4 border-t border-gray-200 border-solid"
+      data-test-id={dataTestId}
+    >
       {children}
     </div>
   );

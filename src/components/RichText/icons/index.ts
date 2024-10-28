@@ -80,3 +80,4 @@ export { default as IconUndo } from './Undo';
 export { default as IconUpload } from './Upload';
 export { default as IconUser } from './User';
 export { default as IconYoutube } from './Youtube';
+export { default as IconTypeClear } from './TypeClear';

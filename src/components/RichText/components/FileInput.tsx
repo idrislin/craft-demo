@@ -1,4 +1,6 @@
-import * as React from 'react';
+import clsx from 'clsx';
+import { first } from 'lodash';
+import React, { useState } from 'react';
 
 interface FileInputProps {
   label: string;
@@ -9,17 +11,39 @@ interface FileInputProps {
 const FileInput: React.FC<FileInputProps> = (props) => {
   const { accept, label, onChange, 'data-test-id': dataTestId } = props;
 
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const [fileName, setFileName] = useState<string>();
+
   return (
-    <div className="flex items-center mb-2.5">
-      <label className="flex flex-1 text-[#666]">{label}</label>
+    <>
+      <label
+        className={clsx(
+          'flex flex-1 text-[#666] whitespace-nowrap items-center',
+          'after:content-[":"] ms-0.5 me-2'
+        )}
+      >
+        {label}
+      </label>
+      <div
+        onClick={() => inputRef.current?.click()}
+        className="rounded-md border-solid border border-[#d9d9d9] text-gray-300 py-1 px-3 hover:border-primary hover:text-primary cursor-pointer w-full whitespace-nowrap"
+      >
+        {fileName || '选择文件'}
+      </div>
       <input
         type="file"
+        ref={inputRef}
         accept={accept}
+        multiple={false}
         data-test-id={dataTestId}
-        onChange={(e) => onChange(e.target.files)}
-        className="flex flex-[2] border border-solid border-[#999] py-2 px-2.5 rounded min-w-0"
+        onChange={(e) => {
+          onChange(e.target.files);
+          setFileName(first(e.target.files)?.name);
+        }}
+        className="hidden border border-solid border-[#999] py-2 px-2.5 rounded min-w-0"
       />
-    </div>
+    </>
   );
 };
 

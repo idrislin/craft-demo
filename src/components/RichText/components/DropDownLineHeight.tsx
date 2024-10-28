@@ -34,7 +34,7 @@ const DropDownLineHeight: React.FC<DropDownDropDownLineHeightProps> = ({
   );
 
   return (
-    <DropDown disabled={disabled} buttonLabel="Line Height">
+    <DropDown disabled={disabled} buttonLabel="行高">
       {lineHeightOptions.map((lineHeight) => (
         <DropDownItem
           key={lineHeight}

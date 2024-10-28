@@ -37,7 +37,7 @@ const DropDownAlignment: React.FC<DropDownAlignmentProps> = (props) => {
   };
 
   return (
-    <DropDown buttonLabel={buttonLabel[value] ?? 'Left Align'}>
+    <DropDown buttonLabel={'对齐'}>
       <DropDownItem
         active={value === 'left'}
         onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left')}

@@ -56,7 +56,7 @@ const DropDownFontSize: React.FC<DropDownFontSizeProps> = ({
   );
 
   return (
-    <DropDown disabled={disabled} buttonLabel={selectionFontSize}>
+    <DropDown disabled={disabled} buttonLabel="字号">
       {fontSizeOptions.map((fontSize) => (
         <DropDownItem
           key={fontSize}

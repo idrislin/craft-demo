@@ -2,6 +2,10 @@
   --primary-color: #2dc08d;
 }
 
+.editor-cell .lexicaltheme__link{
+  pointer-events: none;
+}
+
 .lexicaltheme__ltr {
   text-align: left;
 }

@@ -1,4 +1,4 @@
-import { $isLinkNode } from '@lexical/link';
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $isListNode, ListNode } from '@lexical/list';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $isHeadingNode, $isQuoteNode } from '@lexical/rich-text';
@@ -34,7 +34,7 @@ import {
   UNDO_COMMAND,
 } from 'lexical';
 import clsx from 'clsx';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode';
 
 import DropDownFontSize from '../../components/DropDownFontSize';
@@ -49,9 +49,11 @@ import {
   IconFileImage,
   IconFontColor,
   IconHorizontalRule,
+  IconLink,
   IconRedo,
   IconTrash,
   IconTypeBold,
+  IconTypeClear,
   IconTypeItalic,
   IconTypeStrikethrough,
   IconTypeSubscript,
@@ -62,6 +64,7 @@ import {
 import { INSERT_PAGE_BREAK } from '../PageDividerPlugin';
 import { InsertImageDialog } from '../ImagesPlugin';
 import useModal from '../../utils/useModal';
+import { sanitizeUrl } from '../../utils/url';
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -98,7 +101,8 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = (props) => {
         'h-9 w-9 flex items-center justify-center border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]',
         'disabled:text-gray-300 disabled:cursor-default disabled:hover:bg-transparent',
         active ? 'bg-[#0000000d]' : 'bg-transparent',
-        className
+        className,
+        '[&svg]:w-4 [&svg]:h-4'
       )}
       {...rest}
     >
@@ -107,7 +111,9 @@ const ToolbarButton: React.FC<ToolbarButtonProps> = (props) => {
   );
 };
 
-export default function ToolbarPlugin() {
+const ToolbarPlugin: React.FC<{
+  setIsLinkEditMode: Dispatch<boolean>;
+}> = ({ setIsLinkEditMode }) => {
   const [editor] = useLexicalComposerContext();
   const [activeEditor, setActiveEditor] = useState(editor);
   const toolbarRef = useRef(null);
@@ -374,6 +380,19 @@ export default function ToolbarPlugin() {
     [applyStyleText]
   );
 
+  const insertLink = useCallback(() => {
+    if (!isLink) {
+      setIsLinkEditMode(true);
+      activeEditor.dispatchCommand(
+        TOGGLE_LINK_COMMAND,
+        sanitizeUrl('https://')
+      );
+    } else {
+      setIsLinkEditMode(false);
+      activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+    }
+  }, [activeEditor, isLink, setIsLinkEditMode]);
+
   return (
     <div
       ref={toolbarRef}
@@ -402,7 +421,6 @@ export default function ToolbarPlugin() {
       />
       <Divider />
 
-      {/* font style */}
       <DropdownColorPicker
         color={fontColor}
         onChange={onFontColorSelect}
@@ -413,6 +431,9 @@ export default function ToolbarPlugin() {
         onChange={onBgColorSelect}
         icon={<IconBackgound />}
       />
+      <Divider />
+
+      {/* font style */}
       <ToolbarButton active={isBold} onClick={() => formatText('bold')}>
         <IconTypeBold />
       </ToolbarButton>
@@ -434,6 +455,10 @@ export default function ToolbarPlugin() {
       <ToolbarButton active={isCode} onClick={() => formatText('code')}>
         <IconCode />
       </ToolbarButton>
+
+      <ToolbarButton active={isLink} onClick={insertLink}>
+        <IconLink />
+      </ToolbarButton>
       <Divider />
 
       {/* script/subscript/superscript */}
@@ -450,7 +475,7 @@ export default function ToolbarPlugin() {
         <IconTypeSuperscript />
       </ToolbarButton>
       <ToolbarButton onClick={clearFormatting}>
-        <IconTrash />
+        <IconTypeClear />
       </ToolbarButton>
       <Divider />
 
@@ -477,7 +502,7 @@ export default function ToolbarPlugin() {
 
       <ToolbarButton
         onClick={() => {
-          showModal('Insert Image', (onClose) => (
+          showModal('插入图片', (onClose) => (
             <InsertImageDialog activeEditor={activeEditor} onClose={onClose} />
           ));
         }}
@@ -488,4 +513,6 @@ export default function ToolbarPlugin() {
       {modal}
     </div>
   );
-}
+};
+
+export default ToolbarPlugin;

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import type { SVGProps } from 'react';
+
 const SvgFontColor = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={22}
-    height={22}
-    viewBox="0 0 512 512"
+    focusable="false"
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
     {...props}
   >
-    <path
-      fill="#777"
-      d="M221.631 109 109.92 392h58.055l24.079-61h127.892l24.079 61h58.055L290.369 109Zm-8.261 168L256 169l42.63 108Z"
-    />
+    <path d="M2 20h20v4H2zm3.49-3h2.42l1.27-3.58h5.65L16.09 17h2.42L13.25 3h-2.5zm4.42-5.61 2.03-5.79h.12l2.03 5.79z"></path>
   </svg>
 );
 export default SvgFontColor;

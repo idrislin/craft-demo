@@ -39,11 +39,9 @@ const getDOMSelection = (targetWindow: Window | null): Selection | null =>
 export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> =
   createCommand('INSERT_IMAGE_COMMAND');
 
-export function InsertImageUriDialogBody({
-  onClick,
-}: {
+export const InsertImageUriDialogBody: React.FC<{
   onClick: (payload: InsertImagePayload) => void;
-}) {
+}> = ({ onClick }) => {
   const [src, setSrc] = useState('');
   const [altText, setAltText] = useState('');
 
@@ -51,38 +49,36 @@ export function InsertImageUriDialogBody({
 
   return (
     <>
-      <TextInput
-        label="URL"
-        value={src}
-        onChange={setSrc}
-        placeholder="https://"
-        data-test-id="image-modal-url-input"
-      />
-      <TextInput
-        label="Alt"
-        value={altText}
-        onChange={setAltText}
-        placeholder="Random unsplash image"
-        data-test-id="image-modal-alt-text-input"
-      />
+      <div className="w-[500px] p-5 grid grid-cols-[min-content_1fr] gap-y-4">
+        <TextInput
+          value={src}
+          label="图片地址"
+          onChange={setSrc}
+          placeholder="https://"
+        />
+        <TextInput
+          label="图片描述"
+          value={altText}
+          onChange={setAltText}
+          placeholder="Random unsplash image"
+        />
+      </div>
       <DialogActions>
         <button
           disabled={isDisabled}
-          className="px-3 py-2 text-blue-500 rounded cursor-pointer hover:bg-blue-50"
           onClick={() => onClick({ altText, src })}
+          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-primary hover:bg-primary/10"
         >
-          Confirm
+          确定
         </button>
       </DialogActions>
     </>
   );
-}
+};
 
-export function InsertImageUploadedDialogBody({
-  onClick,
-}: {
+export const InsertImageUploadedDialogBody: React.FC<{
   onClick: (payload: InsertImagePayload) => void;
-}) {
+}> = ({ onClick }) => {
   const [src, setSrc] = useState('');
   const [altText, setAltText] = useState('');
 
@@ -103,39 +99,32 @@ export function InsertImageUploadedDialogBody({
 
   return (
     <>
-      <FileInput
-        label="Image Upload"
-        onChange={loadImage}
-        accept="image/*"
-        data-test-id="image-modal-file-upload"
-      />
-      <TextInput
-        label="Alt Text"
-        placeholder="Descriptive alternative text"
-        onChange={setAltText}
-        value={altText}
-        data-test-id="image-modal-alt-text-input"
-      />
+      <div className="w-[500px] p-5 grid grid-cols-[min-content_1fr] gap-y-4">
+        <FileInput label="图片上传" onChange={loadImage} accept="image/*" />
+        <TextInput
+          label="图片描述"
+          value={altText}
+          onChange={setAltText}
+          placeholder="Descriptive alternative text"
+        />
+      </div>
       <DialogActions>
-        <Button
-          data-test-id="image-modal-file-upload-btn"
+        <button
           disabled={isDisabled}
           onClick={() => onClick({ altText, src })}
+          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-primary hover:bg-primary/10"
         >
-          Confirm
-        </Button>
+          确定
+        </button>
       </DialogActions>
     </>
   );
-}
+};
 
-export function InsertImageDialog({
-  activeEditor,
-  onClose,
-}: {
+export const InsertImageDialog: React.FC<{
   activeEditor: LexicalEditor;
   onClose: () => void;
-}): JSX.Element {
+}> = ({ activeEditor, onClose }) => {
   const [mode, setMode] = useState<null | 'url' | 'file'>(null);
   const hasModifier = useRef(false);
 
@@ -156,18 +145,20 @@ export function InsertImageDialog({
   };
 
   return (
-    <>
+    <div>
       {!mode && (
-        <DialogButtonsList>
-          <Button onClick={() => setMode('url')}>URL</Button>
-          <Button onClick={() => setMode('file')}>File</Button>
-        </DialogButtonsList>
+        <div className="p-5">
+          <DialogButtonsList>
+            <Button onClick={() => setMode('url')}>通过 URL 上传</Button>
+            <Button onClick={() => setMode('file')}>选择文件</Button>
+          </DialogButtonsList>
+        </div>
       )}
       {mode === 'url' && <InsertImageUriDialogBody onClick={onClick} />}
       {mode === 'file' && <InsertImageUploadedDialogBody onClick={onClick} />}
-    </>
+    </div>
   );
-}
+};
 
 export default function ImagesPlugin({
   captionsEnabled,

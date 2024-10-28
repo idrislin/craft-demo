@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { ReactNode } from 'react';
 
 interface ButtonProps {
-  'data-test-id'?: string;
   children: ReactNode;
   className?: string;
   disabled?: boolean;
@@ -12,7 +11,6 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-  'data-test-id': dataTestId,
   children,
   className,
   onClick,
@@ -31,7 +29,6 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       title={title}
       aria-label={title}
-      {...(dataTestId && { 'data-test-id': dataTestId })}
     >
       {children}
     </button>

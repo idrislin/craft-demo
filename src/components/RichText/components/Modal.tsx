@@ -70,18 +70,18 @@ const PortalImpl: React.FC<PortalImplProps> = (props) => {
           type="button"
           onClick={onClose}
           aria-label="Close modal"
-          className="border-none top-5 text-sm text-gray-500 absolute right-5 rounded justify-center items-center flex w-[30px] h-[30px] text-center cursor-pointer hover:bg-[#ddd]"
+          className="border-none outline-primary top-5 text-sm text-gray-500 absolute right-5 rounded justify-center items-center flex w-[30px] h-[30px] text-center cursor-pointer hover:bg-[#ddd]"
         >
           <svg
+            fill="currentColor"
             viewBox="0 0 24 24"
             className="w-6 h-6"
             data-testid="CloseIcon"
-            fill="currentColor"
           >
             <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
           </svg>
         </button>
-        <div className="p-5">{children}</div>
+        <div>{children}</div>
       </div>
     </div>
   );

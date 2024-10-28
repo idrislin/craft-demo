@@ -1,10 +1,14 @@
-import * as React from "react";
-import type { SVGProps } from "react";
+import * as React from 'react';
+import type { SVGProps } from 'react';
 const SvgSuccessAlt = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" {...props}>
+  <svg
+    fill="currentcolor"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 50 50"
+    {...props}
+  >
     <circle cx={25} cy={25} r={25} />
     <path
-      fill="none"
       stroke="#fff"
       strokeLinecap="round"
       strokeLinejoin="round"

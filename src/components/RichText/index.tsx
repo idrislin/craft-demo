@@ -26,6 +26,9 @@ import LexicalContentEditable from './components/ContentEditable';
 import EmojisPlugin from './plugins/EmojisPlugin';
 import NewMentionsPlugin from './plugins/MentionsPlugin';
 import ImagesPlugin from './plugins/ImagesPlugin';
+import TextInput from './components/TextInput';
+import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin';
+import LinkPlugin from './plugins/LinkPlugin';
 
 interface RichTextV3Props {}
 
@@ -58,6 +61,7 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
     // The editor theme
     theme: theme,
   };
+  const [isLinkEditMode, setIsLinkEditMode] = useState<boolean>(false);
 
   const [value, setValue] = useState<string>('');
   const [floatingAnchorElem, setFloatingAnchorElem] =
@@ -90,10 +94,10 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
   }, [isSmallWidthViewport]);
 
   return (
-    <div className="">
+    <div className="pt-10 ">
       <LexicalComposer initialConfig={initialConfig}>
         <div className="my-5 rounded-lg border-[#e2e2e2] border-solid border w-full text-black relative text-left ">
-          <ToolbarPlugin />
+          <ToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />
           {/* {isMaxLength && <MaxLengthPlugin maxLength={30} />} */}
           <AutoFocusPlugin />
           <ClearEditorPlugin />
@@ -141,10 +145,16 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
             />
 
             <PageBreakPlugin />
+            <LinkPlugin />
 
             {floatingAnchorElem && !isSmallWidthViewport && (
               <>
                 <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
+                <FloatingLinkEditorPlugin
+                  anchorElem={floatingAnchorElem}
+                  isLinkEditMode={isLinkEditMode}
+                  setIsLinkEditMode={setIsLinkEditMode}
+                />
               </>
             )}
 

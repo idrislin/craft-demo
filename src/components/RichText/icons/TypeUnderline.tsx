@@ -6,10 +6,12 @@ const SvgTypeUnderline = (props: SVGProps<SVGSVGElement>) => (
     width={20}
     height={20}
     fill="currentColor"
-    viewBox="0 0 16 16"
+    focusable="false"
+    aria-hidden="true"
+    viewBox="0 0 24 24"
     {...props}
   >
-    <path d="M5.313 3.136h-1.23V9.54c0 2.105 1.47 3.623 3.917 3.623s3.917-1.518 3.917-3.623V3.136h-1.23v6.323c0 1.49-.978 2.57-2.687 2.57s-2.687-1.08-2.687-2.57zM12.5 15h-9v-1h9z" />
+    <path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6m-7 2v2h14v-2z"></path>
   </svg>
 );
 export default SvgTypeUnderline;

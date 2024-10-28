@@ -23,8 +23,8 @@ export default function useModal(): [
     const { title, content, closeOnClickOutside } = modalContent;
     return (
       <Modal
-        onClose={onClose}
         title={title}
+        onClose={onClose}
         closeOnClickOutside={closeOnClickOutside}
       >
         {content}
