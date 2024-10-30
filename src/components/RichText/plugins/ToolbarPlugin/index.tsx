@@ -61,7 +61,6 @@ import {
   IconTypeUnderline,
   IconUndo,
 } from '../../icons';
-import { INSERT_PAGE_BREAK } from '../PageDividerPlugin';
 import { InsertImageDialog } from '../ImagesPlugin';
 import useModal from '../../utils/useModal';
 import { sanitizeUrl } from '../../utils/url';
@@ -81,11 +80,11 @@ const blockTypeToBlockName = {
   quote: 'Quote',
 };
 
-function Divider() {
+const Divider: React.FC = () => {
   return (
     <div className="h-8 mx-2 w-px float-left block shadow-[inset_-1px_0_#0000001a]" />
   );
-}
+};
 
 interface ToolbarButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -39,9 +39,13 @@ const getDOMSelection = (targetWindow: Window | null): Selection | null =>
 export const INSERT_IMAGE_COMMAND: LexicalCommand<InsertImagePayload> =
   createCommand('INSERT_IMAGE_COMMAND');
 
-export const InsertImageUriDialogBody: React.FC<{
+interface InsertImageBodyProps {
   onClick: (payload: InsertImagePayload) => void;
-}> = ({ onClick }) => {
+}
+
+export const InsertImageUriDialogBody: React.FC<InsertImageBodyProps> = ({
+  onClick,
+}) => {
   const [src, setSrc] = useState('');
   const [altText, setAltText] = useState('');
 
@@ -76,9 +80,9 @@ export const InsertImageUriDialogBody: React.FC<{
   );
 };
 
-export const InsertImageUploadedDialogBody: React.FC<{
-  onClick: (payload: InsertImagePayload) => void;
-}> = ({ onClick }) => {
+export const InsertImageUploadedDialogBody: React.FC<InsertImageBodyProps> = ({
+  onClick,
+}) => {
   const [src, setSrc] = useState('');
   const [altText, setAltText] = useState('');
 

@@ -96,7 +96,7 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
   return (
     <div className="pt-10 ">
       <LexicalComposer initialConfig={initialConfig}>
-        <div className="my-5 rounded-lg border-[#e2e2e2] border-solid border w-full text-black relative text-left ">
+        <div className="my-5 rounded-lg border-[#e2e2e2] border-solid border w-full text-black relative text-left">
           <ToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />
           {/* {isMaxLength && <MaxLengthPlugin maxLength={30} />} */}
           <AutoFocusPlugin />

@@ -5,7 +5,6 @@ import type {
   EditorConfig,
   LexicalNode,
   NodeKey,
-  SerializedEditor,
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
@@ -35,6 +34,7 @@ function isGoogleDocCheckboxImg(img: HTMLImageElement): boolean {
 
 function $convertImageElement(domNode: Node): null | DOMConversionOutput {
   const img = domNode as HTMLImageElement;
+  //* 本地文件或者 Google 文档复选框图像不处理
   if (img.src.startsWith('file:///') || isGoogleDocCheckboxImg(img)) {
     return null;
   }
@@ -55,16 +55,19 @@ export type SerializedImageNode = Spread<
 >;
 
 export class ImageNode extends DecoratorNode<JSX.Element> {
+  //- img 节点属性，你可以按需添加
   __src: string;
   __altText: string;
   __width: 'inherit' | number;
   __height: 'inherit' | number;
   __maxWidth: number;
 
+  //- 获取节点类型
   static getType(): string {
     return 'image';
   }
 
+  //- 复制操作需要用到，拷贝一下即可
   static clone(node: ImageNode): ImageNode {
     return new ImageNode(
       node.__src,
@@ -76,6 +79,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     );
   }
 
+  //- 反序列化节点
   static importJSON(serializedNode: SerializedImageNode): ImageNode {
     const { altText, height, width, maxWidth, src } = serializedNode;
     const node = $createImageNode({
@@ -88,6 +92,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     return node;
   }
 
+  //- 导出 dom 节点
   exportDOM(): DOMExportOutput {
     const element = document.createElement('img');
     element.setAttribute('src', this.__src);
@@ -97,12 +102,10 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     return { element };
   }
 
+  //- dom 节点序列化
   static importDOM(): DOMConversionMap | null {
     return {
-      img: (node: Node) => ({
-        conversion: $convertImageElement,
-        priority: 0,
-      }),
+      img: () => ({ conversion: $convertImageElement, priority: 0 }),
     };
   }
 
@@ -112,7 +115,6 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     maxWidth: number,
     width?: 'inherit' | number,
     height?: 'inherit' | number,
-
     key?: NodeKey
   ) {
     super(key);
@@ -123,6 +125,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     this.__height = height || 'inherit';
   }
 
+  //- 序列化节点
   exportJSON(): SerializedImageNode {
     return {
       altText: this.getAltText(),
@@ -135,6 +138,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     };
   }
 
+  //- 这是拓展方法，image resize 会用到，可以忽略
   setWidthAndHeight(
     width: 'inherit' | number,
     height: 'inherit' | number
@@ -144,8 +148,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     writable.__height = height;
   }
 
-  // View
-
+  //- 节点渲染
   createDOM(config: EditorConfig): HTMLElement {
     const span = document.createElement('span');
     const theme = config.theme;
