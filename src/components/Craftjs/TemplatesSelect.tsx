@@ -15,7 +15,7 @@ const TemplateSelect: React.FC = () => {
 
   return (
     <div className="my-10 ml-5 bg-white rounded shadow-card w-96">
-      <div className="mt-6 text-sm text-center">Select a template</div>
+      <div className="mt-6 text-[14px] text-center">Select a template</div>
       <div className="grid grid-cols-2 gap-3 px-6 py-4">
         {templates.map((template, index) => (
           <TemplateCard
@@ -53,14 +53,14 @@ const TemplateCard: React.FC<TemplateCardProps> = (props) => {
         {selected ? (
           <span className="absolute bottom-0 right-0 triangleBorder">
             <i className="absolute text-white right-1 top-3">
-              <DoneOutlined className="!text-sm" />
+              <DoneOutlined className="!text-[14px]" />
             </i>
           </span>
         ) : null}
       </div>
       <div
         className={clsx(
-          'flex items-center justify-center text-sm font-medium group-hover/template:text-primary',
+          'flex items-center justify-center text-[14px] font-medium group-hover/template:text-primary',
           selected ? 'text-primary' : 'text-black'
         )}
       >

@@ -70,7 +70,7 @@ const Summary: CUserComponent<SummaryProps> = (props) => {
               });
             }}
             placeholder={placeholder}
-            className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
+            className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start"
           />
         ))}
       </div>
@@ -98,7 +98,7 @@ const SummarySettings = () => {
   const direction = ['column', 'row'];
 
   return (
-    <div className="flex flex-col gap-3 p-5 text-sm">
+    <div className="flex flex-col gap-3 p-5 text-[14px]">
       <button
         className="outlinedButton"
         onClick={() => {
@@ -173,7 +173,7 @@ const SummaryDisplay = () => {
         Summary
       </p>
       <div className="w-full h-px my-1 bg-[#030303]" />
-      <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+      <p className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start">
         What's the one thing that makes you the best candidate for this job?
       </p>
     </div>

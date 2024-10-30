@@ -260,7 +260,10 @@ const FloatingLinkEditor: React.FC<{
                 setTarget(event.target.checked ? '_blank' : '');
               }}
             />
-            <label className="text-sm text-gray-500" htmlFor="link-new-window">
+            <label
+              className="text-[14px] text-gray-500"
+              htmlFor="link-new-window"
+            >
               从新窗口打开
             </label>
           </div>

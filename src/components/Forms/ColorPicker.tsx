@@ -1,6 +1,6 @@
-import { ColorLensOutlined } from "@mui/icons-material";
-import React, { useEffect, useRef, useState } from "react";
-import { ChromePicker } from "react-color";
+import { ColorLensOutlined } from '@mui/icons-material';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChromePicker } from 'react-color';
 
 interface ColorPickerProps {
   label: string;
@@ -25,9 +25,9 @@ const ColorPicker: React.FC<ColorPickerProps> = (props) => {
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -35,7 +35,7 @@ const ColorPicker: React.FC<ColorPickerProps> = (props) => {
   return (
     <div className="w-full">
       {!labelHidden && (
-        <label className="block text-sm font-medium leading-6 text-gray-900">
+        <label className="block text-[14px] font-medium leading-6 text-gray-900">
           {label}
         </label>
       )}

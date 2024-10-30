@@ -50,7 +50,7 @@ const EducationSettings = () => {
   }));
 
   return (
-    <div className="flex p-2 w-[200px] text-sm">
+    <div className="flex p-2 w-[200px] text-[14px]">
       <Slider
         min={0}
         max={100}
@@ -81,14 +81,14 @@ const EducationDisplay = () => {
           </p>
         </div>
         <div className="flex items-center justify-between">
-          <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+          <p className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start">
             Degree and Field of Study
           </p>
-          <div className="text-sm font-normal text-black whitespace-nowrap w-min text-end">
+          <div className="text-[14px] font-normal text-black whitespace-nowrap w-min text-end">
             period
           </div>
         </div>
-        <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+        <p className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start">
           What knowledge or experience did you acquire during your studies
           there?(e.g. Delivered a comprehensive marketing strategy)
         </p>

@@ -67,7 +67,7 @@
 //             onClick={() => setVisible(true)}
 //             className={clsx(
 //               error ? 'border-red-500' : 'border-gray-300',
-//               'flex items-center justify-between w-full h-10 px-4 text-sm border border-solid rounded-lg outline-none hover:border-primary focus:border-primary placeholder:text-sm placeholder:text-gray-500 ring-0',
+//               'flex items-center justify-between w-full h-10 px-4 text-[14px] border border-solid rounded-lg outline-none hover:border-primary focus:border-primary placeholder:text-[14px] placeholder:text-gray-500 ring-0',
 //             )}
 //           >
 //             <p className="mobild:text-xs">

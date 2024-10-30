@@ -263,7 +263,7 @@ export const Viewport: React.FC<ViewportProps> = ({ children }) => {
             <div
               key={menu.label}
               onClick={menu.onAction}
-              className="cursor-default flex items-center gap-2 text-sm min-w-[160px] py-2 px-4 hover:bg-dark hover:text-white"
+              className="cursor-default flex items-center gap-2 text-[14px] min-w-[160px] py-2 px-4 hover:bg-dark hover:text-white"
             >
               {menu.icon}
               {menu.label}

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface RadioProps {
   label: string;
@@ -19,7 +19,7 @@ const Radio: React.FC<RadioProps> = (props) => {
       />
       <label
         htmlFor={props.id ?? props.label}
-        className="block ml-2 text-sm font-medium leading-6 text-gray-900"
+        className="block ml-2 text-[14px] font-medium leading-6 text-gray-900"
       >
         {props.label}
       </label>

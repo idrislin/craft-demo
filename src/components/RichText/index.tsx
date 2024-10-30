@@ -29,6 +29,7 @@ import ImagesPlugin from './plugins/ImagesPlugin';
 import TextInput from './components/TextInput';
 import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin';
 import LinkPlugin from './plugins/LinkPlugin';
+import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin';
 
 interface RichTextV3Props {}
 
@@ -105,6 +106,7 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
           <NewMentionsPlugin />
           <EmojisPlugin />
           <HashtagPlugin />
+          {/* <EmojiPickerPlugin /> */}
 
           <div className="relative bg-white">
             <RichTextPlugin
@@ -153,6 +155,10 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
                 <FloatingLinkEditorPlugin
                   anchorElem={floatingAnchorElem}
                   isLinkEditMode={isLinkEditMode}
+                  setIsLinkEditMode={setIsLinkEditMode}
+                />
+                <FloatingTextFormatToolbarPlugin
+                  anchorElem={floatingAnchorElem}
                   setIsLinkEditMode={setIsLinkEditMode}
                 />
               </>

@@ -1,7 +1,7 @@
-import { useEventListener } from "ahooks";
-import { first } from "lodash";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Tippy from "@tippyjs/react";
+import { useEventListener } from 'ahooks';
+import { first } from 'lodash';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import Tippy from '@tippyjs/react';
 
 interface SliderProps {
   label: string;
@@ -37,14 +37,14 @@ const Slider: React.FC<SliderProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leftValue]);
 
-  useEventListener("mouseup", () => {
+  useEventListener('mouseup', () => {
     setActive(false);
   });
 
   return (
     <div className="w-full">
       {!labelHidden && (
-        <label className="block text-sm font-medium text-gray-900">
+        <label className="block text-[14px] font-medium text-gray-900">
           {label}
         </label>
       )}
@@ -67,7 +67,7 @@ const Slider: React.FC<SliderProps> = (props) => {
         >
           <span className="block absolute rounded-[inherit] bg-current opacity-35 w-full h-[inherit] top-1/2 -translate-y-1/2" />
           <span
-            style={{ width: left + "%" }}
+            style={{ width: left + '%' }}
             className="block absolute rounded-[inherit] h-[inherit] border border-solid border-current bg-current top-1/2 -translate-y-1/2"
           />
           <Tippy
@@ -82,14 +82,14 @@ const Slider: React.FC<SliderProps> = (props) => {
             }
           >
             <span
-              style={{ left: left + "%" }}
+              style={{ left: left + '%' }}
               className="box-border absolute flex items-center justify-center w-5 h-5 overflow-hidden -translate-x-1/2 -translate-y-1/2 bg-current rounded-full top-1/2 outline-0"
             >
               <input
                 type="range"
                 value={value}
                 {...leftProps}
-                style={{ clip: "rect(0 0 0 0)", direction: "ltr" }}
+                style={{ clip: 'rect(0 0 0 0)', direction: 'ltr' }}
                 className="absolute w-full p-0 -m-px overflow-hidden border-none whitespace-nowrap bg-gray-50"
                 onChange={(e) =>
                   onChange(Math.ceil(parseFloat(e.target.value)))

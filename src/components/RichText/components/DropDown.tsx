@@ -1,4 +1,3 @@
-import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import clsx from 'clsx';
 import React, {
   ReactNode,
@@ -9,6 +8,8 @@ import React, {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+
+import { IconArrowDropDown } from '../icons';
 
 type DropDownContextType = {
   registerItem: (ref: React.RefObject<HTMLButtonElement>) => void;
@@ -48,7 +49,7 @@ export const DropDownItem: React.FC<DropDownItemProps> = (props) => {
       type="button"
       onClick={onClick}
       className={clsx(
-        'first:mt-2 hover:bg-[#eee] last:mb-2 text-sm border-0 outline-none mx-2 p-2 cursor-pointer flex items-center gap-2 rounded max-w-[250px] min-w-[100px]',
+        'first:mt-2 hover:bg-[#eee] last:mb-2 text-[14px] border-0 outline-none mx-2 p-2 cursor-pointer flex items-center gap-2 rounded max-w-[250px] min-w-[100px]',
         active ? 'bg-[#eee]' : 'bg-white'
       )}
     >
@@ -120,7 +121,7 @@ const DropDownItems: React.FC<{
       <div
         ref={dropDownRef}
         onKeyDown={handleKeyDown}
-        className="z-[100] flex flex-col gap-y-1 fixed rounded-lg shadow-md min-h-[40px] overflow-y-auto max-h-[375px] bg-white"
+        className="z-[100] flex flex-col gap-y-1 fixed rounded-lg shadow-[0px_5px_10px_rgba(0,0,0,0.3)] min-h-[40px] overflow-y-auto max-h-[375px] bg-white"
       >
         {children}
       </div>
@@ -224,8 +225,8 @@ const DropDown: React.FC<DropDownProps> = (props) => {
         className={clsx(
           'disabled:text-gray-300 disabled:cursor-default disabled:hover:bg-transparent',
           type === 'button'
-            ? 'h-9 w-9 flex items-center justify-center border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]'
-            : 'flex items-center min-w-[100px] text-sm justify-between hover:bg-[#0000000d] gap-2 h-9 pl-3 py-2 align-middle border-none rounded cursor-pointer bg-none',
+            ? 'min-h-[36px] min-w-[36px] flex items-center justify-center border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]'
+            : 'flex items-center min-w-[100px] text-[14px] justify-between hover:bg-[#0000000d] gap-2 min-h-[36px] pl-3 py-2 align-middle border-none rounded cursor-pointer bg-none',
           showDropDown ? 'bg-gray-100' : 'bg-white'
         )}
       >
@@ -234,13 +235,7 @@ const DropDown: React.FC<DropDownProps> = (props) => {
         ) : (
           buttonLabel
         )}
-        {type === 'dropdown' && (
-          <ArrowDropDownOutlinedIcon
-            className="w-3 h-3 text-gray-400"
-            width={12}
-            height={12}
-          />
-        )}
+        {type === 'dropdown' && <IconArrowDropDown className="text-gray-400" />}
       </button>
 
       {showDropDown &&

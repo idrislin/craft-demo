@@ -110,7 +110,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
                 event.stopPropagation();
                 setCalendarOpen(true);
               }}
-              className="text-sm font-normal text-black whitespace-nowrap w-min text-end"
+              className="text-[14px] font-normal text-black whitespace-nowrap w-min text-end"
             >
               <p>{entry.datePeriod}</p>
               {entry.datePeriod && entry.datePeriod !== '' ? null : (
@@ -134,7 +134,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
         <Text
           value={entry.companyDesc}
           placeholder="Company Description"
-          className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
+          className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start"
           onChange={(v) => {
             setProp((props: ExperienceEntryProps) => {
               props.entry = { ...entry, companyDesc: v };
@@ -146,7 +146,7 @@ const ExperienceEntry: CUserComponent<ExperienceEntryProps> = (props) => {
         <Text
           value={entry.value}
           placeholder="Which of your achievements match the job your're applying to?"
-          className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
+          className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start"
           onChange={(v) => {
             setProp((props: ExperienceEntryProps) => {
               props.entry = { ...entry, value: v };
@@ -178,7 +178,7 @@ const ExperienceEntrySettings = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-2 p-5 text-sm">
+    <div className="flex flex-col gap-2 p-5 text-[14px]">
       {fieldKeys.map((field) => (
         <div className="flex items-center justify-between" key={field.value}>
           <p>{`Show ${field.label}`}</p>

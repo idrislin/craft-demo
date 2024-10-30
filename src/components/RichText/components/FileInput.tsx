@@ -5,11 +5,10 @@ import React, { useState } from 'react';
 interface FileInputProps {
   label: string;
   accept?: string;
-  'data-test-id'?: string;
   onChange: (files: FileList | null) => void;
 }
 const FileInput: React.FC<FileInputProps> = (props) => {
-  const { accept, label, onChange, 'data-test-id': dataTestId } = props;
+  const { accept, label, onChange } = props;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -36,7 +35,6 @@ const FileInput: React.FC<FileInputProps> = (props) => {
         ref={inputRef}
         accept={accept}
         multiple={false}
-        data-test-id={dataTestId}
         onChange={(e) => {
           onChange(e.target.files);
           setFileName(first(e.target.files)?.name);

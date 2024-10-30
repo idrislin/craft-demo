@@ -49,7 +49,7 @@ const ExperienceSettings = () => {
   }));
 
   return (
-    <div className="flex p-2 w-[200px] text-sm">
+    <div className="flex p-2 w-[200px] text-[14px]">
       <Slider
         min={0}
         max={100}
@@ -86,14 +86,14 @@ const ExperienceDisplay = () => {
           <p className="w-full text-base font-normal text-black break-all whitespace-pre-wrap text-start">
             Title
           </p>
-          <p className="text-sm font-normal text-black whitespace-nowrap w-min text-end">
+          <p className="text-[14px] font-normal text-black whitespace-nowrap w-min text-end">
             Date period
           </p>
         </div>
-        <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+        <p className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start">
           Company Description
         </p>
-        <p className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start">
+        <p className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start">
           Which of your achievements match the job your're applying to?
         </p>
       </div>

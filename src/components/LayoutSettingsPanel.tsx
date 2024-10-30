@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useImmer } from "use-immer";
-import { useUpdateEffect } from "ahooks";
-import { first } from "lodash";
-import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
+import React, { useState } from 'react';
+import { useImmer } from 'use-immer';
+import { useUpdateEffect } from 'ahooks';
+import { first } from 'lodash';
+import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 
-import { Slider } from "~/components/Forms";
+import { Slider } from '~/components/Forms';
 
 export interface BaseElementsProps {
   margin?: number[];
@@ -52,10 +52,10 @@ const LayoutSlider: React.FC<{
     <div className="w-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <label className="block text-sm font-medium text-gray-900">
+          <label className="block text-[14px] font-medium text-gray-900">
             {label}
           </label>
-          <p className="text-xs text-gray-500">{value.join("px ") + "px"}</p>
+          <p className="text-xs text-gray-500">{value.join('px ') + 'px'}</p>
         </div>
         <button
           className="text-gray-500 hover:text-gray-400"

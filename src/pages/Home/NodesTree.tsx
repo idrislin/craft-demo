@@ -195,7 +195,7 @@ const NodesTree: React.FC<NodesTreeProps> = () => {
     <div className="pt-5">
       <button
         onClick={reorderNodes}
-        className="fixed z-50 flex items-center justify-center text-black transition-all bg-white rounded cursor-pointer shadow-button top-20 right-10 w-9 h-9 hover:bg-purple hover:bg-opacity-20 hover:text-purple"
+        className="fixed z-50 flex items-center justify-center text-black transition-all bg-white rounded cursor-pointer shadow-button top-20 right-10 min-w-[36px] min-h-[36px] hover:bg-purple hover:bg-opacity-20 hover:text-purple"
       >
         <FeedOutlined />
       </button>

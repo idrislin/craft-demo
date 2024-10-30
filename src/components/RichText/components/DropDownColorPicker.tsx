@@ -11,14 +11,9 @@ interface DropdownColorPickerProps {
   onChange?: (color: string, skipHistoryStack: boolean) => void;
 }
 
-const DropdownColorPicker: React.FC<DropdownColorPickerProps> = ({
-  icon,
-  color,
-  onChange,
-  disabled = false,
-  stopCloseOnClickSelf = true,
-  ...rest
-}) => {
+const DropdownColorPicker: React.FC<DropdownColorPickerProps> = (props) => {
+  const { color, disabled, icon, stopCloseOnClickSelf, onChange, ...rest } =
+    props;
   return (
     <DropDown
       {...rest}

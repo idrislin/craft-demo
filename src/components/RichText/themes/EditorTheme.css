@@ -2,7 +2,7 @@
   --primary-color: #2dc08d;
 }
 
-.editor-cell .lexicaltheme__link{
+.editor-cell .lexicaltheme__link {
   pointer-events: none;
 }
 
@@ -519,4 +519,13 @@ span.inline-editor-image {
   min-width: 100%;
   color: #000;
   overflow: hidden;
+}
+.emojidropdown::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+  background-color: white;
+}
+.emojidropdown::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 999px;
 }

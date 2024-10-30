@@ -27,15 +27,6 @@ interface DropDownAlignmentProps {
 const DropDownAlignment: React.FC<DropDownAlignmentProps> = (props) => {
   const { editor, value } = props;
 
-  const buttonLabel: Record<string, string> = {
-    left: 'Left Align',
-    center: 'Center Align',
-    right: 'Right Align',
-    justify: 'Justify Align',
-    start: 'Start Align',
-    end: 'End Align',
-  };
-
   return (
     <DropDown buttonLabel={'对齐'}>
       <DropDownItem

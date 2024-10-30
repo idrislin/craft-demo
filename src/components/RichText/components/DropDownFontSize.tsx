@@ -10,11 +10,8 @@ interface DropDownFontSizeProps {
   disabled?: boolean;
 }
 
-const DropDownFontSize: React.FC<DropDownFontSizeProps> = ({
-  editor,
-  selectionFontSize,
-  disabled = false,
-}) => {
+const DropDownFontSize: React.FC<DropDownFontSizeProps> = (props) => {
+  const { editor, selectionFontSize, disabled = false } = props;
   const fontSizeOptions = [
     '10px',
     '12px',

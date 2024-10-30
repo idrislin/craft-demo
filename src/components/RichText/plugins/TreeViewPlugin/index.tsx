@@ -5,12 +5,12 @@ export default function TreeViewPlugin(): JSX.Element {
   const [editor] = useLexicalComposerContext();
   return (
     <TreeView
-      viewClassName="block bg-[#222] text-white font-xs mt-px mb-2.5 px-auto relative overflow-hidden rounded-b-lg"
-      treeTypeButtonClassName="text-xs top-2.5 right-24 absolute bg-none text-white hover:underline"
-      timeTravelPanelClassName="pb-2.5 m-auto flex"
-      timeTravelButtonClassName="text-xs top-2.5 right-4 absolute bg-none text-white hover:underline"
-      timeTravelPanelSliderClassName="flex-[8]"
-      timeTravelPanelButtonClassName="flex-1 text-white font-xs"
+      timeTravelPanelClassName="p-2.5 order-first w-[90%] m-auto flex gap-2"
+      timeTravelPanelSliderClassName="w-full"
+      viewClassName="block bg-[#222] flex flex-col items-start text-white font-xs mt-px pb-2.5 px-auto relative overflow-hidden rounded-b-lg"
+      timeTravelPanelButtonClassName="flex-1 border-none outline-none cursor-pointer bg-transparenttext-white text-[14px]"
+      treeTypeButtonClassName="text-[14px] p-2 border-none outline-none cursor-pointer bg-transparent text-white hover:underline"
+      timeTravelButtonClassName="text-[14px] p-2 border-none outline-none cursor-pointer bg-transparent text-white hover:underline"
       editor={editor}
     />
   );

@@ -5,7 +5,7 @@ const SvgLink = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     width={22}
     height={22}
-    fill="currentColor"
+    fill="currentcolor"
     focusable="false"
     aria-hidden="true"
     viewBox="0 0 24 24"

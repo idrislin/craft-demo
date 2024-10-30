@@ -70,7 +70,7 @@ const PortalImpl: React.FC<PortalImplProps> = (props) => {
           type="button"
           onClick={onClose}
           aria-label="Close modal"
-          className="border-none outline-primary top-5 text-sm text-gray-500 absolute right-5 rounded justify-center items-center flex w-[30px] h-[30px] text-center cursor-pointer hover:bg-[#ddd]"
+          className="border-none outline-primary top-5 text-[14px] text-gray-500 absolute right-5 rounded justify-center items-center flex w-[30px] h-[30px] text-center cursor-pointer hover:bg-[#ddd]"
         >
           <svg
             fill="currentColor"

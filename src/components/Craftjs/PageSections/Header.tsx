@@ -177,7 +177,7 @@ const Header: CUserComponent<HeaderProps> = (props) => {
         value="The role you are applying for?"
         className="text-base font-medium whitespace-pre-wrap text-sub"
       />
-      <div className="flex items-center justify-center gap-2 text-sm text-dark">
+      <div className="flex items-center justify-center gap-2 text-[14px] text-dark">
         {fields
           ?.filter((field) => field.show)
           .map((field, index) => (
@@ -205,7 +205,7 @@ const HeaderSettings = () => {
   const empty: Field = { label: '', show: false, value: '' };
 
   return (
-    <div className="flex flex-col gap-2 p-5 text-sm">
+    <div className="flex flex-col gap-2 p-5 text-[14px]">
       <div className="flex items-center justify-between">
         <p>Show Title</p>
         <Toggles
@@ -302,7 +302,7 @@ const HeaderDisplay = () => {
       <p className="text-base font-medium whitespace-pre-wrap text-sub">
         The role you are applying for?
       </p>
-      <div className="flex items-center justify-center gap-2 text-sm text-dark">
+      <div className="flex items-center justify-center gap-2 text-[14px] text-dark">
         <p>Phone</p>
         <div className="w-1 h-1 rounded-[50%] bg-dark align-middle" />
         <p>Email</p>

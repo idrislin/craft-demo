@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import ThreeJSPage from './pages/Threejs';
 import CanvasPage from './pages/Canvas';
 import RichTextPage from './pages/RichText';
+import Dashboard from './pages/Dashboard';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/dist/svg-arrow.css';
 import 'tippy.js/themes/material.css';
@@ -13,6 +14,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" Component={Dashboard} />
         <Route path="/editor" Component={Home} />
         <Route path="/threejs" Component={ThreeJSPage} />
         <Route path="/canvas" Component={CanvasPage} />

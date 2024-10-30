@@ -10,11 +10,10 @@ interface DropDownDropDownLineHeightProps {
   disabled?: boolean;
 }
 
-const DropDownLineHeight: React.FC<DropDownDropDownLineHeightProps> = ({
-  editor,
-  selectionLineHeight,
-  disabled = false,
-}) => {
+const DropDownLineHeight: React.FC<DropDownDropDownLineHeightProps> = (
+  props
+) => {
+  const { editor, selectionLineHeight, disabled = false } = props;
   const lineHeightOptions = ['1', '1.2', '1.5', '1.75', '2', '2.5', '3', '4'];
 
   const updateLineHeightInSelection = useCallback(

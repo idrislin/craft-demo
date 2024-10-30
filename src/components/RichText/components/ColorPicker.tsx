@@ -179,12 +179,8 @@ interface MoveWrapperProps {
   children: JSX.Element;
 }
 
-const MoveWrapper: React.FC<MoveWrapperProps> = ({
-  className,
-  style,
-  onChange,
-  children,
-}) => {
+const MoveWrapper: React.FC<MoveWrapperProps> = (props) => {
+  const { className, style, onChange, children } = props;
   const divRef = useRef<HTMLDivElement>(null);
   const draggedRef = useRef(false);
 
@@ -232,8 +228,8 @@ const MoveWrapper: React.FC<MoveWrapperProps> = ({
   return (
     <div
       ref={divRef}
-      className={className}
       style={style}
+      className={className}
       onMouseDown={onMouseDown}
     >
       {children}
@@ -241,10 +237,8 @@ const MoveWrapper: React.FC<MoveWrapperProps> = ({
   );
 };
 
-const ColorPicker: React.FC<Readonly<ColorPickerProps>> = ({
-  color,
-  onChange,
-}) => {
+const ColorPicker: React.FC<Readonly<ColorPickerProps>> = (props) => {
+  const { color, onChange } = props;
   const [selfColor, setSelfColor] = useState(transformColor('hex', color));
   const [inputColor, setInputColor] = useState(color);
   const innerDivRef = useRef(null);
@@ -311,12 +305,12 @@ const ColorPicker: React.FC<Readonly<ColorPickerProps>> = ({
   return (
     <div className="box-content p-4" style={{ width: WIDTH }} ref={innerDivRef}>
       <div className="flex items-center w-full gap-2 mb-2">
-        <label htmlFor="color-picker-input text-sm">HEX:</label>
+        <label htmlFor="color-picker-input text-[14px]">HEX:</label>
         <input
           value={inputColor}
           id="color-picker-input"
           onChange={(ev) => onSetHex(ev.target.value)}
-          className="w-full rounded border border-solid h-7 outline-none focus:outline-blue-400 border-[#ccc] text-sm px-2"
+          className="w-full rounded border border-solid h-7 outline-none focus:outline-blue-400 border-[#ccc] text-[14px] px-2"
         />
       </div>
       <div className="flex flex-wrap gap-2.5 m-0 p-0">

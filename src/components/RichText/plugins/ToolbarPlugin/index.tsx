@@ -46,12 +46,12 @@ import DropDownAlignment from '../../components/DropDownAlignment';
 import {
   IconBackgound,
   IconCode,
+  IconEmojiEmotions,
   IconFileImage,
   IconFontColor,
   IconHorizontalRule,
   IconLink,
   IconRedo,
-  IconTrash,
   IconTypeBold,
   IconTypeClear,
   IconTypeItalic,
@@ -64,6 +64,7 @@ import {
 import { InsertImageDialog } from '../ImagesPlugin';
 import useModal from '../../utils/useModal';
 import { sanitizeUrl } from '../../utils/url';
+import DropdownEmoji from '../../components/DropDownEmoji';
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -91,13 +92,13 @@ interface ToolbarButtonProps
   active?: boolean;
 }
 
-const ToolbarButton: React.FC<ToolbarButtonProps> = (props) => {
+export const ToolbarButton: React.FC<ToolbarButtonProps> = (props) => {
   const { children, className, active, ...rest } = props;
   return (
     <button
       type="button"
       className={clsx(
-        'h-9 w-9 flex items-center justify-center border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]',
+        'min-h-[36px] min-w-[36px] flex items-center justify-center border-none cursor-pointer text-gray-700 rounded hover:bg-[#0000000d]',
         'disabled:text-gray-300 disabled:cursor-default disabled:hover:bg-transparent',
         active ? 'bg-[#0000000d]' : 'bg-transparent',
         className,
@@ -143,7 +144,6 @@ const ToolbarPlugin: React.FC<{
 
   const [elementFormat, setElementFormat] = useState<ElementFormatType>('left');
 
-  const [isImageCaption, setIsImageCaption] = useState(false);
   const [isRTL, setIsRTL] = useState(false);
   const [modal, showModal] = useModal();
 
@@ -151,17 +151,6 @@ const ToolbarPlugin: React.FC<{
   const $updateToolbar = useCallback(() => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
-      if (activeEditor !== editor && $isEditorIsNestedEditor(activeEditor)) {
-        const rootElement = activeEditor.getRootElement();
-        setIsImageCaption(
-          !!rootElement?.parentElement?.classList.contains(
-            'image-caption-container'
-          )
-        );
-      } else {
-        setIsImageCaption(false);
-      }
-
       const anchorNode = selection.anchor.getNode();
       let element =
         anchorNode.getKey() === 'root'
@@ -255,7 +244,7 @@ const ToolbarPlugin: React.FC<{
         $getSelectionStyleValueForProperty(selection, 'line-height')
       );
     }
-  }, [activeEditor, editor]);
+  }, [activeEditor]);
 
   //- register editor
   useEffect(() => {
@@ -508,7 +497,7 @@ const ToolbarPlugin: React.FC<{
       >
         <IconFileImage />
       </ToolbarButton>
-
+      <DropdownEmoji editor={activeEditor} />
       {modal}
     </div>
   );

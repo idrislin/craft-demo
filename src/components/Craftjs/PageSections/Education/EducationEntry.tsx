@@ -31,7 +31,7 @@ const GPAComponent: React.FC<{
   onChange: (v: string[]) => void;
 }> = ({ value, onChange }) => {
   return (
-    <div className="flex items-center gap-2 text-sm text-black whitespace-nowrap w-min">
+    <div className="flex items-center gap-2 text-[14px] text-black whitespace-nowrap w-min">
       <Text
         value={value[0]}
         placeholder="GPA"
@@ -129,7 +129,7 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
           <Text
             value={entry.value}
             placeholder="Degree and Field of Study"
-            className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
+            className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start"
             onChange={(v) => {
               setProp((props: EducationEntryProps) => {
                 props.entry = { ...entry, value: v };
@@ -161,7 +161,7 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
                 event.stopPropagation();
                 setCalendarOpen(true);
               }}
-              className="text-sm font-normal text-black whitespace-nowrap w-min text-end"
+              className="text-[14px] font-normal text-black whitespace-nowrap w-min text-end"
             >
               <p>{entry.datePeriod}</p>
               {entry.datePeriod && entry.datePeriod !== '' ? null : (
@@ -185,7 +185,7 @@ const EducationEntry: CUserComponent<EducationEntryProps> = (props) => {
         <Text
           value={entry.bullets}
           placeholder="What knowledge or experience did you acquire during your studies there?(e.g. Delivered a comprehensive marketing strategy)"
-          className="w-full text-sm font-normal text-black break-all whitespace-pre-wrap text-start"
+          className="w-full text-[14px] font-normal text-black break-all whitespace-pre-wrap text-start"
           onChange={(v) => {
             setProp((props: EducationEntryProps) => {
               props.entry = { ...entry, bullets: v };
@@ -215,7 +215,7 @@ const EducationEntrySettings = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-2 p-2 text-sm">
+    <div className="flex flex-col gap-2 p-2 text-[14px]">
       {fieldKeys.map((field) => (
         <div
           className="flex items-center min-w-[200px] justify-between"
