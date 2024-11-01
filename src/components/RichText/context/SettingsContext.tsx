@@ -21,15 +21,9 @@ export const DEFAULT_SETTINGS = {
   isCharLimitUtf8: false,
   isCollab: false,
   isMaxLength: false,
-  isRichText: true,
   measureTypingPerf: false,
-  shouldPreserveNewLinesInMarkdown: false,
   shouldUseLexicalContextMenu: false,
   showNestedEditorTreeView: false,
-  showTableOfContents: false,
-  showTreeView: true,
-  tableCellBackgroundColor: true,
-  tableCellMerge: true,
 } as const;
 
 // These are mutated in setupEnv
@@ -73,10 +67,7 @@ export const SettingsContext = ({
   const [settings, setSettings] = useState(INITIAL_SETTINGS);
 
   const setOption = useCallback((setting: SettingName, value: boolean) => {
-    setSettings((options) => ({
-      ...options,
-      [setting]: value,
-    }));
+    setSettings((options) => ({ ...options, [setting]: value }));
     setURLParam(setting, value);
   }, []);
 

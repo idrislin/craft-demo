@@ -30,26 +30,14 @@ import TextInput from './components/TextInput';
 import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin';
 import LinkPlugin from './plugins/LinkPlugin';
 import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin';
+import YouTubePlugin from './plugins/YouTubePlugin';
 
 interface RichTextV3Props {}
 
 const RichTextV3: React.FC<RichTextV3Props> = (props) => {
   const { historyState } = useSharedHistoryContext();
   const {
-    settings: {
-      isCollab,
-      isAutocomplete,
-      isMaxLength,
-      isCharLimit,
-      isCharLimitUtf8,
-      isRichText,
-      showTreeView,
-      showTableOfContents,
-      shouldUseLexicalContextMenu,
-      shouldPreserveNewLinesInMarkdown,
-      tableCellMerge,
-      tableCellBackgroundColor,
-    },
+    settings: { isCharLimit, isCharLimitUtf8 },
   } = useSettings();
 
   const initialConfig = {
@@ -148,6 +136,7 @@ const RichTextV3: React.FC<RichTextV3Props> = (props) => {
 
             <PageBreakPlugin />
             <LinkPlugin />
+            <YouTubePlugin />
 
             {floatingAnchorElem && !isSmallWidthViewport && (
               <>

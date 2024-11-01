@@ -20,10 +20,18 @@ interface ImageResizerProps {
   maxWidth?: number;
   onResizeEnd: (width: 'inherit' | number, height: 'inherit' | number) => void;
   onResizeStart: () => void;
+  resizeDirections?: { x: boolean; y: boolean };
 }
 
 const ImageResizer: React.FC<ImageResizerProps> = (props) => {
-  const { onResizeStart, onResizeEnd, imageRef, maxWidth, editor } = props;
+  const {
+    onResizeStart,
+    onResizeEnd,
+    imageRef,
+    maxWidth,
+    editor,
+    resizeDirections = { x: true, y: true },
+  } = props;
   const imageResizerClass =
     'block w-1.5 h-1.5 rounded-full bg-white outline outline-solid absolute outline-[--primary-color] border border-solid border-white';
   const controlWrapperRef = useRef<HTMLDivElement>(null);
@@ -175,8 +183,8 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
         );
 
         const height = width / positioning.ratio;
-        image.style.width = `${width}px`;
         image.style.height = `${height}px`;
+        image.style.width = `${width}px`;
         positioning.currentHeight = height;
         positioning.currentWidth = width;
       } else if (isVertical) {
@@ -188,7 +196,6 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
           minHeight,
           maxHeightContainer
         );
-
         image.style.height = `${height}px`;
         positioning.currentHeight = height;
       } else {
@@ -233,15 +240,17 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
   };
   return (
     <div ref={controlWrapperRef}>
-      <div
-        className={clsx(
-          imageResizerClass,
-          '-top-1 left-1/2 -translate-x-1/2 cursor-n-resize'
-        )}
-        onPointerDown={(event) => {
-          handlePointerDown(event, Direction.north);
-        }}
-      />
+      {resizeDirections.y ? (
+        <div
+          className={clsx(
+            imageResizerClass,
+            '-top-1 left-1/2 -translate-x-1/2 cursor-n-resize'
+          )}
+          onPointerDown={(event) => {
+            handlePointerDown(event, Direction.north);
+          }}
+        />
+      ) : null}
       <div
         className={clsx(imageResizerClass, '-top-1 -right-1 cursor-ne-resize')}
         onPointerDown={(event) => {
@@ -266,15 +275,17 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
           handlePointerDown(event, Direction.south | Direction.east);
         }}
       />
-      <div
-        className={clsx(
-          imageResizerClass,
-          '-bottom-1 left-1/2 -translate-x-1/2 cursor-s-resize'
-        )}
-        onPointerDown={(event) => {
-          handlePointerDown(event, Direction.south);
-        }}
-      />
+      {resizeDirections.y ? (
+        <div
+          className={clsx(
+            imageResizerClass,
+            '-bottom-1 left-1/2 -translate-x-1/2 cursor-s-resize'
+          )}
+          onPointerDown={(event) => {
+            handlePointerDown(event, Direction.south);
+          }}
+        />
+      ) : null}
       <div
         className={clsx(
           imageResizerClass,

@@ -12,7 +12,6 @@ import {
   $findMatchingParent,
   $getNearestBlockElementAncestorOrThrow,
   $getNearestNodeOfType,
-  $isEditorIsNestedEditor,
   mergeRegister,
 } from '@lexical/utils';
 import {
@@ -46,7 +45,6 @@ import DropDownAlignment from '../../components/DropDownAlignment';
 import {
   IconBackgound,
   IconCode,
-  IconEmojiEmotions,
   IconFileImage,
   IconFontColor,
   IconHorizontalRule,
@@ -60,11 +58,14 @@ import {
   IconTypeSuperscript,
   IconTypeUnderline,
   IconUndo,
+  IconYoutube,
 } from '../../icons';
 import { InsertImageDialog } from '../ImagesPlugin';
 import useModal from '../../utils/useModal';
 import { sanitizeUrl } from '../../utils/url';
 import DropdownEmoji from '../../components/DropDownEmoji';
+import DropDownLetterSpacing from '../../components/DropDownLetterSpacing';
+import { InsetYouTubeDialog } from '../YouTubePlugin';
 
 const blockTypeToBlockName = {
   bullet: 'Bulleted List',
@@ -129,6 +130,7 @@ const ToolbarPlugin: React.FC<{
 
   const [fontSize, setFontSize] = useState<string>('16px');
   const [lineHeight, setLineHeight] = useState<string>();
+  const [letterSpacing, setLetterSpacing] = useState<string>();
 
   const [fontColor, setFontColor] = useState<string>('#000');
   const [bgColor, setBgColor] = useState<string>('#fff');
@@ -242,6 +244,9 @@ const ToolbarPlugin: React.FC<{
       );
       setLineHeight(
         $getSelectionStyleValueForProperty(selection, 'line-height')
+      );
+      setLetterSpacing(
+        $getSelectionStyleValueForProperty(selection, 'letter-spacing', '0px')
       );
     }
   }, [activeEditor]);
@@ -407,8 +412,13 @@ const ToolbarPlugin: React.FC<{
         selectionLineHeight={lineHeight}
         editor={activeEditor}
       />
+      <DropDownLetterSpacing
+        selectionLetterSpacing={letterSpacing}
+        editor={activeEditor}
+      />
       <Divider />
 
+      {/* font style */}
       <DropdownColorPicker
         color={fontColor}
         onChange={onFontColorSelect}
@@ -419,9 +429,6 @@ const ToolbarPlugin: React.FC<{
         onChange={onBgColorSelect}
         icon={<IconBackgound />}
       />
-      <Divider />
-
-      {/* font style */}
       <ToolbarButton active={isBold} onClick={() => formatText('bold')}>
         <IconTypeBold />
       </ToolbarButton>
@@ -443,10 +450,6 @@ const ToolbarPlugin: React.FC<{
       <ToolbarButton active={isCode} onClick={() => formatText('code')}>
         <IconCode />
       </ToolbarButton>
-
-      <ToolbarButton active={isLink} onClick={insertLink}>
-        <IconLink />
-      </ToolbarButton>
       <Divider />
 
       {/* script/subscript/superscript */}
@@ -465,20 +468,13 @@ const ToolbarPlugin: React.FC<{
       <ToolbarButton onClick={clearFormatting}>
         <IconTypeClear />
       </ToolbarButton>
+      <DropdownEmoji editor={activeEditor} />
+
       <Divider />
 
       {/* alignment */}
       <DropDownAlignment value={elementFormat} editor={activeEditor} />
-
       <Divider />
-
-      <ToolbarButton
-        onClick={() =>
-          editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)
-        }
-      >
-        <IconHorizontalRule />
-      </ToolbarButton>
 
       {/*  */}
       {blockType in blockTypeToBlockName && activeEditor === editor && (
@@ -497,7 +493,25 @@ const ToolbarPlugin: React.FC<{
       >
         <IconFileImage />
       </ToolbarButton>
-      <DropdownEmoji editor={activeEditor} />
+      <ToolbarButton
+        onClick={() => {
+          showModal(`添加 YouTube 视频`, (onClose) => (
+            <InsetYouTubeDialog activeEditor={activeEditor} onClose={onClose} />
+          ));
+        }}
+      >
+        <IconYoutube />
+      </ToolbarButton>
+      <ToolbarButton active={isLink} onClick={insertLink}>
+        <IconLink />
+      </ToolbarButton>
+      <ToolbarButton
+        onClick={() =>
+          editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)
+        }
+      >
+        <IconHorizontalRule />
+      </ToolbarButton>
       {modal}
     </div>
   );

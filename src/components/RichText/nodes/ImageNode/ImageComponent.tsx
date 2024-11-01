@@ -117,7 +117,6 @@ const ImageComponent: React.FC<ImageComponentProps> = (props) => {
   const { src, altText, nodeKey, width, height, maxWidth, resizable } = props;
 
   const imageRef = useRef<null | HTMLImageElement>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [isSelected, setSelected, clearSelection] =
     useLexicalNodeSelection(nodeKey);
   const [isResizing, setIsResizing] = useState<boolean>(false);
@@ -143,44 +142,6 @@ const ImageComponent: React.FC<ImageComponentProps> = (props) => {
       return false;
     },
     [editor, isSelected]
-  );
-
-  const $onEnter = useCallback(
-    (event: KeyboardEvent) => {
-      const latestSelection = $getSelection();
-      const buttonElem = buttonRef.current;
-      if (
-        isSelected &&
-        $isNodeSelection(latestSelection) &&
-        latestSelection.getNodes().length === 1
-      ) {
-        if (buttonElem !== null && buttonElem !== document.activeElement) {
-          event.preventDefault();
-          buttonElem.focus();
-          return true;
-        }
-      }
-      return false;
-    },
-    [isSelected]
-  );
-
-  const $onEscape = useCallback(
-    (event: KeyboardEvent) => {
-      if (buttonRef.current === event.target) {
-        $setSelection(null);
-        editor.update(() => {
-          setSelected(true);
-          const parentRootElement = editor.getRootElement();
-          if (parentRootElement !== null) {
-            parentRootElement.focus();
-          }
-        });
-        return true;
-      }
-      return false;
-    },
-    [editor, setSelected]
   );
 
   const onClick = useCallback(
@@ -253,8 +214,6 @@ const ImageComponent: React.FC<ImageComponentProps> = (props) => {
         DRAGSTART_COMMAND,
         (event) => {
           if (event.target === imageRef.current) {
-            // TODO This is just a temporary workaround for FF to behave like other browsers.
-            // Ideally, this handles drag & drop too (and all browsers).
             event.preventDefault();
             return true;
           }
@@ -270,12 +229,6 @@ const ImageComponent: React.FC<ImageComponentProps> = (props) => {
       editor.registerCommand(
         KEY_BACKSPACE_COMMAND,
         $onDelete,
-        COMMAND_PRIORITY_LOW
-      ),
-      editor.registerCommand(KEY_ENTER_COMMAND, $onEnter, COMMAND_PRIORITY_LOW),
-      editor.registerCommand(
-        KEY_ESCAPE_COMMAND,
-        $onEscape,
         COMMAND_PRIORITY_LOW
       )
     );
@@ -294,8 +247,6 @@ const ImageComponent: React.FC<ImageComponentProps> = (props) => {
     isSelected,
     nodeKey,
     $onDelete,
-    $onEnter,
-    $onEscape,
     onClick,
     onRightClick,
     setSelected,
