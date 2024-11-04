@@ -282,7 +282,7 @@ const FloatingLinkEditor: React.FC<{
             <div
               role="button"
               tabIndex={0}
-              className="link-edit hover:text-primary"
+              className="link-edit hover:text-[#2dc08d]"
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => {
                 setEditedLinkUrl(linkUrl);

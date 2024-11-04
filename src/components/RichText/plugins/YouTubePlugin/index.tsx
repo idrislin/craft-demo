@@ -58,14 +58,14 @@ export const InsetYouTubeDialog: React.FC<{
           className={error ? '!border-red-500 outline-red-500' : ''}
         />
         {error ? (
-          <div className="mt-1.5 text-xs text-red-500">{error}</div>
+          <div className="mt-1.5 text-[12px] text-red-500">{error}</div>
         ) : null}
       </div>
       <DialogActions>
         <button
           onClick={() => onClick()}
           disabled={url.trim() === ''}
-          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-primary hover:bg-primary/10"
+          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-[#2dc08d] hover:bg-[#2dc08d]/10"
         >
           确定
         </button>

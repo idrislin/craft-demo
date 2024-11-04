@@ -71,7 +71,7 @@ export const InsertImageUriDialogBody: React.FC<InsertImageBodyProps> = ({
         <button
           disabled={isDisabled}
           onClick={() => onClick({ altText, src })}
-          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-primary hover:bg-primary/10"
+          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-[#2dc08d] hover:bg-[#2dc08d]/10"
         >
           确定
         </button>
@@ -116,7 +116,7 @@ export const InsertImageUploadedDialogBody: React.FC<InsertImageBodyProps> = ({
         <button
           disabled={isDisabled}
           onClick={() => onClick({ altText, src })}
-          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-primary hover:bg-primary/10"
+          className="px-3 py-2 rounded-md cursor-pointer disabled:cursor-not-allowed disabled:text-gray-300 text-[#2dc08d] hover:bg-[#2dc08d]/10"
         >
           确定
         </button>

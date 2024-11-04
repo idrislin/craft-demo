@@ -63,24 +63,24 @@ const PortalImpl: React.FC<PortalImplProps> = (props) => {
         ref={modalRef}
         className="min-h-[100px] min-w-[300px] flex grow-0 bg-white flex-col relative shadow-md rounded-lg"
       >
-        <h2 className="py-5 px-5 text-gray-900 m-0 border-b border-solid border-[#ccc]">
-          {title}
-        </h2>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close modal"
-          className="border-none outline-primary top-5 text-[14px] text-gray-500 absolute right-5 rounded justify-center items-center flex w-[30px] h-[30px] text-center cursor-pointer hover:bg-[#ddd]"
-        >
-          <svg
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            className="w-6 h-6"
-            data-testid="CloseIcon"
+        <div className="px-5 border-b border-solid border-[#ccc] h-[26px] flex items-center">
+          <h2 className="text-gray-900 text-[18px] m-0">{title}</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close modal"
+            className="border-none outline-[#2dc08d] top-5 text-[14px] text-gray-500 absolute right-5 rounded justify-center items-center flex w-[30px] h-[30px] text-center cursor-pointer hover:bg-[#ddd]"
           >
-            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-          </svg>
-        </button>
+            <svg
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              className="w-6 h-6"
+              data-testid="CloseIcon"
+            >
+              <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+            </svg>
+          </button>
+        </div>
         <div>{children}</div>
       </div>
     </div>

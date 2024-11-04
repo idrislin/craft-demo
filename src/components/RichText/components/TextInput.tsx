@@ -39,8 +39,8 @@ const TextInput: React.FC<TextInputProps> = (props) => {
         onChange={(e) => onChange(e.target.value)}
         className={clsx(
           'border border-solid border-[#d9d9d9] outline-none py-1 px-3 rounded-md placeholder:text-gray-300 w-full min-w-[250px]',
-          'hover:border-primary',
-          'focus:border-primary focus:shadow-[0_0_0_2px_rgba(5,145,255,0.1)]',
+          'hover:border-[#2dc08d]',
+          'focus:border-[#2dc08d] focus:shadow-[0_0_0_2px_rgba(5,145,255,0.1)]',
           className
         )}
       />

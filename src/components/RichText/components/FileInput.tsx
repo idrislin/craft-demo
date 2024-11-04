@@ -26,7 +26,7 @@ const FileInput: React.FC<FileInputProps> = (props) => {
       </label>
       <div
         onClick={() => inputRef.current?.click()}
-        className="rounded-md border-solid border border-[#d9d9d9] text-gray-300 py-1 px-3 hover:border-primary hover:text-primary cursor-pointer w-full whitespace-nowrap"
+        className="rounded-md border-solid border border-[#d9d9d9] text-gray-300 py-1 px-3 hover:border-[#2dc08d] hover:text-[#2dc08d] cursor-pointer w-full whitespace-nowrap"
       >
         {fileName || '选择文件'}
       </div>

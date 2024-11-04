@@ -33,7 +33,7 @@ const ImageResizer: React.FC<ImageResizerProps> = (props) => {
     resizeDirections = { x: true, y: true },
   } = props;
   const imageResizerClass =
-    'block w-1.5 h-1.5 rounded-full bg-white outline outline-solid absolute outline-[--primary-color] border border-solid border-white';
+    'block w-1.5 h-1.5 rounded-full bg-white outline outline-solid absolute outline-[#2dc08d] border border-solid border-white';
   const controlWrapperRef = useRef<HTMLDivElement>(null);
   const userSelect = useRef({
     priority: '',
